@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6f0ee7a3-7d74-4ddf-85cf-290aac78cf98" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gradle/6.8/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/6.8/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/6.8/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/configuration-cache/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/Book-Store-App.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/AH-Little Missy.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-ExtraBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-ExtraLight.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-Light.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-Medium.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-SemiBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/fonts/sora/Sora-Thin.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/icons/arrow.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/icons/facebook.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/icons/icons8-facebook.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/icons/icons8-google.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/bg2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/icons8-google-48 (1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/image.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/image_1.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/image_2.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/image_3.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/image_4.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/img_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/constants.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/login/body.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/login/login_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/sign_up/body.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/sign_up/sign_up_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/splash/components/body.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/splash/components/content_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/splash/splash_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/start/background.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/start/body.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/start/start_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/shared_preferences.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/size_config.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/pubspec.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[ce041714839ad0b00d]" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1yTXhNsGzqGpPgpZc0qlhh4Rejt" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/book_store_application/assets/images" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\My Hp\AndroidStudioProjects\Book-Store-App\book_store_application\assets\images" />
+      <recent name="C:\Users\My Hp\AndroidStudioProjects\Book-Store-App\book_store_application\assets\icons" />
+      <recent name="C:\Users\My Hp\AndroidStudioProjects\Book-Store-App\book_store_application\assets\fonts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\My Hp\AndroidStudioProjects\Book-Store-App\book_store_application\lib\screens\start" />
+      <recent name="C:\Users\My Hp\AndroidStudioProjects\Book-Store-App\book_store_application\lib\screens\splash\components" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/book_store_application/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6f0ee7a3-7d74-4ddf-85cf-290aac78cf98" name="Default Changelist" comment="" />
+      <created>1632276670220</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1632276670220</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.md" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
