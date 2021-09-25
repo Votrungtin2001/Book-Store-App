@@ -114,6 +114,13 @@
             </list>
           </value>
         </entry>
+        <entry key="font_awesome_flutter">
+          <value>
+            <list>
+              <option value="D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-9.1.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="introduction_screen">
           <value>
             <list>
@@ -375,6 +382,7 @@
       <root url="file://D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/file-6.1.2/lib" />
       <root url="file://D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib" />
       <root url="file://D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_svg-0.22.0/lib" />
+      <root url="file://D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-9.1.0/lib" />
       <root url="file://D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/introduction_screen-2.1.0/lib" />
       <root url="file://D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3/lib" />
       <root url="file://D:/src/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/lib" />

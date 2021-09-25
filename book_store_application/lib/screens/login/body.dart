@@ -52,14 +52,8 @@ class _BodyState extends State<Body>{
       body: SingleChildScrollView(
         child: Container(
           constraints: BoxConstraints(
-            maxHeight: MediaQuery
-                .of(context)
-                .size
-                .height,
-            maxWidth: MediaQuery
-                .of(context)
-                .size
-                .width,
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
           ),
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -110,22 +104,18 @@ class _BodyState extends State<Body>{
                                 child: Column(
                                     children: [
                                       TextField(
-                                        keyboardType: TextInputType
-                                            .emailAddress,
+                                        keyboardType: TextInputType.emailAddress,
                                         decoration: InputDecoration(
                                             fillColor: Colors.transparent,
                                             border: OutlineInputBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular(30.0),
+                                                borderRadius: BorderRadius.circular(30.0),
                                                 borderSide: const BorderSide(
                                                     color: Colors.black)
                                             ),
                                             filled: true,
                                             hintText: "Email",
-                                            hintStyle: const TextStyle(
-                                                color: Colors.black38),
-                                            prefixIcon: const Icon(Icons.person,
-                                                color: Colors.black)
+                                            hintStyle: const TextStyle(color: Colors.black38),
+                                            prefixIcon: const Icon(Icons.person, color: Colors.black)
                                         ),
                                       ),
                                       const SizedBox(height: 10,),
@@ -142,9 +132,9 @@ class _BodyState extends State<Body>{
                                             ),
                                             filled: true,
                                             hintText: "Password",
-                                            hintStyle: TextStyle(
+                                            hintStyle: const TextStyle(
                                                 color: Colors.black38),
-                                            prefixIcon: Icon(
+                                            prefixIcon: const Icon(
                                                 Icons.lock, color: Colors.black)
                                         ),
                                       ),

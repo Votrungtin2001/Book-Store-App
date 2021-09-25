@@ -57,7 +57,7 @@ class _BodyState extends State<Body>{
               ),
               padding: const EdgeInsets.symmetric(vertical: 10),
               onPressed: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (_) => SignUpScreen(),

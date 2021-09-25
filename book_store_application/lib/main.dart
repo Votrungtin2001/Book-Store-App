@@ -1,3 +1,4 @@
+import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/start/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:book_store_application/screens/splash/splash_screen.dart';
@@ -36,7 +37,8 @@ class MyAppState extends State<MyApp> {
            primarySwatch: Colors.blue,
            visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: isLoggedIn ? StartScreen() : SplashScreen()
+        // home: isLoggedIn ? StartScreen() : SplashScreen()
+      home: HomeScreen()
     );
 
 

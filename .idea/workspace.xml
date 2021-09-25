@@ -4,13 +4,28 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6f0ee7a3-7d74-4ddf-85cf-290aac78cf98" name="Default Changelist" comment="" />
+    <list default="true" id="6f0ee7a3-7d74-4ddf-85cf-290aac78cf98" name="Default Changelist" comment="nope">
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/forgotpassword.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/forgot_password/body.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/forgot_password/forgot_password_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/body.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/for_you_list_view.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/home_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/assets/images/icons8-google-48 (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/login/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/login/body.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/start/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/start/body.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/pubspec.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[ce041714839ad0b00d]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\My Hp\.android\avd\Nexus_5X_API_27.avd]" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -93,7 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632458329007</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="nope">
+      <created>1632458777865</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1632458777865</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="UnknownFeatures">
