@@ -156,7 +156,7 @@ class CategoryView extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${category!.count} lesson',
+                                                  '${category!.count} left',
                                                   textAlign: TextAlign.left,
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.w200,
