@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:book_store_application/screens/home/models/category.dart';
 
 class CategoryListView extends StatefulWidget {
   const CategoryListView({Key? key, this.callBack}) : super(key: key);
@@ -115,32 +116,29 @@ class CategoryView extends StatelessWidget {
                           ),
                           Expanded(
                             child: Container(
-                              decoration: BoxDecoration(
-                                color: HexColor('#F8FAFB'),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0)),
+                              decoration: const BoxDecoration(
+                                color: Color(0x00f8fafb),
+                                borderRadius: BorderRadius.all(Radius.circular(16.0)),
                               ),
                               child: Row(
                                 children: <Widget>[
-                                  const SizedBox(
-                                    width: 48 + 24.0,
+                                  const SizedBox(width: 48 + 24.0,
                                   ),
                                   Expanded(
                                     child: Container(
                                       child: Column(
                                         children: <Widget>[
                                           Padding(
-                                            padding:
-                                            const EdgeInsets.only(top: 16),
+                                            padding: const EdgeInsets.only(top: 16),
                                             child: Text(
                                               category!.title,
                                               textAlign: TextAlign.left,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 16,
                                                 letterSpacing: 0.27,
-                                                color: DesignCourseAppTheme
-                                                    .darkerText,
+                                               // color: DesignCourseAppTheme.darkerText,
+                                                color: Colors.black12,
                                               ),
                                             ),
                                           ),
@@ -158,14 +156,13 @@ class CategoryView extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${category!.lessonCount} lesson',
+                                                  '${category!.count} lesson',
                                                   textAlign: TextAlign.left,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.w200,
                                                     fontSize: 12,
                                                     letterSpacing: 0.27,
-                                                    color: DesignCourseAppTheme
-                                                        .grey,
+                                                    color: Colors.grey,
                                                   ),
                                                 ),
                                                 Container(
@@ -175,21 +172,17 @@ class CategoryView extends StatelessWidget {
                                                         '${category!.rating}',
                                                         textAlign:
                                                         TextAlign.left,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontWeight:
                                                           FontWeight.w200,
                                                           fontSize: 18,
                                                           letterSpacing: 0.27,
-                                                          color:
-                                                          DesignCourseAppTheme
-                                                              .grey,
+                                                          color: Colors.grey,
                                                         ),
                                                       ),
-                                                      Icon(
+                                                      const Icon(
                                                         Icons.star,
-                                                        color:
-                                                        DesignCourseAppTheme
-                                                            .nearlyBlue,
+                                                        color: Colors.blueGrey,
                                                         size: 20,
                                                       ),
                                                     ],
@@ -202,41 +195,31 @@ class CategoryView extends StatelessWidget {
                                             padding: const EdgeInsets.only(
                                                 bottom: 16, right: 16),
                                             child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
                                                   '\$${category!.money}',
                                                   textAlign: TextAlign.left,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 18,
                                                     letterSpacing: 0.27,
-                                                    color: DesignCourseAppTheme
-                                                        .nearlyBlue,
+                                                    color: Colors.lightBlueAccent,
                                                   ),
                                                 ),
                                                 Container(
-                                                  decoration: BoxDecoration(
-                                                    color: DesignCourseAppTheme
-                                                        .nearlyBlue,
+                                                  decoration: const BoxDecoration(
+                                                    color: Colors.lightBlueAccent,
                                                     borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(
-                                                            8.0)),
+                                                    BorderRadius.all(Radius.circular(8.0)),
                                                   ),
-                                                  child: Padding(
+                                                  child: const Padding(
                                                     padding:
-                                                    const EdgeInsets.all(
-                                                        4.0),
+                                                    EdgeInsets.all(4.0),
                                                     child: Icon(
                                                       Icons.add,
-                                                      color:
-                                                      DesignCourseAppTheme
-                                                          .nearlyWhite,
+                                                      color: Colors.white70,
                                                     ),
                                                   ),
                                                 )
@@ -263,9 +246,7 @@ class CategoryView extends StatelessWidget {
                             ClipRRect(
                               borderRadius:
                               const BorderRadius.all(Radius.circular(16.0)),
-                              child: AspectRatio(
-                                  aspectRatio: 1.0,
-                                  child: Image.asset(category!.imagePath)),
+                              child: AspectRatio(aspectRatio: 1.0, child: Image.asset(category!.imagePath)),
                             )
                           ],
                         ),

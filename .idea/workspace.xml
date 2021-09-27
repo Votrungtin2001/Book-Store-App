@@ -5,20 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f0ee7a3-7d74-4ddf-85cf-290aac78cf98" name="Default Changelist" comment="nope">
-      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/forgotpassword.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/forgot_password/body.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/forgot_password/forgot_password_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/body.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/for_you_list_view.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/home_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/assets/images/img_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/book_detail/body.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/book_detail/book_detail_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/models/category.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_store_application/assets/images/icons8-google-48 (1).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_store_application/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/forgot_password/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/forgot_password/body.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/home/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/body.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/home/for_you_list_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/home/for_you_list_view.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/login/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/login/body.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/start/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/start/body.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book_store_application/lib/screens/sign_up/body.dart" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/lib/screens/sign_up/body.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book_store_application/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/book_store_application/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/book_store_application/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +59,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/book_store_application/assets/images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/book_store_application" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -115,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632458777865</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="update home + forgot_password_screen">
+      <created>1632590092469</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1632590092469</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -137,6 +142,28 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="spash screen/ login screen / signup screen" />
     <MESSAGE value="nope" />
-    <option name="LAST_COMMIT_MESSAGE" value="nope" />
+    <MESSAGE value="update home + forgot_password_screen" />
+    <option name="LAST_COMMIT_MESSAGE" value="update home + forgot_password_screen" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/book_store_application/lib/screens/login/body.dart</url>
+          <line>201</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/book_store_application/lib/screens/login/body.dart</url>
+          <line>187</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/book_store_application/lib/screens/forgot_password/body.dart</url>
+          <line>65</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

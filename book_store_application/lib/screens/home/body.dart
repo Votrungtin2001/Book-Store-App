@@ -1,3 +1,4 @@
+import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -6,28 +7,30 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../constants.dart';
+import 'for_you_list_view.dart';
 
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> with TickerProviderStateMixin{
+class _BodyState extends State<Body> {
   AnimationController? animationController;
   final ScrollController _scrollController = ScrollController();
+  CategoryType categoryType = CategoryType.all;
 
-  @override
-  void initState() {
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    animationController?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void initState() {
+  //   animationController = AnimationController(
+  //       duration: const Duration(milliseconds: 1000), vsync: this);
+  //   super.initState();
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   animationController?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                                         ),
                                         const Text('Keep reading, you’ll fall in love'),
                                         getSearchBarUI(),
-                                        getCategoryUI(),
+                                        getForYouUI(),
                                       ]
                                   );
                                 }, childCount: 1)
@@ -289,17 +292,17 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: Row(
             children: <Widget>[
-              getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
+              getButtonUI(CategoryType.all, categoryType == CategoryType.all),
               const SizedBox(
                 width: 16,
               ),
               getButtonUI(
-                  CategoryType.coding, categoryType == CategoryType.coding),
+                  CategoryType.fic, categoryType == CategoryType.fic),
               const SizedBox(
                 width: 16,
               ),
               getButtonUI(
-                  CategoryType.basic, categoryType == CategoryType.basic),
+                  CategoryType.science, categoryType == CategoryType.science),
             ],
           ),
         ),
@@ -314,6 +317,16 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
       ],
     );
   }
+
+  void moveTo() {
+    Navigator.push<dynamic>(
+      context,
+      MaterialPageRoute<dynamic>(
+        builder: (BuildContext context) => BookDetailScreen(),
+      ),
+    );
+  }
+
   Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
     String txt = '';
     if (CategoryType.all == categoryTypeData) {
@@ -333,10 +346,10 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
       child: Container(
         decoration: BoxDecoration(
             color: isSelected
-                ? DesignCourseAppTheme.nearlyBlue
-                : DesignCourseAppTheme.nearlyWhite,
+                ? Colors.lightBlueAccent
+                : Colors.white70,
             borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-            border: Border.all(color: DesignCourseAppTheme.nearlyBlue)),
+            border: Border.all(color: Colors.lightBlueAccent)),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -359,8 +372,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                     fontSize: 12,
                     letterSpacing: 0.27,
                     color: isSelected
-                        ? DesignCourseAppTheme.nearlyWhite
-                        : DesignCourseAppTheme.nearlyBlue,
+                        ? Colors.white70
+                        : Colors.lightBlueAccent,
                   ),
                 ),
               ),

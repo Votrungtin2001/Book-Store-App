@@ -2,7 +2,9 @@
 import 'package:book_store_application/MVP/Presenter/signUp_presenter.dart';
 import 'package:book_store_application/MVP/View/signUp_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
+import 'package:book_store_application/screens/login/login_screen.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../../constants.dart';
@@ -132,6 +134,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                     child: Column(
                                         children: [
                                           TextFormField(
+                                            style: const TextStyle( fontSize: 15,),
                                             controller: _emailController,
                                             keyboardType: TextInputType
                                                 .emailAddress,
@@ -144,6 +147,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                               });
                                             },
                                             decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                                                 fillColor: Colors.transparent,
                                                 border: OutlineInputBorder(
                                                     borderRadius: BorderRadius
@@ -161,6 +165,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                           ),
                                           const SizedBox(height: 10,),
                                           TextFormField(
+                                            style: const TextStyle( fontSize: 15,),
                                             controller: _nameController,
                                             keyboardType: TextInputType
                                                 .text,
@@ -175,6 +180,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                               });
                                             },
                                             decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                                                 fillColor: Colors.transparent,
                                                 border: OutlineInputBorder(
                                                     borderRadius: BorderRadius
@@ -192,6 +198,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                           ),
                                           const SizedBox(height: 10,),
                                           TextFormField(
+                                            style: const TextStyle( fontSize: 15,),
                                             controller: _passwordController,
                                             keyboardType: TextInputType
                                                 .visiblePassword,
@@ -207,6 +214,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                               });
                                             },
                                             decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                                                 fillColor: Colors.transparent,
                                                 border: OutlineInputBorder(
                                                     borderRadius: BorderRadius
@@ -216,14 +224,15 @@ class _BodyState extends State<Body> implements SignUpView{
                                                 ),
                                                 filled: true,
                                                 hintText: "Password",
-                                                hintStyle: TextStyle(
+                                                hintStyle: const TextStyle(
                                                     color: Colors.black38),
-                                                prefixIcon: Icon(
+                                                prefixIcon: const Icon(
                                                     Icons.lock, color: Colors.black)
                                             ),
                                           ),
                                           const SizedBox(height: 10,),
                                           TextFormField(
+                                            style: const TextStyle( fontSize: 15,),
                                             controller: _repasswordController,
                                             keyboardType: TextInputType
                                                 .visiblePassword,
@@ -239,6 +248,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                               });
                                             },
                                             decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                                                 fillColor: Colors.transparent,
                                                 border: OutlineInputBorder(
                                                     borderRadius: BorderRadius
@@ -276,16 +286,22 @@ class _BodyState extends State<Body> implements SignUpView{
                                   ),
                                 ),
                                 const SizedBox(height: 50,),
-                                Container(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Text('Already have an account?'),
-                                      Text('Sign In',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
+                                RichText(
+                                    text: TextSpan(
+                                      text: 'Already have an account?',
+                                      children: <TextSpan>[
+                                        TextSpan(text: 'Sign In',
+                                          style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                          recognizer: TapGestureRecognizer()..onTap = (){
+                                            Navigator.push( context,
+                                              MaterialPageRoute(
+                                                builder: (context) => LoginScreen(),
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    )
                                 ),
                               ],
                             ),

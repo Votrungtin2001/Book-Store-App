@@ -1,10 +1,14 @@
 import 'package:book_store_application/MVP/Presenter/logIn_presenter.dart';
 import 'package:book_store_application/MVP/View/logIn_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
+import 'package:book_store_application/screens/forgot_password/forgot_password_screen.dart';
+import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/home_test.dart';
+import 'package:book_store_application/screens/sign_up/sign_up_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -47,10 +51,7 @@ class _BodyState extends State<Body> implements LogInView{
         backgroundColor: Colors.transparent,
         actions: <Widget>[
           Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             height: 30,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,14 +76,8 @@ class _BodyState extends State<Body> implements LogInView{
       body: SingleChildScrollView(
         child: Container(
           constraints: BoxConstraints(
-            maxHeight: MediaQuery
-                .of(context)
-                .size
-                .height,
-            maxWidth: MediaQuery
-                .of(context)
-                .size
-                .width,
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
           ),
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -128,16 +123,16 @@ class _BodyState extends State<Body> implements LogInView{
                             padding: const EdgeInsets.all(24.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              //crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
                                     alignment: Alignment.center,
                                     child: Column(
                                         children: [
                                           TextFormField(
+                                            style: const TextStyle( fontSize: 15,),
                                             controller: _emailController,
-                                            keyboardType: TextInputType
-                                                .emailAddress,
+                                            keyboardType: TextInputType.emailAddress,
                                             validator: (value) => value != null && !EmailValidator.validate(email)
                                                 ? 'Please enter a valid email'
                                                 : null,
@@ -147,26 +142,23 @@ class _BodyState extends State<Body> implements LogInView{
                                               });
                                             },
                                             decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                                                 fillColor: Colors.transparent,
                                                 border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius
-                                                        .circular(30.0),
-                                                    borderSide: const BorderSide(
-                                                        color: Colors.black)
+                                                    borderRadius: BorderRadius.circular(30.0),
+                                                    borderSide: const BorderSide(color: Colors.black)
                                                 ),
                                                 filled: true,
                                                 hintText: "Email",
-                                                hintStyle: const TextStyle(
-                                                    color: Colors.black38),
-                                                prefixIcon: const Icon(Icons.person,
-                                                    color: Colors.black)
+                                                hintStyle: const TextStyle(color: Colors.black38),
+                                                prefixIcon: const Icon(Icons.person, color: Colors.black)
                                             ),
                                           ),
                                           const SizedBox(height: 10,),
                                           TextFormField(
+                                            style: const TextStyle( fontSize: 15,),
                                             controller: _passwordController,
-                                            keyboardType: TextInputType
-                                                .visiblePassword,
+                                            keyboardType: TextInputType.visiblePassword,
                                             obscureText: true,
                                             validator: (value) {
                                               if(value!.length < 6) {
@@ -179,30 +171,47 @@ class _BodyState extends State<Body> implements LogInView{
                                               });
                                             },
                                             decoration: InputDecoration(
+                                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                                                 fillColor: Colors.transparent,
                                                 border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius
-                                                        .circular(30.0),
-                                                    borderSide: const BorderSide(
-                                                        color: Colors.black)
+                                                    borderRadius: BorderRadius.circular(30.0),
+                                                    borderSide: const BorderSide(color: Colors.black)
                                                 ),
                                                 filled: true,
                                                 hintText: "Password",
-                                                hintStyle: TextStyle(
-                                                    color: Colors.black38),
-                                                prefixIcon: Icon(
-                                                    Icons.lock, color: Colors.black)
+                                                hintStyle: const TextStyle(color: Colors.black38),
+                                                prefixIcon: const Icon(Icons.lock, color: Colors.black)
                                             ),
                                           ),
                                         ])
                                 ),
-                                const SizedBox(height: 5.0,),
-                                Container(
-                                  alignment: Alignment.centerRight,
+                                // RichText(
+                                //   textAlign: TextAlign.start,
+                                //     text: TextSpan(
+                                //       text: 'Forgot a Password?',
+                                //           style: const TextStyle(color: Colors.blueAccent,
+                                //               fontWeight: FontWeight.bold),
+                                //       recognizer: TapGestureRecognizer()..onTap = (){
+                                //         Navigator.push( context, MaterialPageRoute(
+                                //                 builder: (context) => ForgotPasswordScreen(),
+                                //               ),
+                                //             );
+                                //           },
+                                //     )
+                                // ),
+                                TextButton(
+                                  onPressed: () { Navigator.push( context,
+                                      MaterialPageRoute(
+                                      builder: (context) => ForgotPasswordScreen()
+                                    ),
+                                  );
+                                  },
                                   child: const Text("Forgot a password?",
+                                      textAlign: TextAlign.end,
                                       style: TextStyle(
                                           decoration: TextDecoration.underline,
-                                          fontWeight: FontWeight.w700)),
+                                          fontWeight: FontWeight.w700,)
+                                  ),
                                 ),
                                 const SizedBox(height: 25.0,),
                                 FlatButton(
@@ -318,16 +327,22 @@ class _BodyState extends State<Body> implements LogInView{
                                   ),
                                 ),
                                 const SizedBox(height: 50,),
-                                Container(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Text('Don’t have an account?'),
-                                      Text('Register now',style: TextStyle(color: Colors.red,fontWeight: FontWeight.bold))
-                                    ],
-                                  ),
+                                RichText(
+                                    text: TextSpan(
+                                      text: 'Don’t have an account?',
+                                      children: <TextSpan>[
+                                        TextSpan(text: 'Register now',
+                                            style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                            recognizer: TapGestureRecognizer()..onTap = (){
+                                          Navigator.push( context,
+                                              MaterialPageRoute(
+                                              builder: (context) => SignUpScreen(),
+                                              ),
+                                          );
+                                          },
+                                        )
+                                      ],
+                                    )
                                 ),
                               ],
                             ),
@@ -348,7 +363,7 @@ class _BodyState extends State<Body> implements LogInView{
     if(result != null) {
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       Navigator.push(context,
-      MaterialPageRoute(builder: (context) => Home_Test()));
+      MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -358,7 +373,7 @@ class _BodyState extends State<Body> implements LogInView{
     if(result != null) {
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => Home_Test()));
+          MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -368,7 +383,7 @@ class _BodyState extends State<Body> implements LogInView{
     if(result != null) {
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => Home_Test()));
+          MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
