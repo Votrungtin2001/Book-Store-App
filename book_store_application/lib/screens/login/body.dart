@@ -361,9 +361,11 @@ class _BodyState extends State<Body> implements LogInView{
   Future<void> logInWithEmailAndPassword() async {
     dynamic result = await _auth.signInWithEmailAndPassword(email, password);
     if(result != null) {
+      // Scaffold.of(context).showSnackBar(
+      //   const SnackBar(content: Text('Logged in successfully.'),)
+      // );
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-      Navigator.push(context,
-      MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
