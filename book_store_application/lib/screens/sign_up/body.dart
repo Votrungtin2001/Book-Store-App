@@ -276,9 +276,9 @@ class _BodyState extends State<Body> implements SignUpView{
                                   ),
                                   padding: const EdgeInsets.symmetric(vertical: 10),
                                   onPressed: () {
-                                    if(formKey.currentState!.validate()) {{
+                                    if(formKey.currentState!.validate()) {
                                       presenter.createUser();
-                                    }}
+                                    }
                                   },
                                   child: const Text("Sign up",
                                     style: TextStyle(

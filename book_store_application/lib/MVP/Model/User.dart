@@ -6,11 +6,9 @@ class User_Model {
   late String phone= "";
   late String dob= "";
   late String gender= "";
-  late String email= "";
-  late String password= "";
   late int photo = 0;
 
-  User_Model(String ID, String Name, int Role, String Address, String Phone, String Dob, String Gender, int Photo, String Email, String Password) {
+  User_Model(String ID, String Name, int Role, String Address, String Phone, String Dob, String Gender, int Photo) {
     this.id = ID;
     this.name = Name;
     this.role = Role;
@@ -19,8 +17,6 @@ class User_Model {
     this.dob = Dob;
     this.gender = Gender;
     this.photo = Photo;
-    this.email = Email;
-    this.password = Password;
   }
 
   String getID() {return this.id;}
@@ -47,12 +43,6 @@ class User_Model {
 
   String getGender() {return this.gender;}
   void setGender(String Gender) {this.gender = Gender;}
-
-  String getEmail() {return this.email;}
-  void setEmail(String Email) {this.email = Email;}
-
-  String getPassword() {return this.password;}
-  void setPassword(String Password) {this.password = Password;}
 }
 
 class User_MD {

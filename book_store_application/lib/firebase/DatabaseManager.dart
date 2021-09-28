@@ -10,8 +10,7 @@ class DatabaseManager {
     return await Users
         .doc(user_model.id)
         .set({'id': user_model.id, 'name': user_model.name, 'role': user_model.role, 'address': user_model.address,
-                'phone': user_model.phone, 'dob': user_model.dob, 'gender': user_model.gender, 'photo': user_model.photo,
-                  'email': user_model.email, 'password': user_model.password});
+                'phone': user_model.phone, 'dob': user_model.dob, 'gender': user_model.gender, 'photo': user_model.photo});
   }
 
   /*Future updateUserList(String name, String gender, int score, String uid) async {
