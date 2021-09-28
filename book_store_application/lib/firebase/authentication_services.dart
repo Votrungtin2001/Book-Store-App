@@ -82,7 +82,7 @@ class AuthenticationServices {
           }
           else {
             _start--;
-            checkEmailVerified(name, email, password);
+            checkEmailVerified(name);
           }
 
         });
@@ -111,13 +111,13 @@ class AuthenticationServices {
     }
   }
 
-  Future<void> checkEmailVerified(String name, String email, String password) async {
+  Future<void> checkEmailVerified(String name) async {
     User? user = _auth.currentUser;
     if (user!=null) await user.reload();
     if(user!= null && user.emailVerified) {
       Fluttertoast.showToast(msg: 'Verify email successfully', toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
       timer.cancel();
-      User_Model user_model = new User_Model(user.uid, name, 1, "", "", "", "", 0, email, password);
+      User_Model user_model = new User_Model(user.uid, name, 1, "", "", "", "", 0);
       await DatabaseManager().createUserData(user_model);
     }
   }
@@ -138,7 +138,7 @@ class AuthenticationServices {
       // Check isNewUser or Not
       if (result.additionalUserInfo!.isNewUser) {
         if (user != null) {
-          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0, user.email!, "");
+          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0);
           await DatabaseManager().createUserData(user_model);
         }
 
@@ -176,7 +176,7 @@ class AuthenticationServices {
       // Check isNewUser or Not
       if (result.additionalUserInfo!.isNewUser) {
         if (user != null) {
-          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0, user.email!, "");
+          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0);
           await DatabaseManager().createUserData(user_model);
         }
 
@@ -196,19 +196,10 @@ class AuthenticationServices {
       User? user = null;
       return user;
     }
+  }
 
-   /* switch(res.status){
-      case FacebookLoginStatus.success:
-
-
-        break;
-      case FacebookLoginStatus.cancel:
-        print('The user canceled the login');
-        break;
-      case FacebookLoginStatus.error:
-        print('There was an error');
-        break;
-    }*/
+  Future sendPasswordResetEmail(String email) async {
+    return _auth.sendPasswordResetEmail(email: email);
   }
 
 }
