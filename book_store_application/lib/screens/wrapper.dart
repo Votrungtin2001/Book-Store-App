@@ -1,4 +1,5 @@
 import 'package:book_store_application/MVP/Model/User.dart';
+import 'package:book_store_application/main_page.dart';
 import 'package:book_store_application/screens/login/login_screen.dart';
 import 'package:book_store_application/screens/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,7 @@ class Wrapper extends StatelessWidget {
     if (user == null){
       return SplashScreen();
     } else {
-      return Home_Test();
+      return MainPage();
     }
 
   }

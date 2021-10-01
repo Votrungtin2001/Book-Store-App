@@ -9,8 +9,8 @@ class CategoryListView extends StatefulWidget {
   _CategoryListViewState createState() => _CategoryListViewState();
 }
 
-class _CategoryListViewState extends State<CategoryListView>
-    with TickerProviderStateMixin {
+class _CategoryListViewState extends State<CategoryListView> with TickerProviderStateMixin {
+
   AnimationController? animationController;
 
   @override
@@ -34,8 +34,8 @@ class _CategoryListViewState extends State<CategoryListView>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16, bottom: 16),
-      child: Container(
+      padding: const EdgeInsets.only( bottom: 16),
+      child: SizedBox(
         height: 134,
         width: double.infinity,
         child: FutureBuilder<bool>(
@@ -45,8 +45,7 @@ class _CategoryListViewState extends State<CategoryListView>
               return const SizedBox();
             } else {
               return ListView.builder(
-                padding: const EdgeInsets.only(
-                    top: 0, bottom: 0, right: 16, left: 16),
+                padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
                 itemCount: Category.categoryList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
@@ -57,10 +56,8 @@ class _CategoryListViewState extends State<CategoryListView>
                   Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
                           parent: animationController!,
-                          curve: Interval((1 / count) * index, 1.0,
-                              curve: Curves.fastOutSlowIn)));
+                          curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
                   animationController?.forward();
-
                   return CategoryView(
                     category: Category.categoryList[index],
                     animation: animation,
@@ -108,148 +105,125 @@ class CategoryView extends StatelessWidget {
                 width: 280,
                 child: Stack(
                   children: <Widget>[
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          const SizedBox(
-                            width: 48,
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0x00f8fafb),
-                                borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  const SizedBox(width: 48 + 24.0,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      child: Column(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 16),
-                                            child: Text(
-                                              category!.title,
+                    Row(
+                      children: <Widget>[
+                        const SizedBox(
+                          width: 48,
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Color(0x00f8fafb),
+                              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                const SizedBox(width: 48 + 24.0,),
+                                Expanded(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 16),
+                                        child: Text(
+                                          category!.title,
+                                          textAlign: TextAlign.left,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                            letterSpacing: 0.27,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      const Expanded(
+                                        child: SizedBox(),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 16, bottom: 8),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '${category!.count} left',
+                                              textAlign: TextAlign.left,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w200,
+                                                fontSize: 12,
+                                                letterSpacing: 0.27,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            Container(
+                                              color: Colors.transparent,
+                                              child: InkWell(
+                                                borderRadius: const BorderRadius.all(
+                                                  Radius.circular(32.0),
+                                                ),
+                                                onTap: () {},
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.favorite_border_outlined),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 16, right: 16),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              '\$${category!.money}',
                                               textAlign: TextAlign.left,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 16,
+                                                fontSize: 18,
                                                 letterSpacing: 0.27,
-                                               // color: DesignCourseAppTheme.darkerText,
-                                                color: Colors.black12,
+                                                color: Colors.lightBlueAccent,
                                               ),
                                             ),
-                                          ),
-                                          const Expanded(
-                                            child: SizedBox(),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 16, bottom: 8),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                              children: <Widget>[
-                                                Text(
-                                                  '${category!.count} left',
-                                                  textAlign: TextAlign.left,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w200,
-                                                    fontSize: 12,
-                                                    letterSpacing: 0.27,
-                                                    color: Colors.grey,
-                                                  ),
+                                            Container(
+                                              decoration: const BoxDecoration(
+                                                color: Colors.lightBlueAccent,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10.0)),
+                                              ),
+                                              child: const Padding(
+                                                padding:
+                                                EdgeInsets.all(4.0),
+                                                child: Icon(
+                                                  Icons.add,
+                                                  color: Colors.white,
                                                 ),
-                                                Container(
-                                                  child: Row(
-                                                    children: <Widget>[
-                                                      Text(
-                                                        '${category!.rating}',
-                                                        textAlign:
-                                                        TextAlign.left,
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                          FontWeight.w200,
-                                                          fontSize: 18,
-                                                          letterSpacing: 0.27,
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ),
-                                                      const Icon(
-                                                        Icons.star,
-                                                        color: Colors.blueGrey,
-                                                        size: 20,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 16, right: 16),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                  '\$${category!.money}',
-                                                  textAlign: TextAlign.left,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
-                                                    letterSpacing: 0.27,
-                                                    color: Colors.lightBlueAccent,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  decoration: const BoxDecoration(
-                                                    color: Colors.lightBlueAccent,
-                                                    borderRadius:
-                                                    BorderRadius.all(Radius.circular(8.0)),
-                                                  ),
-                                                  child: const Padding(
-                                                    padding:
-                                                    EdgeInsets.all(4.0),
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      color: Colors.white70,
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 12),
+                      child: Row(
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius:
+                            const BorderRadius.all(Radius.circular(0.0)),
+                            child: AspectRatio(aspectRatio: 1.0, child: Image.asset(category!.imagePath)),
                           )
                         ],
-                      ),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 24, bottom: 24, left: 16),
-                        child: Row(
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius:
-                              const BorderRadius.all(Radius.circular(16.0)),
-                              child: AspectRatio(aspectRatio: 1.0, child: Image.asset(category!.imagePath)),
-                            )
-                          ],
-                        ),
                       ),
                     ),
                   ],

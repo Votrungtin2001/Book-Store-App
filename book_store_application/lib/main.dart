@@ -1,11 +1,6 @@
-import 'package:book_store_application/screens/home/home_screen.dart';
-import 'package:book_store_application/screens/start/start_screen.dart';
 import 'package:book_store_application/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
-import 'package:book_store_application/screens/splash/splash_screen.dart';
-import 'package:book_store_application/constants.dart';
 import 'package:book_store_application/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
@@ -56,17 +51,4 @@ class MyAppState extends State<MyApp> {
       ),
     );
   }
-    /*return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Book Store App',
-        theme: ThemeData(
-           primarySwatch: Colors.blue,
-           visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        // home: isLoggedIn ? StartScreen() : SplashScreen()
-      home: HomeScreen()
-    );
-
-
-  }*/
 }

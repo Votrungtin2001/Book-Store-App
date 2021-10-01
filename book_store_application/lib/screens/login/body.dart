@@ -267,7 +267,6 @@ class _BodyState extends State<Body> implements LogInView{
                                       MaterialButton(
                                         onPressed: () async {
                                           presenter.logInWithFacebook();
-
                                         },
                                         child: Container(
                                             height: 40,
@@ -293,7 +292,6 @@ class _BodyState extends State<Body> implements LogInView{
                                             )
                                         ),
                                       ),
-                                      const SizedBox(width: 5,),
                                       MaterialButton(
                                         onPressed: () async {
                                           presenter.logInWithGoogle();
@@ -301,15 +299,13 @@ class _BodyState extends State<Body> implements LogInView{
                                         child: Container(
                                             height: 40,
                                             width: 120,
-                                            margin: const EdgeInsets.all(5.0),
                                             padding: const EdgeInsets.only( top: 5.0, bottom: 5.0),
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                 width: 1,
                                                 color: Colors.black,
                                               ),
-                                              borderRadius: BorderRadius.circular(
-                                                  80),
+                                              borderRadius: BorderRadius.circular(80),
                                             ),
                                             child: Row(
                                               children: [
