@@ -47,7 +47,7 @@ class _BestSellerState extends State<BestSeller> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const <Widget>[
-                    Text("Best Seller",
+                    Text("Trending",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 26.0,

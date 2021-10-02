@@ -14,10 +14,13 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> with TickerProviderStateMixin {
+class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   AnimationController? animationController;
   final ScrollController _scrollController = ScrollController();
   CategoryType categoryType = CategoryType.all;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _menuScaleAnimation;
+  late Animation<Offset> _slideAnimation;
 
   @override
   void initState() {
@@ -271,15 +274,12 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(32.0),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Padding(
+                  borderRadius: const BorderRadius.all(Radius.circular(32.0),),
+                  child: Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Icon(Icons.menu),
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.menu)),
                   ),
                 ),
               ),
@@ -312,7 +312,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                       onTap: () {},
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.shopping_bag_outlined),
+                        child: Icon( Icons.shopping_bag_outlined ),
                       ),
                     ),
                   ),
@@ -324,6 +324,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
       ),
     );
   }
+
 
 }
 
