@@ -1,14 +1,23 @@
+import 'dart:core';
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 
+import 'MVP/Model/Book.dart';
+import 'MVP/Presenter/bestSeller_presenter.dart';
+import 'MVP/View/bestSeller_view.dart';
+import 'firebase/DatabaseManager.dart';
+import 'firebase/providers/books_provider.dart';
+
 class BestSeller extends StatefulWidget {
+
   @override
   _BestSellerState createState() => _BestSellerState();
 }
 
 List<String> images = [
-  "assets/images/img_2.png",
-  "assets/images/img_2.png",
   "assets/images/img_2.png",
   "assets/images/img_2.png",
 ];
@@ -23,13 +32,15 @@ List<String> title = [
 var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
-class _BestSellerState extends State<BestSeller> {
+class _BestSellerState extends State<BestSeller>{
 
-  var currentPage = images.length - 1.0;
+  //var currentPage = images.length - 1.0;
 
   @override
   Widget build(BuildContext context) {
-    PageController controller = PageController(initialPage: images.length - 1);
+    final booksProvider = Provider.of<BooksProvider>(context);
+    var currentPage = booksProvider.books.length - 1.0;
+    PageController controller = PageController(initialPage: booksProvider.books.length - 1);
     controller.addListener(() {
       setState(() {
         currentPage = controller.page!;
@@ -59,10 +70,10 @@ class _BestSellerState extends State<BestSeller> {
               ),
               Stack(
                 children: <Widget>[
-                  CardScrollWidget(currentPage),
+                  CardScrollWidget(currentPage, booksProvider.books),
                   Positioned.fill(
                     child: PageView.builder(
-                      itemCount: images.length,
+                      itemCount: booksProvider.books.length,
                       controller: controller,
                       reverse: true,
                       itemBuilder: (context, index) {
@@ -79,14 +90,19 @@ class _BestSellerState extends State<BestSeller> {
       ),
     );
   }
+
 }
 
 class CardScrollWidget extends StatelessWidget {
   var currentPage;
   var padding = 20.0;
   var verticalInset = 20.0;
+  List<Book> books = [];
 
-  CardScrollWidget(this.currentPage);
+  CardScrollWidget(var CurrentPage, List<Book> list) {
+    this.currentPage = CurrentPage;
+    books = list;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +124,7 @@ class CardScrollWidget extends StatelessWidget {
 
         List<Widget> cardList = [];
 
-        for (var i = 0; i < images.length; i++) {
+        for (var i = 0; i < books.length; i++) {
           var delta = i - currentPage;
           bool isOnRight = delta > 0;
 
@@ -133,7 +149,12 @@ class CardScrollWidget extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: <Widget>[
-                      Image.asset(images[i], fit: BoxFit.cover),
+                      Image.network(
+                        books[i].getIMAGE_URL().toString().trim() != ""
+                            ? books[i].getIMAGE_URL().toString()
+                            : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
+                        fit: BoxFit.fitWidth,
+                      ),
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Column(
@@ -143,7 +164,7 @@ class CardScrollWidget extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16.0, vertical: 8.0),
-                              child: Text(title[i],
+                              child: Text(books[i].getTITLE(),
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 25.0,)),

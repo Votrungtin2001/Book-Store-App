@@ -1,5 +1,12 @@
+import 'package:book_store_application/MVP/Model/Book.dart';
+import 'package:book_store_application/MVP/Presenter/bestSeller_presenter.dart';
+import 'package:book_store_application/MVP/View/bestSeller_view.dart';
+import 'package:book_store_application/firebase/DatabaseManager.dart';
+import 'package:book_store_application/firebase/helpers/books_services.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -14,13 +21,16 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
+class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
   AnimationController? animationController;
   final ScrollController _scrollController = ScrollController();
   CategoryType categoryType = CategoryType.all;
   late Animation<double> _scaleAnimation;
   late Animation<double> _menuScaleAnimation;
   late Animation<Offset> _slideAnimation;
+  late BooksServices booksServices;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -324,8 +334,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-
 }
 
 enum CategoryType {
