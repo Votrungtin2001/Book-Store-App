@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../best_seller.dart';
+import 'best_seller.dart';
 import '../../carousel.dart';
 import 'for_you_list_view.dart';
 

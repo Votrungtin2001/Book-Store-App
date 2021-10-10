@@ -1,5 +1,6 @@
 
 import 'package:book_store_application/screens/home/home_screen.dart';
+import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:book_store_application/bottom_nav_bar.dart';
@@ -28,7 +29,7 @@ class _MainPageState extends State<MainPage> {
               ? const Center( child: Text( "Hi, this is Notification page", style: TextStyle(fontSize: 18),),)
               : Container(),
           bottomIcons == BottomIcons.Account
-              ? const Center( child: Text("Hi, this is Account page", style: TextStyle(fontSize: 18),),)
+              ? const ProfileScreen()
               : Container(),
           Align(
             alignment: Alignment.bottomLeft,
