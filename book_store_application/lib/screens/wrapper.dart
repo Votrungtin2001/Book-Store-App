@@ -19,7 +19,7 @@ class Wrapper extends StatelessWidget {
     if (user == null){
       return SplashScreen();
     } else {
-      return HomeScreen();
+      return MainPage();
     }
 
   }

@@ -1,4 +1,6 @@
 import 'package:book_store_application/screens/home/home_screen.dart';
+import 'package:book_store_application/screens/profile/profile_ava.dart';
+import 'package:book_store_application/screens/profile/profile_menu.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatefulWidget {
@@ -6,147 +8,77 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-final labels = [
-  'Notifications',
-  'Payments',
-  'Message',
-  'My Orders',
-  'Setting Account',
-  'Call Center',
-  'About Application',
-];
-
-final icons = [
-  Icons.notifications,
-  Icons.payment,
-  Icons.message,
-  Icons.local_dining,
-  Icons.settings,
-  Icons.person,
-  Icons.info,
-];
-
 class _BodyState extends State<Body> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Colors.white,
-      body: Column(
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      child: Column(
         children: [
-          Stack(
-            overflow: Overflow.visible,
-            alignment: Alignment.center,
-            children: [
-              const SizedBox(
-                height: 250.0,
-                child: Image(
-                  image: AssetImage("assets/images/img.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Positioned(
-                bottom: -60.0,
-                child: Container(
-                  height: 125.0,
-                  width: 125.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100.0),
-                    border: Border.all(
-                      color: Colors.white,
-                      // width: wi,
-                    ),
-                    image: const DecorationImage(
-                      image: AssetImage("assets/images/img.png"),
-                    ),
+          getAppBarUI(),
+          ProfileAvatar(),
+          SizedBox(height: 20),
+          ProfileMenu(
+            text: "My Account",
+            icon: "assets/icons",
+            press: () => {},
+          ),
+          ProfileMenu(
+            text: "My Orders",
+            icon: "assets/icons/Log out.svg",
+            press: () {},
+          ),
+          ProfileMenu(
+            text: "Notifications",
+            icon: "assets/icons/Bell.svg",
+            press: () {},
+          ),
+          ProfileMenu(
+            text: "Settings",
+            icon: "assets/icons/Settings.svg",
+            press: () {},
+          ),
+          ProfileMenu(
+            text: "Help Center",
+            icon: "assets/icons/Question mark.svg",
+            press: () {},
+          ),
+          ProfileMenu(
+            text: "Log Out",
+            icon: "assets/icons/Log out.svg",
+            press: () {},
+          ),
+        ],
+      ),
+    );
+  }
+  Widget getAppBarUI() {
+    return Container(
+      width: AppBar().preferredSize.height + 40,
+      height: AppBar().preferredSize.height,
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only( left: 5, right: 5),
+        child: Row(
+          children: const <Widget>[
+            Expanded(
+              child: Center(
+                child: Text(
+                  'Profile',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
                   ),
                 ),
               ),
-              const Positioned(
-                bottom: -88.0,
-                child: Text(
-                  'Username',
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(top: 88.0),
-              itemCount: labels.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  // dense: true,
-                    leading: Icon(
-                      icons[index],
-                      color: Colors.black,
-                    ),
-                    title: Text(labels[index]),
-                    onTap: () => Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                          return HomeScreen();
-                      // switch (labels[index]) {
-                      //   case 'Notifications':
-                      //     return NotificationList();
-                      //     break;
-                      //   case 'Payments':
-                      //     return PaymentDetails();
-                      //     break;
-                      //   case 'Message':
-                      //     return Message();
-                      //     break;
-                      //   case 'My Orders':
-                      //     return TrackOrder();
-                      //     break;
-                      //   case 'Setting Account':
-                      //     return Setting();
-                      //     break;
-                      //   case 'Call Center':
-                      //     return CallCenter();
-                      //   case 'About Application':
-                      //     return About();
-                      //     break;
-                      //   default:
-                      //     return null;
-                      // }
-                    }))
-                  // onTap: () => this.setState(
-                  //   () {
-                  //     switch (labels[index]) {
-                  //       case 'Notifications':
-                  //         return snackBarMsg(context, 'Notifications');
-                  //         break;
-                  //       case 'Payments':
-                  //         return snackBarMsg(context, 'Payments');
-                  //         break;
-                  //       case 'Message':
-                  //         return snackBarMsg(context, 'Message');
-                  //         break;
-                  //       case 'My Orders':
-                  //         return snackBarMsg(context, 'My Orders');
-                  //         break;
-                  //       case 'Setting Account':
-                  //         return snackBarMsg(context, 'Setting Account');
-                  //         break;
-                  //       case 'Call Center':
-                  //         return snackBarMsg(context, 'Call Center');
-                  //         break;
-                  //       case 'About Application':
-                  //         return snackBarMsg(context, 'About Application');
-                  //         break;
-                  //       default:
-                  //         return snackBarMsg(context, 'Notifications');
-                  //         break;
-                  //     }
-                  //   },
-                  // ),
-                );
-              },
             ),
-          ),
-        ],
+
+          ],
+        ),
       ),
     );
   }

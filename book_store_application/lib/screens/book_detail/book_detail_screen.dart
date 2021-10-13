@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_store_application/screens/forgot_password/body.dart';
+import 'package:book_store_application/screens/book_detail/body.dart';
 
 class BookDetailScreen extends StatelessWidget {
   @override

@@ -1,4 +1,3 @@
-
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';

@@ -10,7 +10,6 @@ class CategoryListView extends StatefulWidget {
 }
 
 class _CategoryListViewState extends State<CategoryListView> with TickerProviderStateMixin {
-
   AnimationController? animationController;
 
   @override
@@ -129,10 +128,11 @@ class CategoryView extends StatelessWidget {
                                           textAlign: TextAlign.left,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             letterSpacing: 0.27,
                                             color: Colors.black,
                                           ),
+                                          maxLines: 1,
                                         ),
                                       ),
                                       const Expanded(
@@ -235,4 +235,5 @@ class CategoryView extends StatelessWidget {
       },
     );
   }
+
 }
