@@ -174,8 +174,7 @@ class CardScrollWidget extends StatelessWidget {
                                 decoration: BoxDecoration(
                                     color: Colors.blueAccent,
                                     borderRadius: BorderRadius.circular(20.0)),
-                                child: const Text("See More",
-                                    style: TextStyle(color: Colors.white)),
+                                child:  TextButton( onPressed: () {  }, child: Text("See more"),),
                               ),
                             )
                           ],

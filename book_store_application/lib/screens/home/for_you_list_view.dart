@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:book_store_application/screens/home/models/category.dart';
 
 class CategoryListView extends StatefulWidget {
-  const CategoryListView({Key? key, this.callBack}) : super(key: key);
+   const CategoryListView({Key? key, this.callBack}) : super(key: key);
+   final Function()? callBack;
 
-  final Function()? callBack;
   @override
   _CategoryListViewState createState() => _CategoryListViewState();
 }
