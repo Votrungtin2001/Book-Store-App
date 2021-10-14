@@ -4,9 +4,9 @@ class Book {
 
   late int id;
   late int author_id;
-  late int favorite;
-  late int genre_id;
-  List<String> image_url = List.empty();
+  late int category_id;
+  late String genre;
+  List<String> image_url = [];
   late double price;
   late int publisher_id;
   late int publishing_year;
@@ -15,12 +15,12 @@ class Book {
   late String summary;
   late String title;
 
-  Book(int ID, int AUTHOR_ID, int FAVORITE, int GENRE_ID, List<String> IMAGE_URL, double PRICE, int PUBLISHER_ID,
+  Book(int ID, int AUTHOR_ID,int CATEGORY_ID, String GENRE, List<String> IMAGE_URL, double PRICE, int PUBLISHER_ID,
       int PUBLISHING_YEAR, int QUANTITY, int SOLD_COUNT, String SUMMARY, String TITLE) {
     this.id = ID;
     this.author_id = AUTHOR_ID;
-    this.favorite = FAVORITE;
-    this.genre_id = GENRE_ID;
+    this.category_id = CATEGORY_ID;
+    this.genre = GENRE;
     this.image_url = IMAGE_URL;
     this.price = PRICE;
     this.publisher_id = PUBLISHER_ID;
@@ -37,11 +37,11 @@ class Book {
   int getAUTHOR_ID() {return this.author_id;}
   void setAUTHOR_ID(int AUTHOR_ID) {this.author_id = AUTHOR_ID;}
 
-  int getFAVORITE() {return this.favorite;}
-  void setFAVORITE(int FAVORITE) {this.favorite = favorite;}
+  String getGENRE() {return this.genre;}
+  void setFAVORITE(String GENRE) {this.genre = GENRE;}
 
-  int getGENRE_ID() {return this.genre_id;}
-  void setGENRE_ID(int GENRE_ID) {this.genre_id = GENRE_ID;}
+  int getCATEGORY_ID() {return this.category_id;}
+  void setGENRE_ID(int CATEGORY_ID) {this.category_id = CATEGORY_ID;}
 
   List<String> getList_IMAGE_URL() {return this.image_url;}
   void setIMAGE_URL(List<String> IMAGE_URL) {this.image_url = IMAGE_URL;}
@@ -72,8 +72,8 @@ class Book {
   Book.fromSnapshot(DocumentSnapshot snapshot) {
     id = snapshot.get('book_id');
     author_id = snapshot.get('author_id');
-    favorite = snapshot.get('favorite');
-    genre_id = snapshot.get('genre_id');
+    genre = snapshot.get('genre');
+    category_id = snapshot.get('category_id');
     for(int i = 0; i < 3; i++) {
       if(snapshot.get('image_url')[i].toString().trim() != "") image_url.add(snapshot.get('image_url')[i]);
       else image_url.add("");

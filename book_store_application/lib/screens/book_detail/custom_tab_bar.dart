@@ -1,14 +1,25 @@
+import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:flutter/material.dart';
 
 class CustomTabBar extends StatefulWidget {
 
+  Book? book;
+  CustomTabBar(Book? BOOK) {
+    this.book = BOOK;
+  }
+
   @override
-  _CustomTabBarState createState() => _CustomTabBarState();
+  _CustomTabBarState createState() => _CustomTabBarState(this.book);
 }
 
 class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   Type type = Type.publisher;
+
+  Book? book;
+  _CustomTabBarState(Book? BOOK) {
+    this.book = BOOK;
+  }
 
   @override
   void initState() {
@@ -48,7 +59,7 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
                 child: TabBarView(
                     controller: _tabController,
                     children: [
-                      const Center(child: Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Urna libero, pharetra hendrerit eu sit variusdignissim malesuada. Lacus, neque  consectetur urnanatoque. Tortor blandit sit tortor, convallis sagittis risusat senectus mi.")),
+                      Center(child: Text(book!.getSUMMARY())),
                       Container(
                         margin: const EdgeInsets.symmetric(vertical: 5.0),
                         alignment: Alignment.center,

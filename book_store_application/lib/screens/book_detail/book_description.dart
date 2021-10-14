@@ -1,19 +1,32 @@
+import 'package:book_store_application/MVP/Model/Author.dart';
+import 'package:book_store_application/MVP/Model/Book.dart';
+import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/screens/book_detail/custom_tab_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 
 class BookDescription extends StatefulWidget {
-  const BookDescription({Key? key, this.pressOnSeeMore,}) : super(key: key);
-  final GestureTapCallback? pressOnSeeMore;
+  Book? book;
+  BookDescription(Book? BOOK) {
+    this.book = BOOK;
+  }
 
-  _BookDescriptionState createState() => _BookDescriptionState();
+  _BookDescriptionState createState() => _BookDescriptionState(this.book);
 
 }
 
 class _BookDescriptionState extends State<BookDescription> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  Book? book;
+  List<Author> authors = [];
+
+  _BookDescriptionState(Book? book) {
+    this.book = book;
+  }
 
   @override
   void initState() {
@@ -23,6 +36,9 @@ class _BookDescriptionState extends State<BookDescription> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
+    final currencyformat = new NumberFormat("#,###,##0");
+    final authorProvider = Provider.of<AuthorProvider>(context);
+    authors = authorProvider.authors;
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -31,12 +47,12 @@ class _BookDescriptionState extends State<BookDescription> with SingleTickerProv
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: RichText(
-                text: const TextSpan(
-                  text: 'Name of Book\n',
+                text: TextSpan(
+                  text: book!.getTITLE() + '\n',
                   style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Colors.black),
                   children: <TextSpan>[
-                    TextSpan(text: 'By author\n', style: TextStyle(fontWeight: FontWeight.w500,color: Colors.black12,fontSize: 16)),
-                    TextSpan(text: "\$200", style: TextStyle(fontWeight: FontWeight.w500,color: Colors.red,fontSize: 26)),
+                    TextSpan(text: getAuthorName(book!.getAUTHOR_ID()) + '\n', style: TextStyle(fontWeight: FontWeight.w500,color: Colors.black12,fontSize: 16)),
+                    TextSpan(text: currencyformat.format(book!.getPRICE()) + 'đ', style: TextStyle(fontWeight: FontWeight.w500,color: Colors.red,fontSize: 26)),
                   ],
                 ),
               )
@@ -54,7 +70,7 @@ class _BookDescriptionState extends State<BookDescription> with SingleTickerProv
                 //     bottomLeft: Radius.circular(15),
                 //   ),
                 // ),
-                child: SvgPicture.asset(
+                child: Image.asset(
                   "assets/icons/heart.svg",
                   height: 24,
                 ),
@@ -65,6 +81,15 @@ class _BookDescriptionState extends State<BookDescription> with SingleTickerProv
       ),
     );
 
+  }
+
+  String getAuthorName(int author_id) {
+    for(int i = 0; i < authors.length; i++) {
+      if(authors[i].getID() == author_id) {
+        return authors[i].getNAME();
+      }
+    }
+    return "";
   }
 
 }

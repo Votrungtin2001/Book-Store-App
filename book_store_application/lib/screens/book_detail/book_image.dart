@@ -1,3 +1,4 @@
+import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
@@ -10,12 +11,24 @@ List<String> images = [
 ];
 
 class BookImages extends StatefulWidget {
+
+  Book? book;
+  BookImages(Book? BOOK) {
+    this.book = BOOK;
+  }
+
   @override
-  _BookImagesState createState() => _BookImagesState();
+  _BookImagesState createState() => _BookImagesState(this.book);
 }
 
 class _BookImagesState extends State<BookImages> {
   int selectedImage = 0;
+
+  Book? book;
+  _BookImagesState(Book? BOOK) {
+    this.book = BOOK;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,7 +39,7 @@ class _BookImagesState extends State<BookImages> {
             aspectRatio: 1,
             child: Hero(
               tag: "",
-              child: Image.asset(images[selectedImage]),
+              child: Image.network(book!.getList_IMAGE_URL()[selectedImage], fit: BoxFit.cover),
             ),
           ),
         ),
@@ -34,7 +47,7 @@ class _BookImagesState extends State<BookImages> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ...List.generate(images.length,
+            ...List.generate(book!.getList_IMAGE_URL().length,
                     (index) => buildSmallBookPreview(index)),
           ],
         )
@@ -61,7 +74,7 @@ class _BookImagesState extends State<BookImages> {
           border: Border.all(
               color: kPrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
-        child: Image.asset(images[index]),
+        child: Image.network(book!.getList_IMAGE_URL()[index]),
       ),
     );
   }

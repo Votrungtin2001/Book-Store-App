@@ -1,8 +1,15 @@
+import 'package:book_store_application/MVP/Model/Author.dart';
 import 'package:book_store_application/MVP/Model/Book.dart';
+import 'package:book_store_application/MVP/Model/Category.dart';
 import 'package:book_store_application/MVP/Presenter/bestSeller_presenter.dart';
+import 'package:book_store_application/MVP/Presenter/homeScreen_presenter.dart';
 import 'package:book_store_application/MVP/View/bestSeller_view.dart';
+import 'package:book_store_application/MVP/View/homeScreen_view.dart';
 import 'package:book_store_application/firebase/DatabaseManager.dart';
 import 'package:book_store_application/firebase/helpers/books_services.dart';
+import 'package:book_store_application/firebase/providers/author_provider.dart';
+import 'package:book_store_application/firebase/providers/books_provider.dart';
+import 'package:book_store_application/firebase/providers/category_provider.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,10 +19,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'best_seller.dart';
 import 'carousel.dart';
-import 'for_you_list_view.dart';
+import 'book_all.dart';
 
 class Body extends StatefulWidget {
 
@@ -23,7 +31,7 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
+class _BodyState extends State<Body> with SingleTickerProviderStateMixin implements HomeScreenView{
   AnimationController? animationController;
   final ScrollController _scrollController = ScrollController();
   CategoryType categoryType = CategoryType.all;
@@ -33,14 +41,14 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
   late BooksServices booksServices;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late HomeScreenPresenter presenter;
 
-  List<Map<String, dynamic>> categories = [
-    {"icon": "", "text": "Name"},
-    {"icon": "", "text": "Name"},
-    {"icon": "", "text": "Name"},
-    {"icon": "", "text": "Name"},
-    {"icon": "", "text": "Name"},
-  ];
+
+  int category_id = 0;
+
+  _BodyState() {
+    this.presenter = new HomeScreenPresenter(this);
+  }
 
   @override
   void initState() {
@@ -57,6 +65,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    presenter.getCategoryList();
+    presenter.getBookList();
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -189,54 +199,29 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
-              categories.length,
+              presenter.categories.length,
                   (index) => CategoryCard(
-                icon: categories[index]["icon"],
-                text: categories[index]["text"],
-                press: () {},
+                icon: presenter.categories[index].getIMAGE_URL(),
+                text: presenter.categories[index].getNAME(),
+                press: () {
+                },
               ),
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 1.0),
-              height: 30.0,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  getButtonUI(CategoryType.all, categoryType == CategoryType.all),
-                  const SizedBox(width: 16,),
-                  getButtonUI(CategoryType.fic, categoryType == CategoryType.fic),
-                  const SizedBox(width: 16,),
-                  getButtonUI(CategoryType.science, categoryType == CategoryType.science),
-                  const SizedBox(width: 16,),
-                  getButtonUI(CategoryType.astro, categoryType == CategoryType.astro),
-                  const SizedBox(width: 16,),
-                  getButtonUI(CategoryType.tech, categoryType == CategoryType.tech),
-                ],
-              )
-          ),
-        ),
-
-        CategoryListView(
-          callBack: () {
-            moveTo();
-          },
-        ),
+        BooksListView(),
       ],
     );
   }
 
-  void moveTo() {
+  /*void moveTo() {
     Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => BookDetailScreen(),
       ),
     );
-  }
+  }*/
 
   Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
     String txt = '';
@@ -361,6 +346,18 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
     );
   }
 
+  @override
+  List<Category> getCategoryList() {
+    final categoryProvider = Provider.of<CategoryProvider>(context);
+    return categoryProvider.categories;
+  }
+
+  @override
+  List<Book> getBookList() {
+    final booksProvider = Provider.of<BooksProvider>(context);
+    return booksProvider.books;
+  }
+
 }
 
 class CategoryCard extends StatelessWidget {
@@ -386,7 +383,7 @@ class CategoryCard extends StatelessWidget {
                 color: const Color(0xFFFFECDF),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: SvgPicture.asset(icon!),
+              child: Image.network(icon!),
             ),
             const SizedBox(height: 5),
             Text(text!, textAlign: TextAlign.center)

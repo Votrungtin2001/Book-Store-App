@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 
 import 'MVP/Model/User.dart';
 import 'firebase/authentication_services.dart';
+import 'firebase/providers/author_provider.dart';
+import 'firebase/providers/category_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,8 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: BooksProvider.initialize()),
+      ChangeNotifierProvider.value(value: CategoryProvider.initialize()),
+      ChangeNotifierProvider.value(value: AuthorProvider.initialize()),
     ],
     child: const MyApp(),
   ));

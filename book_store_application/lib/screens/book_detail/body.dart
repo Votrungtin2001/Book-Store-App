@@ -1,3 +1,4 @@
+import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/screens/book_detail/top_rounded_container.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
@@ -7,27 +8,38 @@ import 'add_to_cart.dart';
 import 'custom_tab_bar.dart';
 
 class Body extends StatefulWidget {
+  Book? book;
+
+  Body(Book? book) {
+    this.book = book;
+  }
+
   @override
-  _BodyState createState() => _BodyState();
+  _BodyState createState() => _BodyState(book);
 }
 
 class _BodyState extends State<Body> {
+  Book? book;
+
+  _BodyState(Book? book) {
+    this.book = book;
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         getAppBarUI(),
-        BookImages(),
+        BookImages(book),
         TopRoundedContainer(
           color: Colors.white,
           child: Column(
             children: [
-              BookDescription(),
+              BookDescription(book),
               TopRoundedContainer(
                 color: const Color(0xFFF6F7F9),
                 child: Column(
                   children: [
-                   CustomTabBar(),
+                   CustomTabBar(book),
                     TopRoundedContainer(
                       color: Colors.white,
                       child: Padding(

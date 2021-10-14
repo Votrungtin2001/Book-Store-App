@@ -18,6 +18,4 @@ class LogInPresenter {
   void logInWithFacebook() {
     view.logInWithFacebook();
   }
-
-
 }
