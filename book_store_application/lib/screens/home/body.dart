@@ -11,12 +11,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../best_seller.dart';
-import '../../carousel.dart';
+import 'best_seller.dart';
+import 'carousel.dart';
 import 'for_you_list_view.dart';
 
 class Body extends StatefulWidget {
+
   @override
   _BodyState createState() => _BodyState();
 }
@@ -31,6 +33,14 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
   late BooksServices booksServices;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  List<Map<String, dynamic>> categories = [
+    {"icon": "", "text": "Name"},
+    {"icon": "", "text": "Name"},
+    {"icon": "", "text": "Name"},
+    {"icon": "", "text": "Name"},
+    {"icon": "", "text": "Name"},
+  ];
 
   @override
   void initState() {
@@ -89,11 +99,10 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
                                             ],
                                           ),
                                         ),
-                                        const SizedBox(height: 10,),
+                                        const SizedBox(height: 5,),
                                         getSearchBarUI(),
-                                        const SizedBox(height: 10,),
-                                        const DestinationCarousel(key: null,),
                                         getCategory(),
+                                        const DestinationCarousel(key: null,),
                                       ]
                                   );
                                 }, childCount: 1)
@@ -125,22 +134,23 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
   Widget getSearchBarUI() {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-      child: TextFormField(
-        style: const TextStyle( fontSize: 16,),
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-            fillColor: Colors.transparent,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: const BorderSide(
-                    color: Colors.black)
+      child:
+          TextFormField(
+            style: const TextStyle(fontSize: 16,),
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                fillColor: Colors.transparent,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: const BorderSide(
+                        color: Colors.black)
+                ),
+                filled: true,
+                hintText: "Search your book..",
+                hintStyle: const TextStyle(color: Colors.black38),
+                prefixIcon: const Icon(Icons.search, color: Colors.black,)
             ),
-            filled: true,
-            hintText: "Search your book..",
-            hintStyle: const TextStyle(color: Colors.black38),
-            prefixIcon: const Icon(Icons.search, color: Colors.black,)
-        ),
-      ),
+          ),
     );
   }
 
@@ -174,6 +184,21 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
             )
         ),
         Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+              categories.length,
+                  (index) => CategoryCard(
+                icon: categories[index]["icon"],
+                text: categories[index]["text"],
+                press: () {},
+              ),
+            ),
+          ),
+        ),
+        Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
           child: Container(
               margin: const EdgeInsets.symmetric(vertical: 1.0),
@@ -194,6 +219,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
               )
           ),
         ),
+
         CategoryListView(
           callBack: () {
             moveTo();
@@ -226,7 +252,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
       txt = 'Technology';
     }
     return Padding(
-      padding: EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(1.0),
       child: Container(
         decoration: BoxDecoration(
             color: isSelected
@@ -329,6 +355,41 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
                 ],
               ),
             )
+          ],
+        ),
+      ),
+    );
+  }
+
+}
+
+class CategoryCard extends StatelessWidget {
+  const CategoryCard({Key? key, required this.icon, required this.text, required this.press,
+  }) : super(key: key);
+
+  final String? icon, text;
+  final GestureTapCallback press;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: press,
+      child: SizedBox(
+        width: 46,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              height: 36,
+              width: 36,
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFECDF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: SvgPicture.asset(icon!),
+            ),
+            const SizedBox(height: 5),
+            Text(text!, textAlign: TextAlign.center)
           ],
         ),
       ),

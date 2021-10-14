@@ -185,20 +185,6 @@ class _BodyState extends State<Body> implements LogInView{
                                           ),
                                         ])
                                 ),
-                                // RichText(
-                                //   textAlign: TextAlign.start,
-                                //     text: TextSpan(
-                                //       text: 'Forgot a Password?',
-                                //           style: const TextStyle(color: Colors.blueAccent,
-                                //               fontWeight: FontWeight.bold),
-                                //       recognizer: TapGestureRecognizer()..onTap = (){
-                                //         Navigator.push( context, MaterialPageRoute(
-                                //                 builder: (context) => ForgotPasswordScreen(),
-                                //               ),
-                                //             );
-                                //           },
-                                //     )
-                                // ),
                                 TextButton(
                                   onPressed: () { Navigator.push( context,
                                       MaterialPageRoute(
