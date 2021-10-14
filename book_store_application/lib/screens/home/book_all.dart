@@ -1,15 +1,18 @@
+import 'package:book_store_application/MVP/Model/Book.dart';
+import 'package:book_store_application/firebase/providers/books_provider.dart';
+import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:book_store_application/screens/home/models/category.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class CategoryListView extends StatefulWidget {
-   const CategoryListView({Key? key, this.callBack}) : super(key: key);
-   final Function()? callBack;
+class BooksListView extends StatefulWidget {
 
   @override
-  _CategoryListViewState createState() => _CategoryListViewState();
+  _BooksListViewState createState() => _BooksListViewState();
 }
 
-class _CategoryListViewState extends State<CategoryListView> with TickerProviderStateMixin {
+class _BooksListViewState extends State<BooksListView> with TickerProviderStateMixin {
   AnimationController? animationController;
 
   @override
@@ -32,6 +35,7 @@ class _CategoryListViewState extends State<CategoryListView> with TickerProvider
 
   @override
   Widget build(BuildContext context) {
+    final booksProvider = Provider.of<BooksProvider>(context);
     return Padding(
       padding: const EdgeInsets.only( bottom: 16),
       child: SizedBox(
@@ -45,23 +49,22 @@ class _CategoryListViewState extends State<CategoryListView> with TickerProvider
             } else {
               return ListView.builder(
                 padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
-                itemCount: Category.categoryList.length,
+                itemCount: booksProvider.books.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int index) {
-                  final int count = Category.categoryList.length > 10
+                  final int count = booksProvider.books.length > 10
                       ? 10
-                      : Category.categoryList.length;
+                      : booksProvider.books.length;
                   final Animation<double> animation =
                   Tween<double>(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
                           parent: animationController!,
                           curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
                   animationController?.forward();
-                  return CategoryView(
-                    category: Category.categoryList[index],
+                  return BooksOfCategoryView(
+                    book: booksProvider.books[index],
                     animation: animation,
                     animationController: animationController,
-                    callback: widget.callBack,
                   );
                 },
               );
@@ -73,22 +76,21 @@ class _CategoryListViewState extends State<CategoryListView> with TickerProvider
   }
 }
 
-class CategoryView extends StatelessWidget {
-  const CategoryView(
+class BooksOfCategoryView extends StatelessWidget {
+  const BooksOfCategoryView(
       {Key? key,
-        this.category,
+        this.book,
         this.animationController,
-        this.animation,
-        this.callback})
+        this.animation})
       : super(key: key);
 
-  final VoidCallback? callback;
-  final Category? category;
+  final Book? book;
   final AnimationController? animationController;
   final Animation<double>? animation;
 
   @override
   Widget build(BuildContext context) {
+    final currencyformat = new NumberFormat("#,###,##0");
     return AnimatedBuilder(
       animation: animationController!,
       builder: (BuildContext context, Widget? child) {
@@ -99,7 +101,12 @@ class CategoryView extends StatelessWidget {
                 100 * (1.0 - animation!.value), 0.0, 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
-              onTap: callback,
+              onTap: () => Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => BookDetailScreen(book),
+                ),
+              ),
               child: SizedBox(
                 width: 280,
                 child: Stack(
@@ -124,7 +131,7 @@ class CategoryView extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.only(top: 16),
                                         child: Text(
-                                          category!.title,
+                                          book!.title,
                                           textAlign: TextAlign.left,
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -145,7 +152,7 @@ class CategoryView extends StatelessWidget {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              '${category!.count} left',
+                                              '${book!.getQUANTITY()} left',
                                               textAlign: TextAlign.left,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w200,
@@ -177,8 +184,7 @@ class CategoryView extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text(
-                                              '\$${category!.money}',
+                                            Text(currencyformat.format(book!.getPRICE()) + "đ",
                                               textAlign: TextAlign.left,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -221,7 +227,7 @@ class CategoryView extends StatelessWidget {
                           ClipRRect(
                             borderRadius:
                             const BorderRadius.all(Radius.circular(0.0)),
-                            child: AspectRatio(aspectRatio: 1.0, child: Image.asset(category!.imagePath)),
+                            child: AspectRatio(aspectRatio: 1.0, child: Image.network(book!.getIMAGE_URL())),
                           )
                         ],
                       ),

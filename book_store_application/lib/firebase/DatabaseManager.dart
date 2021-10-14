@@ -17,41 +17,6 @@ class DatabaseManager {
   }
 
 
-  Future getBooksList() async {
-    List<Book> books = [];
-    try {
-      await Books.get().then((querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-
-          int author_id = element.get('author_id');
-          int book_id = element.get('book_id');
-          int favorite = element.get('favorite');
-          int genre_id = element.get('genre_id');
-          List<String> image_url = [];
-          for(int i = 0; i < 3; i++) {
-            if(element.get('image_url')[i].toString().trim() != "") image_url.add(element.get('image_url')[i]);
-            else image_url.add("");
-          }
-          int iPrice = element.get('price');
-          double price = iPrice.toDouble();
-          int publisher_id = element.get('publisher_id');
-          int publishing_year = element.get('publishing_year');
-          int quantity = element.get('quantity');
-          int sold_count = element.get('sold_count');
-          String summary = element.get('summary');
-          String title = element.get('title');
-          Book book = new Book(book_id, author_id, favorite, genre_id, image_url, price,
-          publisher_id, publishing_year, quantity, sold_count, summary, title);
-          books.add(book);
-        });
-      });
-      return books;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
-
   /*Future updateUserList(String name, String gender, int score, String uid) async {
     return await profileList.document(uid).updateData({
       'name': name, 'gender': gender, 'score': score

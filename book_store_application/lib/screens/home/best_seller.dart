@@ -13,30 +13,19 @@ class BestSeller extends StatefulWidget {
   _BestSellerState createState() => _BestSellerState();
 }
 
-List<String> images = [
-  "assets/images/img_2.png",
-  "assets/images/img.png",
-];
-
-List<String> title = [
-  "Hounted Ground",
-  "Fallen In Love",
-  "The Dreaming Moon",
-  "Jack the Persian and the Black Castel",
-];
-
 var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _BestSellerState extends State<BestSeller>{
 
-  var currentPage = images.length - 1.0;
+  var currentPage = 5 - 1.0;
 
   @override
   Widget build(BuildContext context) {
     final booksProvider = Provider.of<BooksProvider>(context);
-    var currentPage = booksProvider.books.length - 1.0;
-    PageController controller = PageController(initialPage: images.length);
+    booksProvider.loadBestSellerBooks();
+
+    PageController controller = PageController(initialPage: 5 - 1);
     controller.addListener(() {
       setState(() {
         currentPage = controller.page!;
@@ -67,10 +56,10 @@ class _BestSellerState extends State<BestSeller>{
               ),
               Stack(
                 children: <Widget>[
-                  CardScrollWidget(currentPage,booksProvider.books),
+                  CardScrollWidget(currentPage,booksProvider.bestSellerBooks),
                   Positioned.fill(
                     child: PageView.builder(
-                      itemCount: booksProvider.books.length,
+                      itemCount: booksProvider.bestSellerBooks.length,
                       controller: controller,
                       reverse: true,
                       itemBuilder: (context, index) {
@@ -159,10 +148,10 @@ class CardScrollWidget extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16.0, vertical: 8.0),
-                              child: Text(title[i],
+                              child: Text(books[i].getTITLE(),
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25.0,)),
+                                    color: Colors.white,
+                                    fontSize: 25.0,)),
                             ),
                             const SizedBox(height: 10.0,),
                             Padding(
@@ -194,4 +183,5 @@ class CardScrollWidget extends StatelessWidget {
       }),
     );
   }
+
 }
