@@ -166,8 +166,8 @@ class CardScrollWidget extends StatelessWidget {
                                   horizontal: 16.0, vertical: 8.0),
                               child: Text(books[i].getTITLE(),
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25.0,)),
+                                    color: Colors.white,
+                                    fontSize: 25.0,)),
                             ),
                             const SizedBox(height: 10.0,),
                             Padding(

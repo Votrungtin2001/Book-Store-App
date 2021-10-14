@@ -75,18 +75,18 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
                                         Padding(
                                           padding: const EdgeInsets.only(left: 18,),
                                           child: Column(
-                                              children: [
-                                                RichText(
-                                                    text: const TextSpan(
-                                                        text: 'Hello there, Minh Thi\n',
-                                                        style: TextStyle( fontSize: 24, fontWeight: FontWeight.bold,color: Colors.black),
-                                                        children: <TextSpan>[
-                                                          TextSpan( text: 'Keep reading, you’ll fall in love ',
-                                                              style: TextStyle( fontSize: 16, fontWeight: FontWeight.w300,color: Colors.black)),
-                                                        ]
-                                                    )
-                                                ),
-                                              ],
+                                            children: [
+                                              RichText(
+                                                  text: const TextSpan(
+                                                      text: 'Hello there, Minh Thi\n',
+                                                      style: TextStyle( fontSize: 24, fontWeight: FontWeight.bold,color: Colors.black),
+                                                      children: <TextSpan>[
+                                                        TextSpan( text: 'Keep reading, you’ll fall in love ',
+                                                            style: TextStyle( fontSize: 16, fontWeight: FontWeight.w300,color: Colors.black)),
+                                                      ]
+                                                  )
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         const SizedBox(height: 10,),
@@ -101,16 +101,16 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
                       ];
                     },
                     body: Container(
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        onTap: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
-                        child: BestSeller(),
-                      )
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          onTap: () {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                          child: BestSeller(),
+                        )
                     ),
                   ),
                 ),
@@ -150,28 +150,28 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only( left: 18, right: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text( 'Category',
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 26,
-                  color: Colors.black,
-                ),
-              ),
-              TextButton(
-                onPressed: () {  },
-                child: Row(
-                  children: const [
-                    Text('See all',style:TextStyle(color: Colors.black12)),
-                    Icon(Icons.arrow_forward_ios_outlined, size:15, color: Colors.black12)
-                  ],
-                )
-              )
-            ]
-          )
+            padding: const EdgeInsets.only( left: 18, right: 16),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text( 'Category',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 26,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () {  },
+                      child: Row(
+                        children: const [
+                          Text('See all',style:TextStyle(color: Colors.black12)),
+                          Icon(Icons.arrow_forward_ios_outlined, size:15, color: Colors.black12)
+                        ],
+                      )
+                  )
+                ]
+            )
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
@@ -190,8 +190,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
                   getButtonUI(CategoryType.astro, categoryType == CategoryType.astro),
                   const SizedBox(width: 16,),
                   getButtonUI(CategoryType.tech, categoryType == CategoryType.tech),
-            ],
-            )
+                ],
+              )
           ),
         ),
         CategoryListView(
@@ -288,8 +288,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.menu)),
+                        onPressed: () {},
+                        icon: Icon(Icons.menu)),
                   ),
                 ),
               ),
@@ -343,4 +343,3 @@ enum CategoryType {
   astro,
   tech,
 }
-
