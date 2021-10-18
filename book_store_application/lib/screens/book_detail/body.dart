@@ -26,36 +26,45 @@ class _BodyState extends State<Body> {
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        getAppBarUI(),
-        BookImages(book),
-        TopRoundedContainer(
-          color: Colors.white,
-          child: Column(
-            children: [
-              BookDescription(book),
-              TopRoundedContainer(
-                color: const Color(0xFFF6F7F9),
-                child: Column(
-                  children: [
-                   CustomTabBar(book),
-                    TopRoundedContainer(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10, top: 10,),
-                        child: AddToCart(),
+    return Scaffold(
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          getAppBarUI(),
+          BookImages(book),
+          Expanded(
+              child: SingleChildScrollView(
+                child: TopRoundedContainer(
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      BookDescription(book),
+                      TopRoundedContainer(
+                        color: const Color(0xFFF6F7F9),
+                        child: Column(
+                          children: [
+                            AddToCart(),
+                            TopRoundedContainer(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 5, right: 5,),
+                                child: CustomTabBar(book),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              )
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
+
   Widget getAppBarUI() {
     return Container(
       decoration: const BoxDecoration(

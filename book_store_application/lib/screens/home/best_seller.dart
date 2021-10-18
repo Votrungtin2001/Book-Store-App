@@ -8,7 +8,6 @@ import 'dart:math';
 
 
 class BestSeller extends StatefulWidget {
-
   @override
   _BestSellerState createState() => _BestSellerState();
 }
@@ -122,22 +121,26 @@ class CardScrollWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16.0),
               child: Container(
-                decoration: const BoxDecoration(color: Colors.white, boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(3.0, 6.0),
-                      blurRadius: 10.0)
-                ]),
+                decoration: const BoxDecoration(color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(3.0, 6.0),
+                          blurRadius: 10.0)
+                    ]),
                 child: AspectRatio(
                   aspectRatio: cardAspectRatio,
                   child: Stack(
                     fit: StackFit.expand,
                     children: <Widget>[
-                      Image.network(
-                        books[i].getIMAGE_URL().toString().trim() != ""
-                            ? books[i].getIMAGE_URL().toString()
-                            : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
-                        fit: BoxFit.cover,
+                      GestureDetector(
+                        onTap: (){ },
+                        child: Image.network(
+                          books[i].getIMAGE_URL().toString().trim() != ""
+                              ? books[i].getIMAGE_URL().toString()
+                              : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       Align(
                         alignment: Alignment.bottomLeft,
@@ -146,26 +149,26 @@ class CardScrollWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                               child: Text(books[i].getTITLE(),
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25.0,)),
                             ),
                             const SizedBox(height: 10.0,),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 12.0, bottom: 12.0),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 22.0, vertical: 6.0),
-                                decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    borderRadius: BorderRadius.circular(20.0)),
-                                child:  TextButton( onPressed: () {  }, child: Text("See more"),),
-                              ),
-                            )
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 12.0, bottom: 12.0),
+                            //   child: Container(
+                            //     padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 6.0),
+                            //     decoration: BoxDecoration(
+                            //         color: Colors.transparent,
+                            //         borderRadius: BorderRadius.circular(20.0)),
+                            //     child:  TextButton(
+                            //       onPressed: () {  },
+                            //       child: Text("See more"),
+                            //     ),
+                            //   ),
+                            // )
                           ],
                         ),
                       )

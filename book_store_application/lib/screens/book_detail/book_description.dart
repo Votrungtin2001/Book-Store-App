@@ -41,7 +41,7 @@ class _BookDescriptionState extends State<BookDescription> with SingleTickerProv
     authors = authorProvider.authors;
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
@@ -49,7 +49,7 @@ class _BookDescriptionState extends State<BookDescription> with SingleTickerProv
               child: RichText(
                 text: TextSpan(
                   text: book!.getTITLE() + '\n',
-                  style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Colors.black),
+                  style: TextStyle(fontSize: 24,fontWeight: FontWeight.w700 ,color: Colors.black),
                   children: <TextSpan>[
                     TextSpan(text: getAuthorName(book!.getAUTHOR_ID()) + '\n', style: TextStyle(fontWeight: FontWeight.w500,color: Colors.black12,fontSize: 16)),
                     TextSpan(text: currencyformat.format(book!.getPRICE()) + 'đ', style: TextStyle(fontWeight: FontWeight.w500,color: Colors.red,fontSize: 26)),
@@ -57,26 +57,21 @@ class _BookDescriptionState extends State<BookDescription> with SingleTickerProv
                 ),
               )
             ),
-            Spacer(),
             Align(
               alignment: Alignment.topRight,
               child: Container(
-                padding: const EdgeInsets.all(12),
-                width: 56,
-                // decoration: const BoxDecoration(
-                //   color: Colors.black12,
-                //   borderRadius: BorderRadius.only(
-                //     topLeft: Radius.circular(15),
-                //     bottomLeft: Radius.circular(15),
-                //   ),
-                // ),
-                child: Image.asset(
-                  "assets/icons/heart.svg",
-                  height: 24,
+                padding: const EdgeInsets.all(1),
+                width: 42,
+                decoration: const BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    bottomLeft: Radius.circular(15),
+                  ),
                 ),
+                child: IconButton( onPressed: () {  }, icon: Icon(Icons.favorite_border_outlined),),
               ),
             ),
-
           ],
       ),
     );
