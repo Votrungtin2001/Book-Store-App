@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class BooksProvider with ChangeNotifier {
   BooksServices _booksServices = BooksServices();
   List<Book> books = [];
-  List<Book> booksByCategory = [];
+  List<Book> booksOfCategory = [];
   List<Book> bestSellerBooks = [];
 
   BooksProvider.initialize(){
@@ -17,9 +17,15 @@ class BooksProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future loadBooksByCategory({int? id})async{
-    booksByCategory = await _booksServices.getBooksOfCategory(id: id);
-    notifyListeners();
+  loadBooksByCategory({int? id})async{
+    if(id == 0) {
+      booksOfCategory = await _booksServices.getBooks();
+      notifyListeners();
+    }
+    else {
+      booksOfCategory = await _booksServices.getBooksOfCategory(id: id);
+      notifyListeners();
+    }
   }
 
   Future loadBestSellerBooks() async {

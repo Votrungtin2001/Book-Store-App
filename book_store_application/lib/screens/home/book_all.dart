@@ -1,8 +1,11 @@
 import 'package:book_store_application/MVP/Model/Book.dart';
+import 'package:book_store_application/MVP/Model/Category.dart';
+import 'package:book_store_application/MVP/Presenter/category_presenter.dart';
+import 'package:book_store_application/MVP/View/category_view.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
+import 'package:book_store_application/firebase/providers/category_provider.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:book_store_application/screens/home/models/category.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +15,19 @@ class BooksListView extends StatefulWidget {
   _BooksListViewState createState() => _BooksListViewState();
 }
 
-class _BooksListViewState extends State<BooksListView> with TickerProviderStateMixin {
+class _BooksListViewState extends State<BooksListView> with TickerProviderStateMixin implements CategoryView  {
   AnimationController? animationController;
+  late CategoryPresenter presenter;
+
+  final key = GlobalKey<AnimatedListState>();
+
+  List<Book> booksOfCategory = [];
+  List<Book> books = [];
+  int category_id = 0;
+
+  _BooksListViewState() {
+    this.presenter = new CategoryPresenter(this);
+  }
 
   @override
   void initState() {
@@ -35,44 +49,123 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final booksProvider = Provider.of<BooksProvider>(context);
-    return Padding(
-      padding: const EdgeInsets.only( bottom: 16),
-      child: SizedBox(
-        height: 134,
-        width: double.infinity,
-        child: FutureBuilder<bool>(
-          future: getData(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (!snapshot.hasData) {
-              return const SizedBox();
-            } else {
-              return ListView.builder(
-                padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
-                itemCount: booksProvider.books.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  final int count = booksProvider.books.length > 10
-                      ? 10
-                      : booksProvider.books.length;
-                  final Animation<double> animation =
-                  Tween<double>(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                          parent: animationController!,
-                          curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
-                  animationController?.forward();
-                  return BooksOfCategoryView(
-                    book: booksProvider.books[index],
-                    animation: animation,
-                    animationController: animationController,
-                  );
-                },
-              );
-            }
-          },
+    presenter.getCategoryList();
+    presenter.getBookList();
+    books = presenter.books;
+    if(category_id == 0) booksOfCategory = books;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.only( left: 18, right: 16),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text( 'Category',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 26,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () {  },
+                      child: Row(
+                        children: const [
+                          Text('See all',style:TextStyle(color: Colors.black12)),
+                          Icon(Icons.arrow_forward_ios_outlined, size:15, color: Colors.black12)
+                        ],
+                      )
+                  )
+                ]
+            )
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+              presenter.categories.length,
+                  (index) => CategoryCard(
+                icon: presenter.categories[index].getIMAGE_URL(),
+                text: presenter.categories[index].getNAME(),
+                press: () {
+                  setState(() {
+                      category_id = presenter.categories[index].getID();
+                      getBooksOfCategory(category_id);
+                      print('leng: ' + booksOfCategory.length.toString());
+                  });
+
+                },
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only( bottom: 16),
+          child: SizedBox(
+            height: 134,
+            width: double.infinity,
+            child: FutureBuilder<bool>(
+              future: getData(),
+              builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox();
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
+                    itemCount: booksOfCategory.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      int count = booksOfCategory.length > 10
+                          ? 10
+                          : booksOfCategory.length;
+                      final Animation<double> animation =
+                      Tween<double>(begin: 0.0, end: 1.0).animate(
+                          CurvedAnimation(
+                              parent: animationController!,
+                              curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
+                      animationController?.forward();
+                      return BooksOfCategoryView(
+                        book: booksOfCategory[index],
+                        animation: animation,
+                        animationController: animationController,
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+        ),
+      ],
     );
+  }
+  
+  void getBooksOfCategory(int category_id) {
+    List<Book> list = [];
+    if(category_id == 0) booksOfCategory = books;
+    else {
+      for(int i = 0; i < books.length; i++) {
+        if(books[i].getCATEGORY_ID() == category_id) list.add(books[i]);
+      }
+      booksOfCategory = list;
+    }
+  }
+
+  @override
+  List<Category> getCategoryList() {
+    final categoryProvider = Provider.of<CategoryProvider>(context);
+    return categoryProvider.categories;
+  }
+
+  @override
+  List<Book> getBookList() {
+    final booksProvider = Provider.of<BooksProvider>(context);
+    return booksProvider.books;
   }
 }
 
@@ -242,4 +335,37 @@ class BooksOfCategoryView extends StatelessWidget {
     );
   }
 
+}
+class CategoryCard extends StatelessWidget {
+  const CategoryCard({Key? key, required this.icon, required this.text, required this.press,
+  }) : super(key: key);
+
+  final String? icon, text;
+  final GestureTapCallback press;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: press,
+      child: SizedBox(
+        width: 46,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              height: 36,
+              width: 36,
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFECDF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Image.network(icon!),
+            ),
+            const SizedBox(height: 5),
+            Text(text!, textAlign: TextAlign.center)
+          ],
+        ),
+      ),
+    );
+  }
 }

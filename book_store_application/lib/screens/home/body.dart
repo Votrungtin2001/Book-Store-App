@@ -87,35 +87,35 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
                       return <Widget>[
                         SliverList(delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                                  return Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        const SizedBox(height: 10,),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 18,),
-                                          child: Column(
-                                            children: [
-                                              RichText(
-                                                  text: const TextSpan(
-                                                      text: 'Hello there, Minh Thi\n',
-                                                      style: TextStyle( fontSize: 24, fontWeight: FontWeight.bold,color: Colors.black),
-                                                      children: <TextSpan>[
-                                                        TextSpan( text: 'Keep reading, you’ll fall in love ',
-                                                            style: TextStyle( fontSize: 16, fontWeight: FontWeight.w300,color: Colors.black)),
-                                                      ]
-                                                  )
-                                              ),
-                                            ],
+                              return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    const SizedBox(height: 10,),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 18,),
+                                      child: Column(
+                                        children: [
+                                          RichText(
+                                              text: const TextSpan(
+                                                  text: 'Hello there, Minh Thi\n',
+                                                  style: TextStyle( fontSize: 24, fontWeight: FontWeight.bold,color: Colors.black),
+                                                  children: <TextSpan>[
+                                                    TextSpan( text: 'Keep reading, you’ll fall in love ',
+                                                        style: TextStyle( fontSize: 16, fontWeight: FontWeight.w300,color: Colors.black)),
+                                                  ]
+                                              )
                                           ),
-                                        ),
-                                        const SizedBox(height: 5,),
-                                        getSearchBarUI(),
-                                        getCategory(),
-                                        const DestinationCarousel(key: null,),
-                                      ]
-                                  );
-                                }, childCount: 1)
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5,),
+                                    getSearchBarUI(),
+                                    getCategory(),
+                                    const DestinationCarousel(key: null,),
+                                  ]
+                              );
+                            }, childCount: 1)
                         )
                       ];
                     },
@@ -145,22 +145,22 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
       child:
-          TextFormField(
-            style: const TextStyle(fontSize: 16,),
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                fillColor: Colors.transparent,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: const BorderSide(
-                        color: Colors.black)
-                ),
-                filled: true,
-                hintText: "Search your book..",
-                hintStyle: const TextStyle(color: Colors.black38),
-                prefixIcon: const Icon(Icons.search, color: Colors.black,)
+      TextFormField(
+        style: const TextStyle(fontSize: 16,),
+        decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+            fillColor: Colors.transparent,
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30.0),
+                borderSide: const BorderSide(
+                    color: Colors.black)
             ),
-          ),
+            filled: true,
+            hintText: "Search your book..",
+            hintStyle: const TextStyle(color: Colors.black38),
+            prefixIcon: const Icon(Icons.search, color: Colors.black,)
+        ),
+      ),
     );
   }
 
