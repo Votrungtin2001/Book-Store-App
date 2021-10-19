@@ -26,8 +26,7 @@ class AddToCart extends StatelessWidget {
           Spacer(),
           TextButton(
             style: TextButton.styleFrom(
-              shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               primary: Colors.white,
               backgroundColor: Colors.blue,
             ),

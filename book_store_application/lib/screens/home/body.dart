@@ -11,6 +11,7 @@ import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/category_provider.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
+import 'package:book_store_application/screens/cart/cart_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -21,6 +22,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import '../search_bar.dart';
 import 'best_seller.dart';
 import 'carousel.dart';
 import 'book_all.dart';
@@ -87,35 +89,35 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
                       return <Widget>[
                         SliverList(delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                              return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    const SizedBox(height: 10,),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 18,),
-                                      child: Column(
-                                        children: [
-                                          RichText(
-                                              text: const TextSpan(
-                                                  text: 'Hello there, Minh Thi\n',
-                                                  style: TextStyle( fontSize: 24, fontWeight: FontWeight.bold,color: Colors.black),
-                                                  children: <TextSpan>[
-                                                    TextSpan( text: 'Keep reading, you’ll fall in love ',
-                                                        style: TextStyle( fontSize: 16, fontWeight: FontWeight.w300,color: Colors.black)),
-                                                  ]
-                                              )
+                                  return Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        const SizedBox(height: 10,),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 18,),
+                                          child: Column(
+                                            children: [
+                                              RichText(
+                                                  text: const TextSpan(
+                                                      text: 'Hello there, Minh Thi\n',
+                                                      style: TextStyle( fontSize: 24, fontWeight: FontWeight.bold,color: Colors.black),
+                                                      children: <TextSpan>[
+                                                        TextSpan( text: 'Keep reading, you’ll fall in love ',
+                                                            style: TextStyle( fontSize: 16, fontWeight: FontWeight.w300,color: Colors.black)),
+                                                      ]
+                                                  )
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5,),
-                                    getSearchBarUI(),
-                                    getCategory(),
-                                    const DestinationCarousel(key: null,),
-                                  ]
-                              );
-                            }, childCount: 1)
+                                        ),
+                                        const SizedBox(height: 5,),
+                                        getSearchBarUI(),
+                                        getCategory(),
+                                        const DestinationCarousel(key: null,),
+                                      ]
+                                  );
+                                }, childCount: 1)
                         )
                       ];
                     },
@@ -144,23 +146,25 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
   Widget getSearchBarUI() {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-      child:
-      TextFormField(
-        style: const TextStyle(fontSize: 16,),
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-            fillColor: Colors.transparent,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: const BorderSide(
-                    color: Colors.black)
+      child: TextFormField(
+            style: const TextStyle(fontSize: 16,),
+            decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                fillColor: Colors.transparent,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: const BorderSide(
+                        color: Colors.black)
+                ),
+                filled: true,
+                hintText: "Search your book..",
+                hintStyle: const TextStyle(color: Colors.black38),
+                prefixIcon: const Icon(Icons.search, color: Colors.black,)
             ),
-            filled: true,
-            hintText: "Search your book..",
-            hintStyle: const TextStyle(color: Colors.black38),
-            prefixIcon: const Icon(Icons.search, color: Colors.black,)
-        ),
-      ),
+            onEditingComplete: (){
+            //  showSearch(context: context, delegate: DataSearch());
+            },
+          ),
     );
   }
 
@@ -213,15 +217,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
       ],
     );
   }
-
-  /*void moveTo() {
-    Navigator.push<dynamic>(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => BookDetailScreen(),
-      ),
-    );
-  }*/
 
   Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
     String txt = '';
@@ -317,28 +312,43 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
                 ),
               ),
             ),
-            SizedBox(
-              width: AppBar().preferredSize.height + 40,
-              height: AppBar().preferredSize.height,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(32.0),
-                      ),
-                      onTap: () {},
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon( Icons.shopping_bag_outlined ),
-                      ),
-                    ),
+            Row(
+            children: [
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(32.0),
                   ),
-                ],
+                  onTap: () {
+                    showSearch(context: context, delegate: DataSearch());
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon( Icons.search_outlined ),
+                  ),
+                ),
               ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(32.0),
+                  ),
+                  onTap: () {
+                    Navigator.push( context,
+                      MaterialPageRoute(
+                          builder: (context) => CartScreen()
+                      ),
+                    );
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon( Icons.shopping_bag_outlined ),
+                  ),
+                ),
+              ),
+            ],
             )
           ],
         ),
@@ -400,4 +410,80 @@ enum CategoryType {
   science,
   astro,
   tech,
+}
+
+class DataSearch extends SearchDelegate<String>{
+  final data = [
+    "a",
+    "b",
+    "c",
+    "deeeee",
+    "e",
+    "f"
+  ];
+
+  final recentData = [
+    "deeeee",
+    "e",
+    "f"
+  ];
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [IconButton(
+      icon: Icon(Icons.clear),
+      onPressed: () {
+        query = "";
+      },)];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {},
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,)
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Card(
+      color: Colors.red,
+      child: Center(
+        child: Text(query),
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+   final suggestionList = query.isEmpty
+       ? recentData
+       : data.where((p)=>p.startsWith(query)).toList();
+   return ListView.builder(
+     itemBuilder: (context, index) => ListTile(
+       onTap: (){
+         showResults(context);
+       },
+     leading: Icon(Icons.book), // image book
+     title: RichText(
+       text: TextSpan(
+           text: suggestionList[index].substring(0,query.length),
+           style:TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+           children: [
+             TextSpan(
+               text: suggestionList[index].substring(query.length),
+               style:TextStyle(color: Colors.grey,),
+         ),
+             TextSpan(text: "\nauthor"),
+       ]
+     ),
+     )
+   ),
+   itemCount: suggestionList.length,
+   );
+  }
+
 }

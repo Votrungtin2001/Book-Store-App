@@ -30,7 +30,7 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0),
+      padding: const EdgeInsets.only(left: 10.0),
       child: Column (
           children: <Widget>[
             TabBar(
@@ -55,41 +55,65 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
                   ),
                 ]),
             SizedBox(
-                height: 100,
+                height: MediaQuery.of(context).size.height,
                 child: TabBarView(
                     controller: _tabController,
                     children: [
-                      Center(child: Text(book!.getSUMMARY())),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 5.0),
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            getButtonUI(Type.publisher, type == Type.publisher),
-                            const SizedBox(height: 5,),
-                            const Text("2019"),
-                            const SizedBox(height: 5,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                getButtonUI(Type.category1, type == Type.category1),
-                                getButtonUI(Type.category, type == Type.category),
+                      Text(book!.getSUMMARY()),
+                      Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Author:"),
+                              SizedBox(height: 15,),
+                              Text("Publisher:"),
+                              SizedBox(height: 15,),
+                              Text("Publishing Year:"),
+                              SizedBox(height: 15,),
+                              Text("Category:"),
+                              SizedBox(height: 15,),
+                              Text("Genre:"),
+                              SizedBox(height: 15,),
+                              Text("Sold:"),
+                              SizedBox(height: 15,),
+                              Text("Avaiable:"),
+                            ],
+                          ),
+                          SizedBox(width: 15,),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Author"),
+                              SizedBox(height: 15,),
+                              Text("Publisher"),
+                              SizedBox(height: 15,),
+                              Text("2345"),
+                              SizedBox(height: 15,),
+                              Text("Category"),
+                              SizedBox(height: 15,),
+                              Text("Genre"),
+                              SizedBox(height: 15,),
+                              Text("12"),
+                              SizedBox(height: 15,),
+                              Text("Avaiable"),
+                              SizedBox(height: 15,),
                               ],
-                            )
-                            // Padding(
-                            //   padding: const EdgeInsets.only(left: 16, right: 16),
-                            //   child: Container(
-                            //       margin: const EdgeInsets.symmetric(vertical: 1.0),
-                            //       height: 30.0,
-                            //       child: ListView(
-                            //         scrollDirection: Axis.horizontal,
-                            //         children: <Widget>[
-                            //         ],
-                            //       )
-                            //   ),
-                            // ),
-                          ],
-                        ),
+                          ),
+                          // getButtonUI(Type.publisher, type == Type.publisher),
+                            // const SizedBox(height: 5,),
+                            // const Text("2019"),
+                            // const SizedBox(height: 5,),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                            //     getButtonUI(Type.category1, type == Type.category1),
+                            //     getButtonUI(Type.category, type == Type.category),
+                            //   ],
+                            // )
+                        ],
                       ),
                     ]
                 )
