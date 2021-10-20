@@ -1,10 +1,13 @@
+import 'package:book_store_application/MVP/Model/Author.dart';
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/MVP/Model/Category.dart';
 import 'package:book_store_application/MVP/Presenter/category_presenter.dart';
 import 'package:book_store_application/MVP/View/category_view.dart';
+import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/category_provider.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -19,11 +22,12 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
   AnimationController? animationController;
   late CategoryPresenter presenter;
 
-  final key = GlobalKey<AnimatedListState>();
-
   List<Book> booksOfCategory = [];
   List<Book> books = [];
+  List<Author> authors = [];
   int category_id = 0;
+
+  int quantity = 0;
 
   _BooksListViewState() {
     this.presenter = new CategoryPresenter(this);
@@ -53,6 +57,10 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
     presenter.getBookList();
     books = presenter.books;
     if(category_id == 0) booksOfCategory = books;
+
+    final authorProvider = Provider.of<AuthorProvider>(context);
+    authors = authorProvider.authors;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,9 +101,9 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                 text: presenter.categories[index].getNAME(),
                 press: () {
                   setState(() {
-                      category_id = presenter.categories[index].getID();
-                      getBooksOfCategory(category_id);
-                      print('leng: ' + booksOfCategory.length.toString());
+                    category_id = presenter.categories[index].getID();
+                    getBooksOfCategory(category_id);
+                    print('leng: ' + booksOfCategory.length.toString());
                   });
 
                 },
@@ -131,6 +139,7 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                       animationController?.forward();
                       return BooksOfCategoryView(
                         book: booksOfCategory[index],
+                        author: getAuthorName(booksOfCategory[index].getAUTHOR_ID()),
                         animation: animation,
                         animationController: animationController,
                       );
@@ -144,7 +153,7 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
       ],
     );
   }
-  
+
   void getBooksOfCategory(int category_id) {
     List<Book> list = [];
     if(category_id == 0) booksOfCategory = books;
@@ -167,12 +176,23 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
     final booksProvider = Provider.of<BooksProvider>(context);
     return booksProvider.books;
   }
+
+  String getAuthorName(int author_id) {
+    for(int i = 0; i < authors.length; i++) {
+      if(authors[i].getID() == author_id) {
+        return authors[i].getNAME();
+      }
+    }
+    return "";
+  }
+
 }
 
 class BooksOfCategoryView extends StatelessWidget {
-  const BooksOfCategoryView(
+  BooksOfCategoryView(
       {Key? key,
         this.book,
+        this.author,
         this.animationController,
         this.animation})
       : super(key: key);
@@ -180,7 +200,7 @@ class BooksOfCategoryView extends StatelessWidget {
   final Book? book;
   final AnimationController? animationController;
   final Animation<double>? animation;
-
+  final String? author;
   @override
   Widget build(BuildContext context) {
     final currencyformat = new NumberFormat("#,###,##0");
@@ -245,7 +265,7 @@ class BooksOfCategoryView extends StatelessWidget {
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              '${book!.getQUANTITY()} left',
+                                              '${author}',
                                               textAlign: TextAlign.left,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w200,
@@ -334,7 +354,6 @@ class BooksOfCategoryView extends StatelessWidget {
       },
     );
   }
-
 }
 class CategoryCard extends StatelessWidget {
   const CategoryCard({Key? key, required this.icon, required this.text, required this.press,

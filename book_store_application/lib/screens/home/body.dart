@@ -1,6 +1,7 @@
 import 'package:book_store_application/MVP/Model/Author.dart';
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/MVP/Model/Category.dart';
+import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/MVP/Presenter/bestSeller_presenter.dart';
 import 'package:book_store_application/MVP/Presenter/homeScreen_presenter.dart';
 import 'package:book_store_application/MVP/View/bestSeller_view.dart';
@@ -67,8 +68,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
 
   @override
   Widget build(BuildContext context) {
-    presenter.getCategoryList();
     presenter.getBookList();
+    presenter.getSuggestionBookList();
+    presenter.getAuthorList();
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -113,7 +115,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
                                         ),
                                         const SizedBox(height: 5,),
                                         getSearchBarUI(),
-                                        getCategory(),
+                                        BooksListView(),
                                         const DestinationCarousel(key: null,),
                                       ]
                                   );
@@ -165,56 +167,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
             //  showSearch(context: context, delegate: DataSearch());
             },
           ),
-    );
-  }
-
-  Widget getCategory() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.only( left: 18, right: 16),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text( 'Category',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 26,
-                      color: Colors.black,
-                    ),
-                  ),
-                  TextButton(
-                      onPressed: () {  },
-                      child: Row(
-                        children: const [
-                          Text('See all',style:TextStyle(color: Colors.black12)),
-                          Icon(Icons.arrow_forward_ios_outlined, size:15, color: Colors.black12)
-                        ],
-                      )
-                  )
-                ]
-            )
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
-              presenter.categories.length,
-                  (index) => CategoryCard(
-                icon: presenter.categories[index].getIMAGE_URL(),
-                text: presenter.categories[index].getNAME(),
-                press: () {
-                },
-              ),
-            ),
-          ),
-        ),
-        BooksListView(),
-      ],
     );
   }
 
@@ -321,7 +273,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
                     Radius.circular(32.0),
                   ),
                   onTap: () {
-                    showSearch(context: context, delegate: DataSearch());
+                    showSearch(context: context, delegate: DataSearch(presenter.books, presenter.suggestionBook, presenter.authors));
                   },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -357,15 +309,22 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
   }
 
   @override
-  List<Category> getCategoryList() {
-    final categoryProvider = Provider.of<CategoryProvider>(context);
-    return categoryProvider.categories;
-  }
-
-  @override
   List<Book> getBookList() {
     final booksProvider = Provider.of<BooksProvider>(context);
     return booksProvider.books;
+  }
+
+  @override
+  List<Book> getSuggestionBookList() {
+    final booksProvider = Provider.of<BooksProvider>(context);
+    booksProvider.loadSuggestionBooks();
+    return booksProvider.sugesstionBooks;
+  }
+
+  @override
+  List<Author> getAuthorList() {
+    final authorProvider = Provider.of<AuthorProvider>(context);
+    return authorProvider.authors;
   }
 
 }
@@ -413,20 +372,23 @@ enum CategoryType {
 }
 
 class DataSearch extends SearchDelegate<String>{
-  final data = [
-    "a",
-    "b",
-    "c",
-    "deeeee",
-    "e",
-    "f"
-  ];
 
-  final recentData = [
-    "deeeee",
-    "e",
-    "f"
-  ];
+  List<Book> books = [];
+  List<Book> suggestBooks = [];
+  List<Author> authors = [];
+
+  DataSearch(List<Book> list1, List<Book> list2, List<Author> list3) {
+    this.books = list1;
+    this.suggestBooks = list2;
+    this.authors = list3;
+  }
+
+  String getAuthor(List<Author> list, int ID) {
+    for(int i = 0; i < list.length; i++) {
+      if(list[i].getID() == ID) return list[i].getNAME();
+    }
+    return "";
+  }
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -459,30 +421,43 @@ class DataSearch extends SearchDelegate<String>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-   final suggestionList = query.isEmpty
-       ? recentData
-       : data.where((p)=>p.startsWith(query)).toList();
+    List<Book> results = [];
+   if(query.isEmpty) {
+     results = suggestBooks;
+   }
+   else {
+     List<Book> list = [];
+     for (int i = 0; i < books.length; i++) {
+       String search_text = query.toLowerCase();
+       String name = books[i].getTITLE().toLowerCase();
+       if(name.startsWith(search_text)) list.add(books[i]);
+     }
+     results = list;
+   }
    return ListView.builder(
      itemBuilder: (context, index) => ListTile(
-       onTap: (){
-         showResults(context);
-       },
-     leading: Icon(Icons.book), // image book
+       onTap: ()=> Navigator.push<dynamic>(
+         context,
+         MaterialPageRoute<dynamic>(
+           builder: (BuildContext context) => BookDetailScreen(results[index]),
+         ),
+       ),
+     leading: Image.network(results[index].getIMAGE_URL(), fit: BoxFit.cover), // image book
      title: RichText(
        text: TextSpan(
-           text: suggestionList[index].substring(0,query.length),
+           text: results[index].getTITLE().substring(0, query.length),
            style:TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
            children: [
              TextSpan(
-               text: suggestionList[index].substring(query.length),
+               text: results[index].getTITLE().substring(query.length),
                style:TextStyle(color: Colors.grey,),
          ),
-             TextSpan(text: "\nauthor"),
+             TextSpan(text: '\n' + getAuthor(authors, results[index].getAUTHOR_ID()) + '\n \n'),
        ]
      ),
      )
    ),
-   itemCount: suggestionList.length,
+   itemCount: results.length,
    );
   }
 

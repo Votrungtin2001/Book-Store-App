@@ -19,5 +19,4 @@ class CategoryPresenter {
   void getBookList(){
     books = view.getBookList();
   }
-
 }

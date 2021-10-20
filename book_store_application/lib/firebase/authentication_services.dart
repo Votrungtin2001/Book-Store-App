@@ -119,6 +119,7 @@ class AuthenticationServices {
       timer.cancel();
       User_Model user_model = new User_Model(user.uid, name, 1, "", "", "", "", 0);
       await DatabaseManager().createUserData(user_model);
+      await DatabaseManager().createFavorites(user_model);
     }
   }
 
@@ -140,6 +141,7 @@ class AuthenticationServices {
         if (user != null) {
           User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0);
           await DatabaseManager().createUserData(user_model);
+          await DatabaseManager().createFavorites(user_model);
         }
 
       }
@@ -178,6 +180,7 @@ class AuthenticationServices {
         if (user != null) {
           User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0);
           await DatabaseManager().createUserData(user_model);
+          await DatabaseManager().createFavorites(user_model);
         }
 
       }

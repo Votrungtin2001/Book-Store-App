@@ -15,6 +15,18 @@ class BooksServices {
         return books;
       });
 
+  Future<List<Book>> getSuggestionBooks() async =>
+      _firestore.collection(collection).get().then((result) {
+        List<Book> books = [];
+        int count = 0;
+        for (DocumentSnapshot book in result.docs) {
+          count++;
+          books.add(Book.fromSnapshot(book));
+          if (count > 4) return books;
+        }
+        return books;
+      });
+
   Future<List<Book>> getBooksOfCategory({int? id}) async =>
       _firestore
           .collection(collection)

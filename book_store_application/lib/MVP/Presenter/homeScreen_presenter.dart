@@ -7,28 +7,21 @@ class HomeScreenPresenter {
   late HomeScreenView view;
   List<Category> categories = [];
   List<Book> books = [];
+  List<Book> suggestionBook = [];
   List<Author> authors = [];
 
   HomeScreenPresenter(HomeScreenView view) {
     this.view = view;
   }
 
-  void getCategoryList() {
-    categories = view.getCategoryList();
-  }
-
   void getBookList(){
     books = view.getBookList();
   }
-
-  List<Book> getBooksOfCategory(int category_id) {
-    List<Book> booksOfCategory = [];
-    for(int i = 0; i < books.length; i++) {
-      if(books[i].getCATEGORY_ID() == category_id) {
-        booksOfCategory.add(books[i]);
-      }
-    }
-    return booksOfCategory;
+  void getSuggestionBookList(){
+    suggestionBook = view.getSuggestionBookList();
+  }
+  void getAuthorList() {
+    authors = view.getAuthorList();
   }
 
 }

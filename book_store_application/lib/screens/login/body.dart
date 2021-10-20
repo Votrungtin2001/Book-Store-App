@@ -7,6 +7,7 @@ import 'package:book_store_application/screens/home_test.dart';
 import 'package:book_store_application/screens/sign_up/sign_up_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

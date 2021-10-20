@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "472865927409",
+    "firebase_url": "https://book-store-app-3d8a6-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "book-store-app-3d8a6",
     "storage_bucket": "book-store-app-3d8a6.appspot.com"
   },
@@ -13,6 +14,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "472865927409-bhhc14gu59n4ejqg11jc7gtkeg1l81bv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.book_store_application",
+            "certificate_hash": "b3d691d1a0a6240c1702d3ddd9299210c806ab08"
+          }
+        },
+        {
+          "client_id": "472865927409-hns7h55cm2e4ooiunigb2a0hg3sqm0ge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.book_store_application",
+            "certificate_hash": "04859f0cdeabfb453b67f117d3debe22aee658bf"
+          }
+        },
         {
           "client_id": "472865927409-g7id3vfjhl696h4f9iab26bsqo8e0eo2.apps.googleusercontent.com",
           "client_type": 3

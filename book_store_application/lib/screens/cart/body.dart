@@ -1,5 +1,7 @@
+import 'package:book_store_application/firebase/providers/order_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'cart_card.dart';
 
 class Body extends StatefulWidget {
@@ -8,12 +10,14 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+
   @override
   Widget build(BuildContext context) {
+    final orderProvider = Provider.of<OrderProvider>(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: ListView.builder(
-        itemCount: 3,
+        itemCount: orderProvider.booksInCart.length,
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Dismissible(
@@ -37,7 +41,7 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            child: CartCard(),
+            child: CartCard(orderProvider.booksInCart[index]),
           ),
         ),
       ),

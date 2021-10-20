@@ -1,15 +1,26 @@
+import 'package:book_store_application/MVP/Presenter/accoutAdministration_presenter.dart';
+import 'package:book_store_application/MVP/View/accountAdministration_view.dart';
+import 'package:book_store_application/firebase/authentication_services.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
+import 'package:book_store_application/screens/login/login_screen.dart';
 import 'package:book_store_application/screens/profile/profile_ava.dart';
 import 'package:book_store_application/screens/profile/profile_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<Body> implements AccountAdministrationView {
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  final AuthenticationServices _auth = AuthenticationServices();
+  late AccountAdministrationPresenter presenter;
+
+  _BodyState() {
+    this.presenter = new AccountAdministrationPresenter(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,12 @@ class _BodyState extends State<Body> {
           ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
-            press: () {},
+            press: () {
+              presenter.logOut();
+              Fluttertoast.showToast(msg: 'Logged out successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
+            },
           ),
         ],
       ),
@@ -81,5 +97,10 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  }
+
+  @override
+  Future<void> logOut() async {
+    dynamic result = await _auth.signOut();
   }
 }

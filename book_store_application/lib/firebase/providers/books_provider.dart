@@ -7,6 +7,7 @@ class BooksProvider with ChangeNotifier {
   List<Book> books = [];
   List<Book> booksOfCategory = [];
   List<Book> bestSellerBooks = [];
+  List<Book> sugesstionBooks = [];
 
   BooksProvider.initialize(){
     loadBooks();
@@ -14,6 +15,11 @@ class BooksProvider with ChangeNotifier {
 
   loadBooks() async {
     books = await _booksServices.getBooks();
+    notifyListeners();
+  }
+
+  loadSuggestionBooks({int? id})async{
+    sugesstionBooks = await _booksServices.getSuggestionBooks();
     notifyListeners();
   }
 
@@ -47,7 +53,7 @@ class BooksProvider with ChangeNotifier {
     }
     bestSellerBooks = list2;
     notifyListeners();
-}
+  }
 
 
 }

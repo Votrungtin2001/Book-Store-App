@@ -1,20 +1,30 @@
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class DatabaseManager {
+  final List<int> book_id = [];
   final CollectionReference Users =
   FirebaseFirestore.instance.collection('Users');
 
-  final CollectionReference Books = FirebaseFirestore.instance.collection('Books');
+  final DatabaseReference refFavorite = FirebaseDatabase.instance.reference().child('Favorites');
 
-  Future<void> createUserData(
-      User_Model user_model) async {
+
+  Future<void> createUserData(User_Model user_model) async {
     return await Users
         .doc(user_model.id)
         .set({'id': user_model.id, 'name': user_model.name, 'role': user_model.role, 'address': user_model.address,
                 'phone': user_model.phone, 'dob': user_model.dob, 'gender': user_model.gender, 'photo': user_model.photo});
   }
+
+  Future<void> createFavorites(User_Model user_model) async {
+    return await refFavorite
+        .child(user_model.id)
+        .set({'user_id': user_model.id, 'book_id': book_id});
+  }
+
+
 
 
   /*Future updateUserList(String name, String gender, int score, String uid) async {

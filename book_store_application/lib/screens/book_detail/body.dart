@@ -43,7 +43,7 @@ class _BodyState extends State<Body> {
                         color: const Color(0xFFF6F7F9),
                         child: Column(
                           children: [
-                            AddToCart(),
+                            AddToCart(book),
                             TopRoundedContainer(
                               color: Colors.white,
                               child: Padding(

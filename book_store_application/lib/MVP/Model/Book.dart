@@ -10,13 +10,12 @@ class Book {
   late double price;
   late int publisher_id;
   late int publishing_year;
-  late int quantity;
   late int sold_count;
   late String summary;
   late String title;
 
   Book(int ID, int AUTHOR_ID,int CATEGORY_ID, String GENRE, List<String> IMAGE_URL, double PRICE, int PUBLISHER_ID,
-      int PUBLISHING_YEAR, int QUANTITY, int SOLD_COUNT, String SUMMARY, String TITLE) {
+      int PUBLISHING_YEAR, int SOLD_COUNT, String SUMMARY, String TITLE) {
     this.id = ID;
     this.author_id = AUTHOR_ID;
     this.category_id = CATEGORY_ID;
@@ -25,7 +24,6 @@ class Book {
     this.price = PRICE;
     this.publisher_id = PUBLISHER_ID;
     this.publishing_year = PUBLISHING_YEAR;
-    this.quantity = QUANTITY;
     this.sold_count = SOLD_COUNT;
     this.summary = SUMMARY;
     this.title = TITLE;
@@ -57,9 +55,6 @@ class Book {
   int getPUBLISHING_YEAR() {return this.publishing_year;}
   void setPUBLISHING_YEAR(int PUBLISHING_YEAR) {this.publishing_year = PUBLISHING_YEAR;}
 
-  int getQUANTITY() {return this.quantity;}
-  void setQUANTITY(int QUANTITY) {this.quantity = QUANTITY;}
-
   int getSOLD_COUNT() {return this.sold_count;}
   void setSOLD_COUNT(int SOLD_COUNT) {this.sold_count = SOLD_COUNT;}
 
@@ -82,7 +77,6 @@ class Book {
     price = iPrice.toDouble();
     publisher_id = snapshot.get('publisher_id');
     publishing_year = snapshot.get('publishing_year');
-    quantity = snapshot.get('quantity');
     sold_count = snapshot.get('sold_count');
     title = snapshot.get('title');
     summary = snapshot.get('summary');

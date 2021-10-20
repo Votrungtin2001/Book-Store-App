@@ -9,6 +9,8 @@ import 'MVP/Model/User.dart';
 import 'firebase/authentication_services.dart';
 import 'firebase/providers/author_provider.dart';
 import 'firebase/providers/category_provider.dart';
+import 'firebase/providers/order_provider.dart';
+import 'firebase/providers/publisher_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +20,8 @@ void main() async {
       ChangeNotifierProvider.value(value: BooksProvider.initialize()),
       ChangeNotifierProvider.value(value: CategoryProvider.initialize()),
       ChangeNotifierProvider.value(value: AuthorProvider.initialize()),
+      ChangeNotifierProvider.value(value: PublisherProvider.initialize()),
+      ChangeNotifierProvider.value(value: OrderProvider.initialize()),
     ],
     child: const MyApp(),
   ));

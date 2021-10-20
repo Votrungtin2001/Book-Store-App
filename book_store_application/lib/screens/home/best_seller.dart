@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
+import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -134,7 +135,12 @@ class CardScrollWidget extends StatelessWidget {
                     fit: StackFit.expand,
                     children: <Widget>[
                       GestureDetector(
-                        onTap: (){ },
+                        //onTap: ()=> Navigator.push<dynamic>(
+                          //context,
+                          //MaterialPageRoute<dynamic>(
+                            //builder: (BuildContext context) => BookDetailScreen(books[i]),
+                          //),
+                        //),
                         child: Image.network(
                           books[i].getIMAGE_URL().toString().trim() != ""
                               ? books[i].getIMAGE_URL().toString()
