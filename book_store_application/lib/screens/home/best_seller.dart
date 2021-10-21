@@ -4,6 +4,7 @@ import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 
@@ -34,9 +35,9 @@ class _BestSellerState extends State<BestSeller>{
 
     return Container(
       color: Colors.transparent,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(
+     // child: Scaffold(
+       // backgroundColor: Colors.transparent,
+        child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Padding(
@@ -72,7 +73,7 @@ class _BestSellerState extends State<BestSeller>{
             ],
           ),
         ),
-      ),
+      //),
     );
   }
 }
@@ -81,6 +82,7 @@ class CardScrollWidget extends StatelessWidget {
   var currentPage;
   var padding = 10.0;
   var verticalInset = 20.0;
+
   List<Book> books = [];
 
   CardScrollWidget(var CurrentPage, List<Book> list) {
@@ -91,6 +93,7 @@ class CardScrollWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
+
       aspectRatio: widgetAspectRatio,
       child: LayoutBuilder(builder: (context, contraints) {
 
@@ -119,77 +122,77 @@ class CardScrollWidget extends StatelessWidget {
             bottom: padding + verticalInset * max(-delta, 0.0),
             start: start,
             textDirection: TextDirection.rtl,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: Container(
-                decoration: const BoxDecoration(color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(3.0, 6.0),
-                          blurRadius: 10.0)
-                    ]),
-                child: AspectRatio(
-                  aspectRatio: cardAspectRatio,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      GestureDetector(
-                        //onTap: ()=> Navigator.push<dynamic>(
-                          //context,
-                          //MaterialPageRoute<dynamic>(
-                            //builder: (BuildContext context) => BookDetailScreen(books[i]),
-                          //),
-                        //),
-                        child: Image.network(
-                          books[i].getIMAGE_URL().toString().trim() != ""
-                              ? books[i].getIMAGE_URL().toString()
-                              : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                              child: Text(books[i].getTITLE(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25.0,)),
-                            ),
-                            const SizedBox(height: 10.0,),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(left: 12.0, bottom: 12.0),
-                            //   child: Container(
-                            //     padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 6.0),
-                            //     decoration: BoxDecoration(
-                            //         color: Colors.transparent,
-                            //         borderRadius: BorderRadius.circular(20.0)),
-                            //     child:  TextButton(
-                            //       onPressed: () {  },
-                            //       child: Text("See more"),
-                            //     ),
-                            //   ),
-                            // )
-                          ],
-                        ),
-                      )
-                    ],
+            child: InkWell(
+                onTap: () => Navigator.push<dynamic>(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => BookDetailScreen(books[i]),
                   ),
                 ),
-              ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+                child: Container(
+                  decoration: const BoxDecoration(color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(3.0, 6.0),
+                            blurRadius: 10.0)
+                      ]),
+                  child: AspectRatio(
+                    aspectRatio: cardAspectRatio,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () { Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => BookDetailScreen(books[i]),
+                            ),
+                          );
+                          },
+                          child: Image.network(
+                            books[i].getIMAGE_URL().toString().trim() != ""
+                                ? books[i].getIMAGE_URL().toString()
+                                : 'https://www.testingxperts.com/wp-content/uploads/2019/02/placeholder-img.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                child: Text(books[i].getTITLE(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25.0,)),
+                              ),
+                              const SizedBox(height: 10.0,),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ),
           );
+
           cardList.add(cardItem);
         }
+
         return Stack(
-          children: cardList,
+          children:cardList ,
         );
-      }),
+      }
+      ),
+
     );
   }
 

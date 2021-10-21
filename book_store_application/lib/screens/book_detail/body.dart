@@ -1,5 +1,6 @@
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/screens/book_detail/top_rounded_container.dart';
+import 'package:book_store_application/screens/cart/cart_screen.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import 'book_description.dart';
@@ -125,7 +126,13 @@ class _BodyState extends State<Body> {
                       borderRadius: const BorderRadius.all(
                         Radius.circular(32.0),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push( context,
+                          MaterialPageRoute(
+                              builder: (context) => CartScreen()
+                          ),
+                        );
+                      },
                       child: const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon( Icons.shopping_bag_outlined ),

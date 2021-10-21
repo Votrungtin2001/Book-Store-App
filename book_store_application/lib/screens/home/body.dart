@@ -37,7 +37,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin implements HomeScreenView{
   AnimationController? animationController;
   final ScrollController _scrollController = ScrollController();
-  CategoryType categoryType = CategoryType.all;
+  // CategoryType categoryType = CategoryType.all;
   late Animation<double> _scaleAnimation;
   late Animation<double> _menuScaleAnimation;
   late Animation<Offset> _slideAnimation;
@@ -114,9 +114,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
                                           ),
                                         ),
                                         const SizedBox(height: 5,),
-                                        getSearchBarUI(),
                                         BooksListView(),
-                                        const DestinationCarousel(key: null,),
+                                       // getSearchBarUI(),
+                                       // const DestinationCarousel(key: null,),
                                       ]
                                   );
                                 }, childCount: 1)
@@ -167,61 +167,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
             //  showSearch(context: context, delegate: DataSearch());
             },
           ),
-    );
-  }
-
-  Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
-    String txt = '';
-    if (CategoryType.all == categoryTypeData) {
-      txt = 'All';
-    } else if (CategoryType.fic == categoryTypeData) {
-      txt = 'Fiction';
-    } else if (CategoryType.science == categoryTypeData) {
-      txt = 'Science Fiction';
-    } else if (CategoryType.astro == categoryTypeData) {
-      txt = 'Astrology';
-    } else if (CategoryType.tech == categoryTypeData) {
-      txt = 'Technology';
-    }
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: isSelected
-                ? Colors.blueAccent
-                : Colors.white70,
-            borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-            border: Border.all(color: Colors.lightBlueAccent)),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            splashColor: Colors.white24,
-            borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-            onTap: () {
-              setState(() {
-                categoryType = categoryTypeData;
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 12, bottom: 12, left: 18, right: 18),
-              child: Center(
-                child: Text(
-                  txt,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    letterSpacing: 0.27,
-                    color: isSelected
-                        ? Colors.white
-                        : Colors.lightBlueAccent,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -363,13 +308,7 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-enum CategoryType {
-  all,
-  fic,
-  science,
-  astro,
-  tech,
-}
+
 
 class DataSearch extends SearchDelegate<String>{
 

@@ -50,80 +50,90 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
       if(booksProvider.books[i].getID() == bookInCart.getID()) book = booksProvider.books[i];
     }
     if (quantity == 0) quantity = bookInCart.getQUANTITY();
-    return Row(
-      children: [
-        SizedBox(
-          width: 88,
-          child: AspectRatio(
-            aspectRatio: 0.88,
-            child: Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Color(0xFFF5F6F9),
-                borderRadius: BorderRadius.circular(15),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child:Row(
+        children: [
+          SizedBox(
+            width: 100,
+            child: AspectRatio(
+              aspectRatio: 0.88,
+              child: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Color(0xFFF5F6F9),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Image.network(book.getIMAGE_URL(), fit: BoxFit.fitHeight,),
               ),
-              child: Image.network(book.getIMAGE_URL(), fit: BoxFit.cover,),
             ),
           ),
-        ),
-        SizedBox(width: 15),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              book.getTITLE(),
-              style: TextStyle(color: Colors.black, fontSize: 16,fontWeight: FontWeight.bold),
-              maxLines: 2,
-            ),
-            Text(
-              getAuthorName(book.getAUTHOR_ID()),
-              style: TextStyle(color: Colors.black12, fontSize: 14),
-            ),
-            Row(
+          SizedBox(width: 5),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(currencyformat.format(book.getPRICE()) + "đ"),
-                SizedBox(width: 120,),
+                Text(
+                  book.getTITLE(),
+                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                  maxLines: 2,
+                ),
+                Text(
+                  getAuthorName(book.getAUTHOR_ID()),
+                  style: TextStyle(color: Colors.black12, fontSize: 14),
+                ),
+                SizedBox(height: 10,),
                 Row(
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.remove),
-                      onPressed: () {
-                        if(quantity == 1) {
-                          Fluttertoast.showToast(
-                              msg: 'The minimum quantity has been reached',
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.BOTTOM);
-                        }
-                        else {
-                          setState(() {
-                            quantity--;
-                            orderProvider.updateQuantityAndTotalPrice(bookInCart.getID(), quantity);
-                            orderProvider.calculateTotalPrice();
-                          });
-                        }
-                      },
-                    ),
-                    const SizedBox(width: 10),
-                    Text(quantity.toString()),
-                    const SizedBox(width: 10),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        setState(() {
-                          quantity++;
-                          orderProvider.updateQuantityAndTotalPrice(bookInCart.getID(), quantity);
-                        });
-                      },
+                    Text(currencyformat.format(book.getPRICE()) + "đ"),
+                    SizedBox(width: 95,),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.remove),
+                          onPressed: () {
+                            if(quantity == 1) {
+                              Fluttertoast.showToast(
+                                  msg: 'The minimum quantity has been reached',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM);
+                            }
+                            else {
+                              setState(() {
+                                quantity--;
+                                orderProvider.updateQuantityAndTotalPrice(bookInCart.getID(), quantity);
+                                orderProvider.calculateTotalPrice();
+                              });
+                            }
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        Text(quantity.toString()),
+                        const SizedBox(width: 10),
+                        IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            setState(() {
+                              quantity++;
+                              orderProvider.updateQuantityAndTotalPrice(bookInCart.getID(), quantity);
+                            });
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ],
             ),
-          ],
-        )
-      ],
+          )
+
+        ],
+      ) ,
     );
+
   }
+
   String getAuthorName(int author_id) {
     for(int i = 0; i < authors.length; i++) {
       if(authors[i].getID() == author_id) {

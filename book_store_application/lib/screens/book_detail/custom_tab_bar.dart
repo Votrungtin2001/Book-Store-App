@@ -82,7 +82,9 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
                     controller: _tabController,
                     children: [
                       Text(book!.getSUMMARY()),
-                      Row(
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Row(
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -103,7 +105,8 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
                               Text("Avaiable:"),
                             ],
                           ),
-                          SizedBox(width: 15,),
+                          Spacer(),
+                         // SizedBox(width: 15,), 
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,6 +140,7 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
                             // )
                         ],
                       ),
+                      )
                     ]
                 )
             )

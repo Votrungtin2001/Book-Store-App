@@ -54,39 +54,6 @@ class _CheckoutCardState extends State<CheckoutCard> with TickerProviderStateMix
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10),
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF5F6F9),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: SvgPicture.asset("assets/icons/receipt.svg"),
-                ),
-                Spacer(),
-                Container(
-                  width: 170,
-                  //height: 20,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 1.0,horizontal: 5),
-                      fillColor: Colors.transparent,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                          borderSide: const BorderSide(color: Colors.black)
-                      ),
-                      filled: true,
-                      hintText: "Enter Voucher Code",
-                      hintStyle: const TextStyle(color: Colors.black38),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 5),
-            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text.rich(
