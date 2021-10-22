@@ -21,9 +21,11 @@ class OrderProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  void removeBookCart(int ID) {
+  void removeBooksInCart(int ID) {
     for (int i = 0; i < booksInCart.length; i++) {
-      if(booksInCart[i].getID() == ID) booksInCart.removeAt(i);
+      if(booksInCart[i].getID() == ID) {
+        booksInCart.removeAt(i);
+      }
     }
     notifyListeners();
   }

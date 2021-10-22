@@ -1,3 +1,4 @@
+import 'package:book_store_application/MVP/Model/BookInCart.dart';
 import 'package:book_store_application/MVP/Model/Order.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
@@ -21,7 +22,10 @@ class CheckoutCard extends StatefulWidget {
 class _CheckoutCardState extends State<CheckoutCard> with TickerProviderStateMixin {
 
   final DatabaseReference refOrder = FirebaseDatabase.instance.reference().child('Orders');
+  final DatabaseReference refInventory = FirebaseDatabase.instance.reference().child('Inventory');
   double total_price = 0;
+  int available = 0;
+
   @override
   void initState() {
     super.initState();
@@ -92,8 +96,23 @@ class _CheckoutCardState extends State<CheckoutCard> with TickerProviderStateMix
                               .set({'user_id': order.getUSER_ID(), 'name': order.getNAME(),
                             'phone': order.getPHONE(), 'address': order.getADDRESS(),
                            'total_price': order.getTOTAL_PRICE()});
+
                           int count = 0;
+
                           for(int i = 0; i < order.getBooksInCart().length; i++){
+                            await refInventory.child(order.getBooksInCart()[i].getID().toString())
+                                .once().then((DataSnapshot dataSnapshot) {
+                              if(dataSnapshot.exists) {
+                                setState(() {
+                                  available = dataSnapshot.value['quantity'];
+                                });
+                              }
+                            });
+                            int update_available = available - order.getBooksInCart()[i].getQUANTITY();
+
+                            await refInventory.child(order.getBooksInCart()[i].getID().toString())
+                                .update({'quantity': update_available});
+
                             await refOrder.child(order.getUSER_ID())
                                 .child(id)
                                 .child('book_id')
@@ -137,5 +156,4 @@ class _CheckoutCardState extends State<CheckoutCard> with TickerProviderStateMix
       ),
     );
   }
-
 }

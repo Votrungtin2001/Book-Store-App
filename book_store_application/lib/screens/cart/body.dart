@@ -26,11 +26,12 @@ class _BodyState extends State<Body> {
                 itemBuilder: (context, index) => Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Dismissible(
-                    key: Key("1"),
+                    key: Key(orderProvider.booksInCart[index].getID().toString()),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       setState(() {
-                        // code remove item
+                        orderProvider.removeBooksInCart(orderProvider.booksInCart[index].getID());
+                        orderProvider.calculateTotalPrice();
                       });
                     },
                     background: Container(

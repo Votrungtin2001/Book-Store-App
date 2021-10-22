@@ -39,4 +39,30 @@ class BooksServices {
         }
         return books;
       });
+
+  Future<List<Book>> getBooksOfAuthor({int? id}) async =>
+      _firestore
+          .collection(collection)
+          .where("author_id", isEqualTo: id)
+          .get()
+          .then((result) {
+        List<Book> books = [];
+        for (DocumentSnapshot book in result.docs) {
+          books.add(Book.fromSnapshot(book));
+        }
+        return books;
+      });
+
+  Future<List<Book>> getBooksOfPublisher({int? id}) async =>
+      _firestore
+          .collection(collection)
+          .where("publisher_id", isEqualTo: id)
+          .get()
+          .then((result) {
+        List<Book> books = [];
+        for (DocumentSnapshot book in result.docs) {
+          books.add(Book.fromSnapshot(book));
+        }
+        return books;
+      });
 }

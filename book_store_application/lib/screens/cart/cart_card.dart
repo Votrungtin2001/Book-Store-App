@@ -4,6 +4,7 @@ import 'package:book_store_application/MVP/Model/BookInCart.dart';
 import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,9 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
   late BookInCart bookInCart;
   late Book book;
   List<Author> authors = [];
+
+  final DatabaseReference refInventory = FirebaseDatabase.instance.reference().child('Inventory');
+  int available = 0;
   
   _CartCardState(BookInCart BOOKINCART) {
     this.bookInCart = BOOKINCART;
@@ -50,6 +54,9 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
       if(booksProvider.books[i].getID() == bookInCart.getID()) book = booksProvider.books[i];
     }
     if (quantity == 0) quantity = bookInCart.getQUANTITY();
+
+    getAvailable(book.getID());
+
     return Container(
       width: MediaQuery.of(context).size.width,
       child:Row(
@@ -95,7 +102,7 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
                           onPressed: () {
                             if(quantity == 1) {
                               Fluttertoast.showToast(
-                                  msg: 'The minimum quantity has been reached',
+                                  msg: 'Reached the minimum quantity',
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.BOTTOM);
                             }
@@ -115,8 +122,12 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
                           icon: const Icon(Icons.add),
                           onPressed: () {
                             setState(() {
-                              quantity++;
-                              orderProvider.updateQuantityAndTotalPrice(bookInCart.getID(), quantity);
+                              if(quantity < available) {
+                                quantity++;
+                                orderProvider.updateQuantityAndTotalPrice(bookInCart.getID(), quantity);
+                                orderProvider.calculateTotalPrice();
+                              }
+                              else Fluttertoast.showToast(msg: "This book is not enough quantity to provide", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
                             });
                           },
                         ),
@@ -141,6 +152,17 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
       }
     }
     return "";
+  }
+
+  Future<void> getAvailable(int book_id) async {
+    await refInventory.child(book_id.toString())
+        .once().then((DataSnapshot dataSnapshot) {
+      if(dataSnapshot.exists) {
+        setState(() {
+          available = dataSnapshot.value['quantity'];
+        });
+      }
+    });
   }
 
 }

@@ -1,5 +1,6 @@
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,9 @@ class AddToCart extends StatefulWidget {
 class _AddToCartState extends State<AddToCart> with TickerProviderStateMixin {
 
   int quantity = 0;
+  int available = 0;
   Book? book;
+  final DatabaseReference refInventory = FirebaseDatabase.instance.reference().child('Inventory');
 
   _AddToCartState(Book? book) {
     this.book = book;
@@ -34,6 +37,7 @@ class _AddToCartState extends State<AddToCart> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context);
+    getAvailable(book!.getID());
     // Now this is fixed and only for demo
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -75,17 +79,27 @@ class _AddToCartState extends State<AddToCart> with TickerProviderStateMixin {
             ),
             onPressed: () {
               if(quantity > 0) {
-                bool isUpdate = false;
-                if (orderProvider.booksInCart.length > 0) {
-                  for(int i = 0; i < orderProvider.booksInCart.length; i++) {
-                    if (orderProvider.booksInCart[i].getID() == book!.getID()) {
-                      isUpdate = true;
+                if(quantity <= available) {
+                  bool isUpdate = false;
+                  if (orderProvider.booksInCart.length > 0) {
+                    for(int i = 0; i < orderProvider.booksInCart.length; i++) {
+                      if (orderProvider.booksInCart[i].getID() == book!.getID()) {
+                        isUpdate = true;
+                      }
                     }
-                  }
-                  if(isUpdate) {
-                    orderProvider.updateExtraQuantityAndTotalPrice(book!.getID(), quantity);
-                    orderProvider.calculateTotalPrice();
-                    Fluttertoast.showToast(msg: "Updated this book's quantity in you cart", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                    if(isUpdate) {
+                      orderProvider.updateExtraQuantityAndTotalPrice(book!.getID(), quantity);
+                      orderProvider.calculateTotalPrice();
+                      Fluttertoast.showToast(msg: "Updated this book's quantity in you cart", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                    }
+                    else {
+                      double total_price = quantity * book!.getPRICE();
+                      orderProvider.addBookInCart(book!.getID(), book!.getTITLE(),
+                          quantity, total_price);
+                      orderProvider.calculateTotalPrice();
+                      Fluttertoast.showToast(msg: "Added this book in you cart", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+
+                    }
                   }
                   else {
                     double total_price = quantity * book!.getPRICE();
@@ -93,16 +107,10 @@ class _AddToCartState extends State<AddToCart> with TickerProviderStateMixin {
                         quantity, total_price);
                     orderProvider.calculateTotalPrice();
                     Fluttertoast.showToast(msg: "Added this book in you cart", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-
                   }
                 }
-                else {
-                  double total_price = quantity * book!.getPRICE();
-                  orderProvider.addBookInCart(book!.getID(), book!.getTITLE(),
-                      quantity, total_price);
-                  orderProvider.calculateTotalPrice();
-                  Fluttertoast.showToast(msg: "Added this book in you cart", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-                }
+                else Fluttertoast.showToast(msg: "This book is not enough quantity to provide", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+
               }
               else Fluttertoast.showToast(msg: "Please choose quantity to add this book", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
               setState(() {
@@ -121,5 +129,16 @@ class _AddToCartState extends State<AddToCart> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  Future<void> getAvailable(int book_id) async {
+    await refInventory.child(book_id.toString())
+        .once().then((DataSnapshot dataSnapshot) {
+      if(dataSnapshot.exists) {
+        setState(() {
+          available = dataSnapshot.value['quantity'];
+        });
+      }
+    });
   }
 }

@@ -1,11 +1,13 @@
 import 'package:book_store_application/MVP/Model/Author.dart';
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/MVP/Model/Category.dart';
+import 'package:book_store_application/MVP/Model/Publisher.dart';
 import 'package:book_store_application/MVP/Presenter/category_presenter.dart';
 import 'package:book_store_application/MVP/View/category_view.dart';
 import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/category_provider.dart';
+import 'package:book_store_application/firebase/providers/publisher_provider.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +25,19 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
   late CategoryPresenter presenter;
 
   List<Book> booksOfCategory = [];
+  List<Book> booksOfAuthor = [];
+  List<Book> booksOfPublisher = [];
   List<Book> books = [];
   List<Author> authors = [];
+  List<Publisher> publishers = [];
   int category_id = 0;
+  int author_id = 1;
+  int publisher_id = 1;
 
   int quantity = 0;
 
-  Authors auth = Authors.all;
-  Publisher pub = Publisher.all;
+  String defaultAuthor = "";
+  String defaultPublisher = "";
 
   _BooksListViewState() {
     this.presenter = new CategoryPresenter(this);
@@ -63,6 +70,13 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
 
     final authorProvider = Provider.of<AuthorProvider>(context);
     authors = authorProvider.authors;
+    if(defaultAuthor == "") defaultAuthor = getAuthorName(1);
+    if(author_id == 1) getBooksOfAuthor(author_id);
+
+    final publisherProvider = Provider.of<PublisherProvider>(context);
+    publishers = publisherProvider.publishers;
+    if(defaultPublisher == "") defaultPublisher = getPublisherName(1);
+    if(publisher_id == 1) getBooksOfPublisher(publisher_id);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +179,7 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                     ),
                   ),
                   TextButton(
-                      onPressed: () {  },
+                      onPressed: () {},
                       child: Row(
                         children: const [
                           Text('See all',style:TextStyle(color: Colors.black12)),
@@ -182,15 +196,12 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
           child: ListView(
             scrollDirection: Axis.horizontal,
               children:[
-                getButtonAuthors(Authors.all, auth == Authors.all),
+                getButtonAuthors(getAuthorName(1), defaultAuthor == getAuthorName(1)),
                 const SizedBox(width: 16,),
-                getButtonAuthors(Authors.fic, auth == Authors.fic),
+                getButtonAuthors(getAuthorName(2), defaultAuthor == getAuthorName(2)),
                 const SizedBox(width: 16,),
-                getButtonAuthors(Authors.science, auth == Authors.science),
+                getButtonAuthors(getAuthorName(3), defaultAuthor == getAuthorName(3)),
                 const SizedBox(width: 16,),
-                getButtonAuthors(Authors.astro, auth == Authors.astro),
-                const SizedBox(width: 16,),
-                getButtonAuthors(Authors.tech, auth == Authors.tech),
               ]
           ),
         ),
@@ -208,21 +219,21 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                   return ListView.builder(
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
-                    itemCount: booksOfCategory.length,
+                    itemCount: booksOfAuthor.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
-                      int count = booksOfCategory.length > 10
+                      int count = booksOfAuthor.length > 10
                           ? 10
-                          : booksOfCategory.length;
+                          : booksOfAuthor.length;
                       final Animation<double> animation =
                       Tween<double>(begin: 0.0, end: 1.0).animate(
                           CurvedAnimation(
                               parent: animationController!,
                               curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
                       animationController?.forward();
-                      return BooksOfCategoryView(
-                        book: booksOfCategory[index],
-                        author: getAuthorName(booksOfCategory[index].getAUTHOR_ID()),
+                      return BooksOfAuthorView(
+                        book: booksOfAuthor[index],
+                        author: getAuthorName(booksOfAuthor[index].getAUTHOR_ID()),
                         animation: animation,
                         animationController: animationController,
                       );
@@ -263,15 +274,12 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
           child: ListView(
               scrollDirection: Axis.horizontal,
               children:[
-                getButtonPublisher(Publisher.all, pub == Publisher.all),
+                getButtonPublisher(getPublisherName(1), defaultPublisher == getPublisherName(1)),
                 const SizedBox(width: 16,),
-                getButtonPublisher(Publisher.fic, pub == Publisher.fic),
+                getButtonPublisher(getPublisherName(2), defaultPublisher == getPublisherName(2)),
                 const SizedBox(width: 16,),
-                getButtonPublisher(Publisher.science, pub == Publisher.science),
+                getButtonPublisher(getPublisherName(3), defaultPublisher == getPublisherName(3)),
                 const SizedBox(width: 16,),
-                getButtonPublisher(Publisher.astro, pub == Publisher.astro),
-                const SizedBox(width: 16,),
-                getButtonPublisher(Publisher.tech, pub == Publisher.tech),
               ]
           ),
         ),
@@ -289,21 +297,21 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                   return ListView.builder(
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
-                    itemCount: booksOfCategory.length,
+                    itemCount: booksOfPublisher.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
-                      int count = booksOfCategory.length > 10
+                      int count = booksOfPublisher.length > 10
                           ? 10
-                          : booksOfCategory.length;
+                          : booksOfPublisher.length;
                       final Animation<double> animation =
                       Tween<double>(begin: 0.0, end: 1.0).animate(
                           CurvedAnimation(
                               parent: animationController!,
                               curve: Interval((1 / count) * index, 1.0, curve: Curves.fastOutSlowIn)));
                       animationController?.forward();
-                      return BooksOfCategoryView(
-                        book: booksOfCategory[index],
-                        author: getAuthorName(booksOfCategory[index].getAUTHOR_ID()),
+                      return BooksOfPublisherView(
+                        book: booksOfPublisher[index],
+                        author: getAuthorName(booksOfPublisher[index].getAUTHOR_ID()),
                         animation: animation,
                         animationController: animationController,
                       );
@@ -329,6 +337,28 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
     }
   }
 
+  void getBooksOfAuthor(int author_id) {
+    List<Book> list = [];
+    if(author_id == 0) booksOfAuthor = books;
+    else {
+      for(int i = 0; i < books.length; i++) {
+        if(books[i].getAUTHOR_ID() == author_id) list.add(books[i]);
+      }
+      booksOfAuthor = list;
+    }
+  }
+
+  void getBooksOfPublisher(int publisher_id) {
+    List<Book> list = [];
+    if(publisher_id == 0) booksOfPublisher = books;
+    else {
+      for(int i = 0; i < books.length; i++) {
+        if(books[i].getPUBLISHER_ID() == publisher_id) list.add(books[i]);
+      }
+      booksOfPublisher = list;
+    }
+  }
+
   @override
   List<Category> getCategoryList() {
     final categoryProvider = Provider.of<CategoryProvider>(context);
@@ -350,19 +380,28 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
     return "";
   }
 
-  Widget getButtonAuthors(Authors TypeData, bool isSelected) {
-    String txt = '';
+  String getPublisherName(int publisher_id) {
+    for(int i = 0; i < publishers.length; i++) {
+      if(publishers[i].getID() == publisher_id) {
+        return publishers[i].getNAME();
+      }
+    }
+    return "";
+  }
 
-    if (Authors.all == TypeData) {
-      txt = 'All';
-    } else if (Authors.fic == TypeData) {
-      txt = 'Fiction';
-    } else if (Authors.science == TypeData) {
-      txt = 'Science Fiction';
-    } else if (Authors.astro == TypeData) {
-      txt = 'Astrology';
-    } else if (Authors.tech == TypeData) {
-      txt = 'Technology';
+  Widget getButtonAuthors(String authorName, bool isSelected) {
+    String txt = '';
+    int index = 0;
+
+    if (getAuthorName(1) == authorName) {
+      txt = getAuthorName(1);
+      index = 0;
+    } else if (getAuthorName(2) == authorName) {
+      txt = getAuthorName(2);
+      index = 1;
+    } else if (getAuthorName(3) == authorName) {
+      txt = getAuthorName(3);
+      index = 2;
     }
 
     return Padding(
@@ -381,7 +420,9 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
             borderRadius: const BorderRadius.all(Radius.circular(24.0)),
             onTap: () {
               setState(() {
-                auth = TypeData;
+                defaultAuthor = authorName;
+                author_id = authors[index].getID();
+                getBooksOfAuthor(author_id);
               });
             },
             child: Padding(
@@ -407,18 +448,19 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
     );
   }
 
-  Widget getButtonPublisher(Publisher TypeData, bool isSelected) {
+  Widget getButtonPublisher(String publisherName, bool isSelected) {
     String txt = '';
-    if (Publisher.all == TypeData) {
-      txt = 'All';
-    } else if (Publisher.fic == TypeData) {
-      txt = 'Fiction';
-    } else if (Publisher.science == TypeData) {
-      txt = 'Science Fiction';
-    } else if (Publisher.astro == TypeData) {
-      txt = 'Astrology';
-    } else if (Publisher.tech == TypeData) {
-      txt = 'Technology';
+    int index = 0;
+
+    if (getPublisherName(1) == publisherName) {
+      txt = getPublisherName(1);
+      index = 0;
+    } else if (getPublisherName(2) == publisherName) {
+      txt = getPublisherName(2);
+      index = 1;
+    } else if (getPublisherName(3) == publisherName) {
+      txt = getPublisherName(3);
+      index = 2;
     }
     return Padding(
       padding: const EdgeInsets.all(1.0),
@@ -436,7 +478,9 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
             borderRadius: const BorderRadius.all(Radius.circular(24.0)),
             onTap: () {
               setState(() {
-                pub = TypeData;
+                defaultPublisher = publisherName;
+                publisher_id = publishers[index].getID();
+                getBooksOfPublisher(publisher_id);
               });
             },
             child: Padding(
@@ -631,8 +675,8 @@ class BooksOfCategoryView extends StatelessWidget {
   }
 }
 
-class BooksOfAuthor extends StatelessWidget {
-  BooksOfAuthor({Key? key, this.book, this.author, this.animationController, this.animation}) : super(key: key);
+class BooksOfAuthorView extends StatelessWidget {
+  BooksOfAuthorView({Key? key, this.book, this.author, this.animationController, this.animation}) : super(key: key);
 
   final Book? book;
   final AnimationController? animationController;
@@ -793,8 +837,8 @@ class BooksOfAuthor extends StatelessWidget {
   }
 }
 
-class BooksOfPublisher extends StatelessWidget {
-  BooksOfPublisher({Key? key, this.book, this.author, this.animationController,this.animation}) : super(key: key);
+class BooksOfPublisherView extends StatelessWidget {
+  BooksOfPublisherView({Key? key, this.book, this.author, this.animationController,this.animation}) : super(key: key);
 
   final Book? book;
   final AnimationController? animationController;
@@ -990,19 +1034,4 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-enum Authors {
-  all,
-  fic,
-  science,
-  astro,
-  tech,
-}
-
-enum Publisher {
-  all,
-  fic,
-  science,
-  astro,
-  tech,
-}
 
