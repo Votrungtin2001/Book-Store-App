@@ -34,6 +34,7 @@ class _MainPageState extends State<MainPage> {
             alignment: Alignment.bottomLeft,
             child: Container(
               padding: const EdgeInsets.only(left: 24, right: 24, bottom: 30),
+              color: Colors.white,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[

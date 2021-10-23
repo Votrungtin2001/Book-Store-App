@@ -94,7 +94,7 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
                 Row(
                   children: [
                     Text(currencyformat.format(book.getPRICE()) + "đ"),
-                    SizedBox(width: 95,),
+                    SizedBox(width: 75,),
                     Row(
                       children: [
                         IconButton(
@@ -115,9 +115,9 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
                             }
                           },
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         Text(quantity.toString()),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 8),
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {

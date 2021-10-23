@@ -94,15 +94,6 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                       color: Colors.black,
                     ),
                   ),
-                  TextButton(
-                      onPressed: () {  },
-                      child: Row(
-                        children: const [
-                          Text('See all',style:TextStyle(color: Colors.black12)),
-                          Icon(Icons.arrow_forward_ios_outlined, size:15, color: Colors.black12)
-                        ],
-                      )
-                  )
                 ]
             )
         ),
@@ -178,15 +169,6 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                       color: Colors.black,
                     ),
                   ),
-                  TextButton(
-                      onPressed: () {},
-                      child: Row(
-                        children: const [
-                          Text('See all',style:TextStyle(color: Colors.black12)),
-                          Icon(Icons.arrow_forward_ios_outlined, size:15, color: Colors.black12)
-                        ],
-                      )
-                  )
                 ]
             )
         ),
@@ -255,15 +237,6 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                       fontSize: 26,
                       color: Colors.black,
                     ),
-                  ),
-                  TextButton(
-                      onPressed: () {  },
-                      child: Row(
-                        children: const [
-                          Text('See all',style:TextStyle(color: Colors.black12)),
-                          Icon(Icons.arrow_forward_ios_outlined, size:15, color: Colors.black12)
-                        ],
-                      )
                   )
                 ]
             )
@@ -625,21 +598,21 @@ class BooksOfCategoryView extends StatelessWidget {
                                                 color: Colors.lightBlueAccent,
                                               ),
                                             ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: Colors.lightBlueAccent,
-                                                borderRadius:
-                                                BorderRadius.all(Radius.circular(10.0)),
-                                              ),
-                                              child: const Padding(
-                                                padding:
-                                                EdgeInsets.all(4.0),
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            )
+                                            // Container(
+                                            //   decoration: const BoxDecoration(
+                                            //     color: Colors.lightBlueAccent,
+                                            //     borderRadius:
+                                            //     BorderRadius.all(Radius.circular(10.0)),
+                                            //   ),
+                                            //   child: const Padding(
+                                            //     padding:
+                                            //     EdgeInsets.all(4.0),
+                                            //     child: Icon(
+                                            //       Icons.add,
+                                            //       color: Colors.white,
+                                            //     ),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),
@@ -787,21 +760,20 @@ class BooksOfAuthorView extends StatelessWidget {
                                                 color: Colors.lightBlueAccent,
                                               ),
                                             ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: Colors.lightBlueAccent,
-                                                borderRadius:
-                                                BorderRadius.all(Radius.circular(10.0)),
-                                              ),
-                                              child: const Padding(
-                                                padding:
-                                                EdgeInsets.all(4.0),
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            )
+                                            // Container(
+                                            //   decoration: const BoxDecoration(
+                                            //     color: Colors.lightBlueAccent,
+                                            //     borderRadius:
+                                            //     BorderRadius.all(Radius.circular(10.0)),
+                                            //   ),
+                                            //   child: const Padding(
+                                            //     padding: EdgeInsets.all(4.0),
+                                            //     child: Icon(
+                                            //       Icons.add,
+                                            //       color: Colors.white,
+                                            //     ),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),
@@ -950,21 +922,21 @@ class BooksOfPublisherView extends StatelessWidget {
                                                 color: Colors.lightBlueAccent,
                                               ),
                                             ),
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                color: Colors.lightBlueAccent,
-                                                borderRadius:
-                                                BorderRadius.all(Radius.circular(10.0)),
-                                              ),
-                                              child: const Padding(
-                                                padding:
-                                                EdgeInsets.all(4.0),
-                                                child: Icon(
-                                                  Icons.add,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            )
+                                            // Container(
+                                            //   decoration: const BoxDecoration(
+                                            //     color: Colors.lightBlueAccent,
+                                            //     borderRadius:
+                                            //     BorderRadius.all(Radius.circular(10.0)),
+                                            //   ),
+                                            //   child: const Padding(
+                                            //     padding:
+                                            //     EdgeInsets.all(4.0),
+                                            //     child: Icon(
+                                            //       Icons.add,
+                                            //       color: Colors.white,
+                                            //     ),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),

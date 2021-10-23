@@ -17,6 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../constants.dart';
+import '../../main_page.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -348,7 +349,7 @@ class _BodyState extends State<Body> implements LogInView{
       //   const SnackBar(content: Text('Logged in successfully.'),)
       // );
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
     }
   }
 
@@ -358,7 +359,7 @@ class _BodyState extends State<Body> implements LogInView{
     if(result != null) {
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+          MaterialPageRoute(builder: (context) => MainPage()));
     }
   }
 
@@ -368,7 +369,7 @@ class _BodyState extends State<Body> implements LogInView{
     if(result != null) {
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+          MaterialPageRoute(builder: (context) => MainPage()));
     }
   }
 

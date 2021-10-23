@@ -222,6 +222,7 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
     }
     return "";
   }
+
   void getQuantity(int book_id) {
     refInventory.child(book_id.toString())
         .once().then((DataSnapshot dataSnapshot) {

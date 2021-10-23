@@ -308,8 +308,6 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-
-
 class DataSearch extends SearchDelegate<String>{
 
   List<Book> books = [];
@@ -331,17 +329,19 @@ class DataSearch extends SearchDelegate<String>{
 
   @override
   List<Widget>? buildActions(BuildContext context) {
-    return [IconButton(
+    return [
+      IconButton(
       icon: Icon(Icons.clear),
       onPressed: () {
         query = "";
-      },)];
+      },)
+    ];
   }
 
   @override
-  Widget? buildLeading(BuildContext context) {
+  Widget buildLeading(BuildContext context) {
     return IconButton(
-        onPressed: () {},
+        onPressed: () => Navigator.pop(context),
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_arrow,
           progress: transitionAnimation,)
@@ -391,7 +391,10 @@ class DataSearch extends SearchDelegate<String>{
                text: results[index].getTITLE().substring(query.length),
                style:TextStyle(color: Colors.grey,),
          ),
-             TextSpan(text: '\n' + getAuthor(authors, results[index].getAUTHOR_ID()) + '\n \n'),
+             TextSpan(
+               text: '\n' + getAuthor(authors, results[index].getAUTHOR_ID()) + '\n \n',
+                 style: TextStyle(color: Colors.grey)
+             ),
        ]
      ),
      )
