@@ -1,12 +1,16 @@
 import 'package:book_store_application/MVP/Presenter/accoutAdministration_presenter.dart';
 import 'package:book_store_application/MVP/View/accountAdministration_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
+import 'package:book_store_application/screens/favourite/myfavourite_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/login/login_screen.dart';
+import 'package:book_store_application/screens/my_orders/my_orders_screen.dart';
 import 'package:book_store_application/screens/profile/profile_ava.dart';
 import 'package:book_store_application/screens/profile/profile_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'edit_profile_screen.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -33,18 +37,37 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
           SizedBox(height: 20),
           ProfileMenu(
             text: "My Account",
-            icon: "assets/icons",
-            press: () => {},
+            icon: "assets/icons/account.svg",
+            press: () {
+              Navigator.push<dynamic>( context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => EditProfileScreen(),
+                ),
+              );
+            },
           ),
           ProfileMenu(
             text: "My Orders",
-            icon: "assets/icons/Log out.svg",
-            press: () {},
+            icon: "assets/icons/shopping_bag.svg",
+            press: () {
+              Navigator.push<dynamic>( context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => MyOrdersScreen(),
+                ),
+              );
+            },
           ),
           ProfileMenu(
-            text: "Notifications",
-            icon: "assets/icons/Bell.svg",
-            press: () {},
+            text: "My Favourite",
+            icon: "assets/icons/heart.svg",
+            press: () {
+              Navigator.push<dynamic>(
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => MyFavouriteScreen(),
+                ),
+              );
+            },
           ),
           ProfileMenu(
             text: "Settings",

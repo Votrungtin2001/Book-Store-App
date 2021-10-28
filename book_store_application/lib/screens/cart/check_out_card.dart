@@ -2,6 +2,7 @@ import 'package:book_store_application/MVP/Model/BookInCart.dart';
 import 'package:book_store_application/MVP/Model/Order.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
+import 'package:book_store_application/screens/check_out/check_out_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,11 @@ class _CheckoutCardState extends State<CheckoutCard> with TickerProviderStateMix
                     ),
                     onPressed: () async {
                       if(orderProvider.booksInCart.length > 0) {
+                        Navigator.push( context,
+                          MaterialPageRoute(
+                              builder: (context) => CheckOutScreen()
+                          ),
+                        );
                         Order order = new Order(0, user_id, "Vo trung tin", "123456789",
                             "phu tuc", orderProvider.booksInCart, orderProvider.total_price);
                         try {
