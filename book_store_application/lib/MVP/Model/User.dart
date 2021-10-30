@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User_Model {
   String id = "";
   String name = "";
@@ -6,9 +8,9 @@ class User_Model {
   late String phone= "";
   late String dob= "";
   late String gender= "";
-  late int photo = 0;
+  late String photo = "";
 
-  User_Model(String ID, String Name, int Role, String Address, String Phone, String Dob, String Gender, int Photo) {
+  User_Model(String ID, String Name, int Role, String Address, String Phone, String Dob, String Gender, String Photo) {
     this.id = ID;
     this.name = Name;
     this.role = Role;
@@ -28,8 +30,8 @@ class User_Model {
   int getRole() {return this.role;}
   void setRole(int Role) {this.role = Role;}
 
-  int getPhoto() {return this.photo;}
-  void setPhoto(int Photo) {this.photo = Photo;}
+  String getPhoto() {return this.photo;}
+  void setPhoto(String Photo) {this.photo = Photo;}
 
 
   String getAddress() {return this.address;}
@@ -43,6 +45,17 @@ class User_Model {
 
   String getGender() {return this.gender;}
   void setGender(String Gender) {this.gender = Gender;}
+
+  User_Model.fromSnapshot(DocumentSnapshot snapshot) {
+    id = snapshot.get('id');
+    address = snapshot.get('address');
+    dob = snapshot.get('dob');
+    gender = snapshot.get('gender');
+    name = snapshot.get('name');
+    phone = snapshot.get('phone');
+    photo = snapshot.get('photo');
+    role = snapshot.get('role');
+  }
 }
 
 class User_MD {

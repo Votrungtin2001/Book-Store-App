@@ -11,6 +11,7 @@ import 'firebase/providers/author_provider.dart';
 import 'firebase/providers/category_provider.dart';
 import 'firebase/providers/order_provider.dart';
 import 'firebase/providers/publisher_provider.dart';
+import 'firebase/providers/user_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ void main() async {
       ChangeNotifierProvider.value(value: AuthorProvider.initialize()),
       ChangeNotifierProvider.value(value: PublisherProvider.initialize()),
       ChangeNotifierProvider.value(value: OrderProvider.initialize()),
+      ChangeNotifierProvider.value(value: UserProvider.initialize()),
     ],
     child: const MyApp(),
   ));

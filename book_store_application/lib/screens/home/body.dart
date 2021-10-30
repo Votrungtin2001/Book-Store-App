@@ -11,6 +11,8 @@ import 'package:book_store_application/firebase/helpers/books_services.dart';
 import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/category_provider.dart';
+import 'package:book_store_application/firebase/providers/order_provider.dart';
+import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:book_store_application/screens/cart/cart_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -68,9 +70,17 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User_MD?>(context);
+    final user_model = Provider.of<UserProvider>(context);
+
+    String user_id = "";
+    if(user!.uid != null) user_id = user.uid.toString();
+    user_model.getUser(user_id);
+
     presenter.getBookList();
     presenter.getSuggestionBookList();
     presenter.getAuthorList();
+
     return Scaffold(
       body: Stack(
         children: <Widget>[

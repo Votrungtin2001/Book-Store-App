@@ -1,12 +1,43 @@
+import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/select_card_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AddAddressScreen extends StatelessWidget {
+import 'check_out/check_out_screen.dart';
+
+class AddAddressScreen extends StatefulWidget {
+
+  @override
+  _AddAddressScreenState createState() => _AddAddressScreenState();
+}
+
+class _AddAddressScreenState extends State<AddAddressScreen> {
+
+  final formKey = GlobalKey<FormState>();
+
+  String flat = "";
+  String street = "";
+  String village = "";
+  String district = "";
+  String city = "";
+
+  TextEditingController _flatController = TextEditingController();
+  TextEditingController _streetController = TextEditingController();
+  TextEditingController _villageController = TextEditingController();
+  TextEditingController _districtController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final user_model = Provider.of<UserProvider>(context);
 
     Widget finishButton = InkWell(
-      onTap:() {},
+      onTap:() {
+        if(formKey.currentState!.validate()) {{
+          String address = flat + ", " + street + " Street, " + village + ", " + district + ", " + city;
+          user_model.updateAddress(user_model.user.getID(), address);
+
+          Navigator.pop(context);
+      }}},
       child: Container(
         height: 50,
         width: MediaQuery.of(context).size.width / 1.5,
@@ -66,198 +97,186 @@ class AddAddressScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Card(
-                          margin: EdgeInsets.symmetric(vertical: 8.0),
-                          color: Colors.white,
-                          elevation: 3,
-                          child: SizedBox(
-                              height: 100,
-                              width: 80,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Image.asset(
-                                          'assets/icons/address_home.png'),
-                                    ),
-                                    Text(
-                                      'Add New Address',
-                                      style: TextStyle(
-                                        fontSize: 8,
-                                        color: Colors.grey,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              ))),
-                      Card(
-                          margin: EdgeInsets.symmetric(vertical: 8.0),
-                          color: Colors.blue,
-                          elevation: 3,
-                          child: SizedBox(
-                              height: 80,
-                              width: 100,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Image.asset(
-                                        'assets/icons/address_home.png',
-                                        color: Colors.white,
-                                        height: 20,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Simon Philip,\nCity Oscarlad',
-                                      style: TextStyle(
-                                        fontSize: 8,
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              ))),
-                      Card(
-                          margin: EdgeInsets.symmetric(vertical: 8.0),
-                          color: Colors.blue,
-                          elevation: 3,
-                          child: SizedBox(
-                              height: 80,
-                              width: 100,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Image.asset(
-                                          'assets/icons/address_work.png',
-                                          color: Colors.white,
-                                          height: 20),
-                                    ),
-                                    Text(
-                                      'Workplace',
-                                      style: TextStyle(
-                                        fontSize: 8,
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              )))
-                    ],
-                  ),
                 SizedBox(
-                  height: 500,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          color: Colors.white,
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              border: InputBorder.none, hintText: 'Flat Number/House Number'),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          color: Colors.white,
-                        ),
-                        child: TextField(
-                          decoration:
-                          InputDecoration(border: InputBorder.none, hintText: 'Street'),
-                        ),
-                      ),
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: <Widget>[
-                      //     Padding(
-                      //       padding: const EdgeInsets.all(16.0),
-                      //       child: Text(
-                      //         'Area',
-                      //         style: TextStyle(fontSize: 12, color: Colors.grey),
-                      //       ),
-                      //     ),
-                      //     ClipRRect(
-                      //       borderRadius: BorderRadius.only(
-                      //           topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                      //       child: Container(
-                      //         padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                      //         decoration: BoxDecoration(
-                      //           border: Border(
-                      //               bottom: BorderSide(color: Colors.orange, width: 2)),
-                      //           color: Colors.orange[100],
-                      //         ),
-                      //         child: TextField(
-                      //           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      //           decoration: InputDecoration(
-                      //             border: InputBorder.none,
-                      //             hintText: 'Name on card',
-                      //             hintStyle:
-                      //             TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // Container(
-                      //   padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                      //   decoration: BoxDecoration(
-                      //     borderRadius: BorderRadius.all(Radius.circular(5)),
-                      //     color: Colors.white,
-                      //   ),
-                      //   child: TextField(
-                      //     decoration: InputDecoration(
-                      //         border: InputBorder.none, hintText: 'Name on card'),
-                      //   ),
-                      // ),
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.only(
-                      //       topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                      //   child: Container(
-                      //     padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                      //     decoration: BoxDecoration(
-                      //       border: Border(bottom: BorderSide(color: Colors.red, width: 1)),
-                      //       color: Colors.white,
-                      //     ),
-                      //     child: TextField(
-                      //       decoration: InputDecoration(
-                      //           border: InputBorder.none, hintText: 'Postal code'),
-                      //     ),
-                      //   ),
-                      // ),
-                      Row(
-                        children: <Widget>[
-                          Checkbox(
-                            value: true,
-                            onChanged: (_) {},
+                  child: Form (
+                    key: formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Colors.white,
                           ),
-                          Text('Add this to address bookmark')
-                        ],
-                      )
-                    ],
-                  ),
+                          child: TextFormField(
+                            controller: _flatController,
+                            validator: (value) {
+                              if(value == "") {
+                                return "Please enter your flat number";
+                              } else return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                flat = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: InputBorder.none, hintText: 'Flat Number/House Number'),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: _streetController,
+                            validator: (value) {
+                              if(value == "") {
+                                return "Please enter your street address";
+                              } else return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                street = value;
+                              });
+                            },
+                            decoration:
+                            InputDecoration(border: InputBorder.none, hintText: 'Street'),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: _villageController,
+                            validator: (value) {
+                              if(value == "") {
+                                return "Please enter your village";
+                              } else return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                village = value;
+                              });
+                            },
+                            decoration:
+                            InputDecoration(border: InputBorder.none, hintText: 'Village'),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: _districtController,
+                            validator: (value) {
+                              if(value == "") {
+                                return "Please enter your district";
+                              } else return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                district = value;
+                              });
+                            },
+                            decoration:
+                            InputDecoration(border: InputBorder.none, hintText: 'District'),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: _cityController,
+                            validator: (value) {
+                              if(value == "") {
+                                return "Please enter your city";
+                              } else return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                city = value;
+                              });
+                            },
+                            decoration:
+                            InputDecoration(border: InputBorder.none, hintText: 'City'),
+                          ),
+                        ),
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: <Widget>[
+                        //     Padding(
+                        //       padding: const EdgeInsets.all(16.0),
+                        //       child: Text(
+                        //         'Area',
+                        //         style: TextStyle(fontSize: 12, color: Colors.grey),
+                        //       ),
+                        //     ),
+                        //     ClipRRect(
+                        //       borderRadius: BorderRadius.only(
+                        //           topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                        //       child: Container(
+                        //         padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                        //         decoration: BoxDecoration(
+                        //           border: Border(
+                        //               bottom: BorderSide(color: Colors.orange, width: 2)),
+                        //           color: Colors.orange[100],
+                        //         ),
+                        //         child: TextField(
+                        //           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        //           decoration: InputDecoration(
+                        //             border: InputBorder.none,
+                        //             hintText: 'Name on card',
+                        //             hintStyle:
+                        //             TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Container(
+                        //   padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: BorderRadius.all(Radius.circular(5)),
+                        //     color: Colors.white,
+                        //   ),
+                        //   child: TextField(
+                        //     decoration: InputDecoration(
+                        //         border: InputBorder.none, hintText: 'Name on card'),
+                        //   ),
+                        // ),
+                        // ClipRRect(
+                        //   borderRadius: BorderRadius.only(
+                        //       topLeft: Radius.circular(5), topRight: Radius.circular(5)),
+                        //   child: Container(
+                        //     padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
+                        //     decoration: BoxDecoration(
+                        //       border: Border(bottom: BorderSide(color: Colors.red, width: 1)),
+                        //       color: Colors.white,
+                        //     ),
+                        //     child: TextField(
+                        //       decoration: InputDecoration(
+                        //           border: InputBorder.none, hintText: 'Postal code'),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
+              )
+
                 ),
                   Center(child: finishButton)
                 ],

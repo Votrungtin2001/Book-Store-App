@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:book_store_application/firebase/providers/user_provider.dart';
+
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final user_model = Provider.of<UserProvider>(context);
+    String photo = user_model.user.getPhoto();
     return SizedBox(
       height: 115,
       width: 115,
@@ -13,8 +19,8 @@ class ProfileAvatar extends StatelessWidget {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          const CircleAvatar(
-            backgroundImage: AssetImage("assets/images/img_4.png"),
+          CircleAvatar(
+            child: Image.network(photo, fit: BoxFit.cover),
           ),
           Positioned(
             right: -16,

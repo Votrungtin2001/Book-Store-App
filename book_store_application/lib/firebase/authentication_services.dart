@@ -117,7 +117,7 @@ class AuthenticationServices {
     if(user!= null && user.emailVerified) {
       Fluttertoast.showToast(msg: 'Verify email successfully', toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
       timer.cancel();
-      User_Model user_model = new User_Model(user.uid, name, 1, "", "", "", "", 0);
+      User_Model user_model = new User_Model(user.uid, name, 1, "", "", "", "", "");
       await DatabaseManager().createUserData(user_model);
       await DatabaseManager().createFavorites(user_model);
     }
@@ -139,7 +139,7 @@ class AuthenticationServices {
       // Check isNewUser or Not
       if (result.additionalUserInfo!.isNewUser) {
         if (user != null) {
-          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0);
+          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", "");
           await DatabaseManager().createUserData(user_model);
           await DatabaseManager().createFavorites(user_model);
         }
@@ -178,7 +178,7 @@ class AuthenticationServices {
       // Check isNewUser or Not
       if (result.additionalUserInfo!.isNewUser) {
         if (user != null) {
-          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", 0);
+          User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", "");
           await DatabaseManager().createUserData(user_model);
           await DatabaseManager().createFavorites(user_model);
         }

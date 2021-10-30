@@ -1,7 +1,15 @@
+import 'package:book_store_application/MVP/Model/BookInCart.dart';
+import 'package:book_store_application/MVP/Model/Order.dart';
+import 'package:book_store_application/MVP/Model/User.dart';
+import 'package:book_store_application/firebase/providers/order_provider.dart';
 import 'package:book_store_application/screens/cart/cart_screen.dart';
 import 'package:book_store_application/screens/my_orders/order_detail.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'order_card.dart';
 
@@ -12,10 +20,16 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 
+
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
+  final DatabaseReference refOrders = FirebaseDatabase.instance.reference().child('Orders');
+  final DatabaseReference refInventory = FirebaseDatabase.instance.reference().child('Inventory');
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User_MD?>(context);
+    String user_id = "";
+    if(user!.uid != null) user_id = user.uid.toString();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home:DefaultTabController(
@@ -56,20 +70,20 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               children: [
                 TabBar(
                   tabs: [
-                  Tab(child: Text("Comfirm", style: TextStyle(color: Colors.black),),),
-                  Tab(child: Text("Delivery",style: TextStyle(color: Colors.black),),),
-                  Tab(child: Text("Placed",style: TextStyle(color: Colors.black),),),
-                  Tab(child: Text("Cancelled",style: TextStyle(color: Colors.black),),),
+                  Tab(child: Text("Waiting", style: TextStyle(color: Colors.black),),),
+                  Tab(child: Text("Preparing",style: TextStyle(color: Colors.black),),),
+                  Tab(child: Text("Delivering",style: TextStyle(color: Colors.black),),),
+                  Tab(child: Text("Received",style: TextStyle(color: Colors.black),),),
                   ],
                 ),
                 SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: TabBarView(
                       children: [
-                        OrderPlaceWidget(context, 0),
-                        OrderPlaceWidget(context, 0),
-                        OrderPlaceWidget(context, 0),
-                        OrderPlaceWidget(context, 0),
+                        OrderPlaceWidget(context, 0, user_id),
+                        OrderPlaceWidget(context, 1, user_id),
+                        OrderPlaceWidget(context, 2, user_id),
+                        OrderPlaceWidget(context, 3, user_id),
                       ],
                     )
                 )
@@ -81,48 +95,128 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       )
     );
   }
-  Widget OrderPlaceWidget(BuildContext context,int status) {
-    // return FutureBuilder(
-    //     future: //get order by status,
-    //     builder: (context, snapshot){
-    //       if(connect = waiting)
-    //         return Center(child: CirularProgressIndicator(),);
-    //       else{
-    //         if (order = 0)
-    //             return Center(child:Text("You have O order"));
-    //         else
-    //           return ListView.builder(
-    //             itemCount: order.lenght;
-    //             itemBuilder:(context,index){
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Dismissible(
-                        key: Key("1"),
-                        direction: DismissDirection.endToStart,
-                        onDismissed: (direction) {
-                          setState(() {});
-                          },
-                        background: Container(
-                          height: 200,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFE6E6),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Row(
-                            children: [
-                              Spacer(),
-                              SvgPicture.asset("assets/icons/Trash.svg"),
-                            ],
-                          ),
-                        ),
-                        child: OrderCard(),
-                  ));
-  //           }
-  //
-  //             );
-  //         }
-  //       }
-  //       );
-   }
-}
+  Widget OrderPlaceWidget(BuildContext context,int status, user_id) {
+     return FutureBuilder(
+         future: getOrdersByStatus(user_id, status),
+         builder: (context, snapshot){
+           if(snapshot.connectionState == ConnectionState.waiting)
+             return Center(child: CircularProgressIndicator());
+           else{
+             var orders = snapshot.data as List<Order>;
+             if (orders == null || orders.length == 0)
+                 return Center(child:Text("You have O order"));
+             else
+               return ListView.builder(
+                 itemCount: orders.length,
+                 itemBuilder:(context,index){
+                   return Padding(
+                       padding: EdgeInsets.symmetric(horizontal: 10),
+                       child: Dismissible(
+                         key: Key(orders[index].getID().toString()),
+                         direction: DismissDirection.endToStart,
+                         onDismissed: (direction) {
+                           setState(() async {
+                             if (status == 0) {
+                               int count = 0;
+                               for (int i = 0; i < orders[index]
+                                   .getBooksInCart()
+                                   .length; i++) {
+                                 count++;
+                                 await refInventory.child(
+                                     orders[index].getBooksInCart()[i]
+                                         .getID()
+                                         .toString()).once().then((
+                                     DataSnapshot dataSnapshot) {
+                                   if (dataSnapshot.exists) {
+                                     int available = dataSnapshot
+                                         .value['quantity'];
+                                     int update_available = available +
+                                         orders[index].getBooksInCart()[i]
+                                             .getQUANTITY();
+                                     refInventory.child(
+                                         orders[i].getBooksInCart()[i]
+                                             .getID()
+                                             .toString()).update(
+                                         {'quantity': update_available});
+                                   }
+                                 });
+                                 if (count == orders[index]
+                                     .getBooksInCart()
+                                     .length) {
+                                   await refOrders.child(user_id).child(
+                                       orders[index].getID()).remove();
+                                   Fluttertoast.showToast(
+                                       msg: 'Delete this order successfully',
+                                       toastLength: Toast.LENGTH_SHORT,
+                                       gravity: ToastGravity.BOTTOM);
+                                 }
+                               }
+                             }
+                             else
+                               Fluttertoast.showToast(
+                                   msg: "You can't delete this order. Please contact with us",
+                                   toastLength: Toast.LENGTH_SHORT,
+                                   gravity: ToastGravity.BOTTOM);
+                           });
+
+
+                         },
+                         background: Container(
+                           height: 200,
+                           padding: EdgeInsets.symmetric(horizontal: 20),
+                           decoration: BoxDecoration(
+                             color: Color(0xFFFFE6E6),
+                             borderRadius: BorderRadius.circular(15),
+                           ),
+                           child: Row(
+                             children: [
+                               Spacer(),
+                               SvgPicture.asset("assets/icons/Trash.svg"),
+                             ],
+                           ),
+                         ),
+                         child: OrderCard(orders[index]),
+                       ));
+                  }
+
+               );
+            }
+           }
+           );
+  }
+
+  Future<List<Order>> getOrdersByStatus(String User_ID, int Status) async {
+    List<Order> orders = [];
+    refOrders.child(User_ID).limitToLast(10).once().then((DataSnapshot snapshot1){
+      Map<dynamic, dynamic> values1 = snapshot1.value;
+      values1.forEach((key,values1) async {
+        List<BookInCart> books = [];
+        String order_id = values1['order_id'].toString();
+        String address = values1['address'].toString();
+        String date = values1['date'].toString();
+        String name = values1['name'].toString();
+        String phone = values1['phone'].toString();
+        int status = int.parse(values1['status'].toString());
+        double total_price = double.parse(values1['total_price'].toString());
+        String user_id = values1['user_id'].toString();
+        if(status == Status) {
+          refOrders.child(User_ID).child(order_id).child('book_id').once().then((DataSnapshot snapshot2) {
+            List<dynamic> result = snapshot2.value;
+            result.forEach((value) {
+              int book_id = int.parse(value['id'].toString());
+              int quantity = int.parse(value['quantity'].toString());
+              String title = value['title'].toString();
+              double total = double.parse(value['total_price'].toString());
+              BookInCart book = new BookInCart(book_id, title, quantity, total);
+              books.add(book);
+            });
+          });
+          Order order = new Order(order_id, user_id, name, phone, address, books, total_price, status, date);
+          orders.add(order);
+        }
+      });
+    });
+    return orders;
+  }
+  }
+

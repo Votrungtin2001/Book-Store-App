@@ -1,16 +1,27 @@
+import 'package:book_store_application/MVP/Model/BookInCart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'order_detail_card.dart';
 
 class OrdersDetailScreen extends StatefulWidget {
-  const OrdersDetailScreen({Key? key}) : super(key: key);
+  late List<BookInCart> books;
+
+  OrdersDetailScreen(List<BookInCart> list) {
+    this.books = list;
+  }
 
   @override
-  _OrdersDetailScreenState createState() => _OrdersDetailScreenState();
+  _OrdersDetailScreenState createState() => _OrdersDetailScreenState(this.books);
 }
 
 class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
+
+  late List<BookInCart> books;
+  _OrdersDetailScreenState(List<BookInCart> list) {
+    this.books = list;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +32,7 @@ class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: books.length,
                 itemBuilder: (context, index) => Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Container(
@@ -37,7 +48,7 @@ class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
                           )
                         ],
                       ),
-                    child: OrderDetailCard(),
+                    child: OrderDetailCard(books[index]),
                     ),
                 ),
               ),

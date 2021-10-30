@@ -1,22 +1,35 @@
+import 'package:book_store_application/MVP/Model/Order.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'order_detail.dart';
 
 class OrderCard extends StatefulWidget {
-  const OrderCard({Key? key}) : super(key: key);
+  late Order order;
+
+  OrderCard(Order ORDER) {
+    this.order = ORDER;
+  }
 
   @override
-  _OrderCardState createState() => _OrderCardState();
+  _OrderCardState createState() => _OrderCardState(this.order);
 }
 
 class _OrderCardState extends State<OrderCard> {
+
+  late Order order;
+  final currencyformat = new NumberFormat("#,###,##0");
+
+  _OrderCardState(Order ORDER) {
+    this.order = ORDER;
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: (){
           Navigator.push( context,
             MaterialPageRoute(
-              builder: (context) => OrdersDetailScreen(),
+              builder: (context) => OrdersDetailScreen(order.getBooksInCart()),
             ),
           );
         },
@@ -28,13 +41,13 @@ class _OrderCardState extends State<OrderCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Minh Thi",style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),),
+                Text(order.getNAME(),style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),),
                 SizedBox(height: 5,),
                 Row(
                   children: [
                     Text("Order Time:",style: TextStyle(fontWeight: FontWeight.w600)),
                     SizedBox(width: 10,),
-                    Text("20/11/2021")
+                    Text(order.getDATE())
                   ],
                 ),
                 Divider(thickness: 2,),
@@ -47,7 +60,7 @@ class _OrderCardState extends State<OrderCard> {
                         children: [
                           Text("Order Id",style: TextStyle(fontWeight: FontWeight.w600)),
                           SizedBox(height: 8,),
-                          Text("#2736352"),
+                          Text(order.getID()),
                         ],
                       ),
                       VerticalDivider(thickness: 1,),
@@ -56,7 +69,7 @@ class _OrderCardState extends State<OrderCard> {
                         children: [
                           Text("Order Amount",style: TextStyle(fontWeight: FontWeight.w600)),
                           SizedBox(height: 8,),
-                          Text("1000000đ"),
+                          Text(currencyformat.format(order.getTOTAL_PRICE()) + "đ"),
                         ],
                       ),
                     ],
@@ -67,7 +80,7 @@ class _OrderCardState extends State<OrderCard> {
                   children: [
                     Icon(Icons.location_on_outlined),
                     SizedBox(width: 10,),
-                    Text("Do Tin doan duoc"),
+                    Text(order.getADDRESS()),
                   ],
                 ),
                 Divider(thickness: 2,),
@@ -75,7 +88,7 @@ class _OrderCardState extends State<OrderCard> {
                   children: [
                     Icon(Icons.phone),
                     SizedBox(width: 10,),
-                    Text("0178910JQK"),
+                    Text(order.getPHONE()),
                   ],
                 ),
               ],

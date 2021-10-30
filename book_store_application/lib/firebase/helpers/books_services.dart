@@ -7,7 +7,7 @@ class BooksServices {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<List<Book>> getBooks() async =>
-      _firestore.collection(collection).get().then((result) {
+      _firestore.collection(collection).orderBy('book_id', descending: false).get().then((result) {
         List<Book> books = [];
         for (DocumentSnapshot book in result.docs) {
           books.add(Book.fromSnapshot(book));

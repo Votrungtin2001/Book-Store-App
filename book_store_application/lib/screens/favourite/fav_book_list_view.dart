@@ -1,5 +1,13 @@
+import 'package:book_store_application/MVP/Model/Author.dart';
+import 'package:book_store_application/MVP/Model/Book.dart';
+import 'package:book_store_application/MVP/Model/User.dart';
+import 'package:book_store_application/firebase/providers/author_provider.dart';
+import 'package:book_store_application/firebase/providers/books_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'list_fav.dart';
 
@@ -12,6 +20,7 @@ class FavouriteBookListView extends StatefulWidget {
 }
 
 class _FavouriteBookListViewState extends State<FavouriteBookListView>  with TickerProviderStateMixin {
+  final DatabaseReference refFavorite = FirebaseDatabase.instance.reference().child('Favorites');
   AnimationController? animationController;
   @override
   void initState() {
@@ -27,22 +36,26 @@ class _FavouriteBookListViewState extends State<FavouriteBookListView>  with Tic
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User_MD?>(context);
+    String user_id = "";
+    if(user!.uid != null) user_id = user.uid.toString();
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: FutureBuilder<bool>(
-        future: getData(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      child: FutureBuilder(
+        future: getFavorites(user_id),
+        builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
             return const SizedBox();
           } else {
+            var books = snapshot.data as List<int>;
             return GridView(
               padding: const EdgeInsets.all(8),
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
-                Fav.favBookList.length,
+                books.length,
                     (int index) {
-                  final int count =  Fav.favBookList.length;
+                  final int count =  books.length;
                   final Animation<double> animation =
                   Tween<double>(begin: 0.0, end: 1.0).animate(
                     CurvedAnimation(
@@ -54,7 +67,7 @@ class _FavouriteBookListViewState extends State<FavouriteBookListView>  with Tic
                   animationController?.forward();
                   return FavouriteView(
                     callback: widget.callBack,
-                    favourite: Fav.favBookList[index],
+                    book_id: books[index],
                     animation: animation,
                     animationController: animationController,
                   );
@@ -72,18 +85,40 @@ class _FavouriteBookListViewState extends State<FavouriteBookListView>  with Tic
       ),
     );
   }
+  Future<List<int>> getFavorites(String User_ID) async {
+    List<int> books = [];
+    refFavorite.child(User_ID).child('book_id').once().then((DataSnapshot snapshot){
+      List<dynamic> result = snapshot.value;
+      result.forEach((value) {
+        int book_id = int.parse(value.toString());
+        books.add(book_id);
+      });
+    });
+    return books;
+  }
 }
 
 class FavouriteView extends StatelessWidget {
-  const FavouriteView({Key? key, this.favourite, this.animationController, this.animation, this.callback}) : super(key: key);
+  FavouriteView({Key? key, this.book_id, this.animationController, this.animation, this.callback}) : super(key: key);
 
   final VoidCallback? callback;
-  final Fav? favourite;
+  final int? book_id;
   final AnimationController? animationController;
   final Animation<double>? animation;
 
+  Book book = new Book(0, 0, 0, "", [], 0, 0, 0, 0, "", "");
+  List<Author> authors = [];
+  final currencyformat = new NumberFormat("#,###,##0");
   @override
   Widget build(BuildContext context) {
+
+    final booksProvider = Provider.of<BooksProvider>(context);
+    for (int i = 0; i < booksProvider.books.length; i++) {
+      if(booksProvider.books[i].getID() == book_id) book = booksProvider.books[i];
+    }
+    final authorProvider = Provider.of<AuthorProvider>(context);
+    authors = authorProvider.authors;
+
     return AnimatedBuilder(
       animation: animationController!,
       builder: (BuildContext context, Widget? child) {
@@ -117,7 +152,7 @@ class FavouriteView extends StatelessWidget {
                                           Padding(
                                             padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                                             child: Text(
-                                              favourite!.title,
+                                              book.getTITLE(),
                                               textAlign: TextAlign.left,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w600,
@@ -135,7 +170,7 @@ class FavouriteView extends StatelessWidget {
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '\$20',
+                                                currencyformat.format(book.getPRICE()) + "đ",
                                                   textAlign: TextAlign.left,
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.w500,
@@ -154,7 +189,7 @@ class FavouriteView extends StatelessWidget {
                                               crossAxisAlignment: CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  favourite!.author,
+                                                  getAuthorName(book.getAUTHOR_ID()),
                                                   textAlign: TextAlign.left,
                                                   style: const TextStyle(
                                                     fontWeight: FontWeight.w300,
@@ -196,12 +231,12 @@ class FavouriteView extends StatelessWidget {
                             borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                             child: AspectRatio(
                                 aspectRatio: 1.1,
-                                child: Image.asset(favourite!.imagePath)),
+                                child: Image.network(book.getIMAGE_URL(), fit: BoxFit.cover,),
                           ),
                         ),
                       ),
                     ),
-                  ],
+                    )],
                 ),
               ),
             ),
@@ -210,4 +245,15 @@ class FavouriteView extends StatelessWidget {
       },
     );
   }
+  String getAuthorName(int author_id) {
+    for(int i = 0; i < authors.length; i++) {
+      if(authors[i].getID() == author_id) {
+        return authors[i].getNAME();
+      }
+    }
+    return "";
+  }
+
+
+
 }

@@ -4,6 +4,7 @@ import 'package:book_store_application/MVP/Model/Favorite.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/favorite_provider.dart';
+import 'package:book_store_application/firebase/providers/order_provider.dart';
 import 'package:book_store_application/screens/book_detail/custom_tab_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';

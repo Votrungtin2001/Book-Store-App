@@ -62,12 +62,12 @@ class _BodyState extends State<Body> {
   }
 
   void moveTo() {
-    Navigator.push<dynamic>(
+    /*Navigator.push<dynamic>(
       context,
       MaterialPageRoute<dynamic>(
         builder: (BuildContext context) => OrdersDetailScreen(),
       ),
-    );
+    );*/
   }
 
 }
