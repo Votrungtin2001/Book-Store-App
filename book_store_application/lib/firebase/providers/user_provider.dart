@@ -25,6 +25,11 @@ class UserProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  void updatePhoto(String url) {
+    user.setPhoto(url);
+    notifyListeners();
+  }
+
   Future<void> updateAddress(String User_ID, String Address) async {
     _firestore.collection(collection).doc(User_ID).update({'address': Address});
     user.setAddress(Address);

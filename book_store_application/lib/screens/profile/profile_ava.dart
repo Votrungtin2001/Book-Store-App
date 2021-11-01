@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:path/path.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 
 class ProfileAvatar extends StatefulWidget {
@@ -21,6 +23,7 @@ late String filename;
 
 class _ProfileAvatarState extends State<ProfileAvatar> {
   File? image;
+  String? filename;
 
   Future _getImage() async{
     try{
@@ -28,7 +31,10 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
         source: ImageSource.gallery
     );
     final imageTemporaty = File(image!.path);
-    setState(() => this.image = imageTemporaty) ;
+    setState(() {
+      this.image = imageTemporaty;
+      this.filename = basename(image.path);
+    }) ;
     }
     on PlatformException catch(e){
       print('Failed o pick image: $e');
@@ -72,7 +78,7 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
                 child: const Icon( Icons.camera_alt, color: Colors.black,),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
