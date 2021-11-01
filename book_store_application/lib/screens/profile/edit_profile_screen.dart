@@ -65,6 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
                 const SizedBox(height: 15,),
                 ProfileAvatar(),
+                const SizedBox(height: 50,),
                 SizedBox(
                   child: Form(
                     key: formKey,
@@ -72,12 +73,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                    Container(
-                    padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: Colors.white,
-                    ),
+                          Text("   Full name",style: TextStyle(color:Colors.black,fontSize: 17),),
+                          Container(
+                    padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                     child: TextFormField(
                       controller: _nameController,
                       onChanged: (value) {
@@ -86,15 +84,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         });
                       },
                       decoration: InputDecoration(
-                          border: InputBorder.none, hintText: user_model.user.getName()),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                          fillColor: Colors.transparent,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: const BorderSide(color: Colors.black)
+                          ),
+                          filled: true,
+                          hintStyle: const TextStyle(color: Colors.black38),
+                          hintText: user_model.user.getName()
+                      ),
                     ),
                   ),
+                          const SizedBox(height: 15,),
+                          Text("   Phone number",style: TextStyle(color:Colors.black,fontSize: 17),),
                           Container(
-                            padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                              color: Colors.white,
-                            ),
+                            padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                             child: TextFormField(
                               controller: _phoneController,
                               keyboardType: TextInputType.number,
@@ -104,15 +109,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 });
                               },
                               decoration: InputDecoration(
-                                  border: InputBorder.none, hintText: user_model.user.getPhone()),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10),
+                                  fillColor: Colors.transparent,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: const BorderSide(color: Colors.black)
+                                  ),
+                                  filled: true,
+                                  hintStyle: const TextStyle(color: Colors.black38),
+                                  hintText: user_model.user.getPhone()
+                              ),
                             ),
                           ),
+                          const SizedBox(height: 15,),
+                          Text("   Address",style: TextStyle(color:Colors.black,fontSize: 17),),
                           Container(
-                            padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(5)),
-                              color: Colors.white,
-                            ),
+                            padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                             child: TextFormField(
                               controller: _addressController,
                               onChanged: (value) {
@@ -121,11 +133,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 });
                               },
                               decoration: InputDecoration(
-                                  border: InputBorder.none, hintText: user_model.user.getAddress()),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                  fillColor: Colors.transparent,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: const BorderSide(color: Colors.black)
+                                  ),
+                                  filled: true,
+                                  hintStyle: const TextStyle(color: Colors.black38),
+                                  hintText: user_model.user.getAddress()),
                             ),
                           ),
-                ]),
-                ),
+
+                        ]
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 35,),
                 Row(

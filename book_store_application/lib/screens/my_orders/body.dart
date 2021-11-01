@@ -80,7 +80,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                     height: MediaQuery.of(context).size.height,
                     child: TabBarView(
                       children: [
-                        OrderPlaceWidget(context, 0, user_id),
+                        OrderPlaceWidgetWaiting(context, 0, user_id),
                         OrderPlaceWidget(context, 1, user_id),
                         OrderPlaceWidget(context, 2, user_id),
                         OrderPlaceWidget(context, 3, user_id),
@@ -89,13 +89,13 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                 )
               ],
             ),
-
           )
         ),
       )
     );
   }
-  Widget OrderPlaceWidget(BuildContext context,int status, user_id) {
+
+  Widget OrderPlaceWidgetWaiting(BuildContext context,int status, user_id) {
      return FutureBuilder(
          future: getOrdersByStatus(user_id, status),
          builder: (context, snapshot){
@@ -183,6 +183,31 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
             }
            }
            );
+  }
+
+  Widget OrderPlaceWidget(BuildContext context,int status, user_id) {
+    return FutureBuilder(
+        future: getOrdersByStatus(user_id, status),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting)
+            return Center(child: CircularProgressIndicator());
+          else{
+            var orders = snapshot.data as List<Order>;
+            if (orders == null || orders.length == 0)
+              return Center(child:Text("You have O order"));
+            else
+              return ListView.builder(
+                  itemCount: orders.length,
+                  itemBuilder:(context,index){
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: OrderCard(orders[index]),
+                        );
+                  }
+              );
+          }
+        }
+    );
   }
 
   Future<List<Order>> getOrdersByStatus(String User_ID, int Status) async {

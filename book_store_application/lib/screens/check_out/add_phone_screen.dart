@@ -61,16 +61,33 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0,
         backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Colors.grey),
-        title: Text(
-          'Add Phone Number',
-          style: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
-              fontSize: 18.0),
-        ),
+        actions: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextButton(
+                  child: Row(
+                    children: const [
+                      Icon(Icons.navigate_before, color: Colors.black, size: 35,),
+                      Text("Back",
+                        style: TextStyle(color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400),)
+                    ],
+                  ),
+                  onPressed: () { Navigator.pop(context);},
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: LayoutBuilder(
         builder: (_, viewportConstraints) => SingleChildScrollView(
@@ -96,11 +113,7 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(5)),
-                                color: Colors.white,
-                              ),
+                              padding: EdgeInsets.only(top: 4.0, bottom: 4.0),
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
                                 controller: _phoneController,
@@ -115,7 +128,15 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                                   });
                                 },
                                 decoration: InputDecoration(
-                                    border: InputBorder.none, hintText: 'Phone number'),
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: const BorderSide(color: Colors.black)
+                                    ),
+                                    filled: true,
+                                    hintStyle: const TextStyle(color: Colors.black38),
+                                    hintText: 'Phone number'),
                               ),
                             ),
                           ],

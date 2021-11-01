@@ -1,12 +1,40 @@
+
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:provider/provider.dart';
-
+import 'package:path/path.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 
-class ProfileAvatar extends StatelessWidget {
-  const ProfileAvatar({Key? key,}) : super(key: key);
+
+class ProfileAvatar extends StatefulWidget {
+  const ProfileAvatar({Key? key}) : super(key: key);
+
+  @override
+  _ProfileAvatarState createState() => _ProfileAvatarState();
+}
+late File image;
+late String filename;
+
+class _ProfileAvatarState extends State<ProfileAvatar> {
+  File? image;
+
+  Future _getImage() async{
+    try{
+   final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery
+    );
+    final imageTemporaty = File(image!.path);
+    setState(() => this.image = imageTemporaty) ;
+    }
+    on PlatformException catch(e){
+      print('Failed o pick image: $e');
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +48,8 @@ class ProfileAvatar extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           CircleAvatar(
-            child: Image.network(photo, fit: BoxFit.cover),
+            child: image!= null ? Image.file(image!, fit:BoxFit.cover)
+                : Image.network(photo, fit: BoxFit.cover),
           ),
           Positioned(
             right: -16,
@@ -37,8 +66,10 @@ class ProfileAvatar extends StatelessWidget {
                   primary: Colors.white,
                   backgroundColor: Color(0xFFF5F6F9),
                 ),
-                onPressed: () {},
-                child: const Icon(Icons.camera_alt,color: Colors.black,),
+                onPressed: () {
+                  _getImage();
+                },
+                child: const Icon( Icons.camera_alt, color: Colors.black,),
               ),
             ),
           )
@@ -46,4 +77,15 @@ class ProfileAvatar extends StatelessWidget {
       ),
     );
   }
+
+  Widget uploadArea(){
+    return Column(
+      children: <Widget>[
+
+      ],
+    );
+  }
 }
+
+
+

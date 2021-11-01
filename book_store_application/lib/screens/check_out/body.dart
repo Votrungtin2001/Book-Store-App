@@ -2,7 +2,7 @@ import 'package:book_store_application/MVP/Model/Order.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/main_page.dart';
-import 'package:book_store_application/screens/change_address_screen.dart';
+import 'package:book_store_application/screens/check_out/change_address_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -258,7 +258,6 @@ class _BodyState extends State<Body> {
                               DocumentReference docRef = _firestore.collection('Orders').doc();
                               String id = docRef.id;
 
-
                               await refOrder.child(order.getUSER_ID())
                                   .child(id)
                                   .set({'order_id': id, 'user_id': order.getUSER_ID(), 'name': order.getNAME(),
@@ -307,19 +306,9 @@ class _BodyState extends State<Body> {
                                           height: MediaQuery.of(context).size.height * 0.7,
                                           child: Column(
                                             children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context).pop();
-                                                    },
-                                                    icon: const Icon(Icons.clear),
-                                                  ),
-                                                ],
-                                              ),
+                                              const SizedBox(height: 10,),
                                               Image.asset("assets/images/vector4.png"),
-                                              const SizedBox(height: 20,),
+                                              const SizedBox(height: 15,),
                                               const Text( "Thank You!",
                                                 style: TextStyle(
                                                   color: Color(0xFF4A4B4D),
@@ -332,15 +321,12 @@ class _BodyState extends State<Body> {
                                                 "for your order",
                                                 style: TextStyle(fontWeight: FontWeight.w500,color: Color(0xFF4A4B4D)),
                                               ),
-                                              const SizedBox(height: 20,),
+                                              const SizedBox(height: 15,),
                                               const Padding(
-                                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                                padding: EdgeInsets.symmetric(horizontal: 10.0),
                                                 child: Text("Your order is now being processed. We will let you know once the order is picked from the outlet. Check the status of your order!",textAlign: TextAlign.center,),),
-                                              const SizedBox(height: 30,),
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(
-                                                  horizontal: 20,
-                                                ),
+                                              const SizedBox(height: 20,),
+                                              Padding(padding: const EdgeInsets.symmetric(horizontal: 20,),
                                                 child: TextButton(
                                                   onPressed: () {
                                                     Navigator.push<dynamic>( context,

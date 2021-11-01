@@ -3,7 +3,7 @@ import 'package:book_store_application/screens/select_card_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'check_out/check_out_screen.dart';
+import 'check_out_screen.dart';
 
 class AddAddressScreen extends StatefulWidget {
 
@@ -70,16 +70,33 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0,
         backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Colors.grey),
-        title: Text(
-          'Add Address',
-          style: const TextStyle(
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
-              fontSize: 18.0),
-        ),
+        actions: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextButton(
+                  child: Row(
+                    children: const [
+                      Icon(Icons.navigate_before, color: Colors.black, size: 35,),
+                      Text("Back",
+                        style: TextStyle(color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400),)
+                    ],
+                  ),
+                  onPressed: () { Navigator.pop(context);},
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: LayoutBuilder(
         builder: (_, viewportConstraints) => SingleChildScrollView(
@@ -87,9 +104,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             constraints:
             BoxConstraints(minHeight: viewportConstraints.maxHeight),
             child: Container(
-              padding: EdgeInsets.only(
-                  left: 16.0,
-                  right: 16.0,
+              padding: EdgeInsets.only(left: 16.0, right: 16.0,
                   bottom: MediaQuery.of(context).padding.bottom == 0
                       ? 20
                       : MediaQuery.of(context).padding.bottom),
@@ -105,11 +120,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: Colors.white,
-                          ),
+                          padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                           child: TextFormField(
                             controller: _flatController,
                             validator: (value) {
@@ -123,15 +134,20 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                                border: InputBorder.none, hintText: 'Flat Number/House Number'),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: const BorderSide(color: Colors.black)
+                                ),
+                                filled: true,
+                                hintStyle: const TextStyle(color: Colors.black38),
+                                hintText: 'Flat Number/House Number'),
                           ),
                         ),
+                        const SizedBox(height: 10,),
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: Colors.white,
-                          ),
+                          padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                           child: TextFormField(
                             controller: _streetController,
                             validator: (value) {
@@ -145,15 +161,21 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               });
                             },
                             decoration:
-                            InputDecoration(border: InputBorder.none, hintText: 'Street'),
+                            InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: const BorderSide(color: Colors.black)
+                                ),
+                                filled: true,
+                                hintStyle: const TextStyle(color: Colors.black38),
+                                hintText: 'Street'),
                           ),
                         ),
+                        const SizedBox(height: 10,),
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: Colors.white,
-                          ),
+                          padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                           child: TextFormField(
                             controller: _villageController,
                             validator: (value) {
@@ -167,15 +189,21 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               });
                             },
                             decoration:
-                            InputDecoration(border: InputBorder.none, hintText: 'Village'),
+                            InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: const BorderSide(color: Colors.black)
+                                ),
+                                filled: true,
+                                hintStyle: const TextStyle(color: Colors.black38),
+                                hintText: 'Village'),
                           ),
                         ),
+                        const SizedBox(height: 10,),
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: Colors.white,
-                          ),
+                          padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                           child: TextFormField(
                             controller: _districtController,
                             validator: (value) {
@@ -189,15 +217,22 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               });
                             },
                             decoration:
-                            InputDecoration(border: InputBorder.none, hintText: 'District'),
+                            InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: const BorderSide(color: Colors.black)
+                                ),
+                                filled: true,
+                                hintStyle: const TextStyle(color: Colors.black38),
+                                hintText: 'District'),
                           ),
                         ),
+                        const SizedBox(height: 10,),
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: Colors.white,
-                          ),
+                          padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
+
                           child: TextFormField(
                             controller: _cityController,
                             validator: (value) {
@@ -211,72 +246,21 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               });
                             },
                             decoration:
-                            InputDecoration(border: InputBorder.none, hintText: 'City'),
+                            InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    borderSide: const BorderSide(color: Colors.black)
+                                ),
+                                filled: true,
+                                hintStyle: const TextStyle(color: Colors.black38),
+                                hintText: 'City'),
                           ),
                         ),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                        //   children: <Widget>[
-                        //     Padding(
-                        //       padding: const EdgeInsets.all(16.0),
-                        //       child: Text(
-                        //         'Area',
-                        //         style: TextStyle(fontSize: 12, color: Colors.grey),
-                        //       ),
-                        //     ),
-                        //     ClipRRect(
-                        //       borderRadius: BorderRadius.only(
-                        //           topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                        //       child: Container(
-                        //         padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                        //         decoration: BoxDecoration(
-                        //           border: Border(
-                        //               bottom: BorderSide(color: Colors.orange, width: 2)),
-                        //           color: Colors.orange[100],
-                        //         ),
-                        //         child: TextField(
-                        //           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                        //           decoration: InputDecoration(
-                        //             border: InputBorder.none,
-                        //             hintText: 'Name on card',
-                        //             hintStyle:
-                        //             TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // Container(
-                        //   padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                        //   decoration: BoxDecoration(
-                        //     borderRadius: BorderRadius.all(Radius.circular(5)),
-                        //     color: Colors.white,
-                        //   ),
-                        //   child: TextField(
-                        //     decoration: InputDecoration(
-                        //         border: InputBorder.none, hintText: 'Name on card'),
-                        //   ),
-                        // ),
-                        // ClipRRect(
-                        //   borderRadius: BorderRadius.only(
-                        //       topLeft: Radius.circular(5), topRight: Radius.circular(5)),
-                        //   child: Container(
-                        //     padding: EdgeInsets.only(left: 16.0, top: 4.0, bottom: 4.0),
-                        //     decoration: BoxDecoration(
-                        //       border: Border(bottom: BorderSide(color: Colors.red, width: 1)),
-                        //       color: Colors.white,
-                        //     ),
-                        //     child: TextField(
-                        //       decoration: InputDecoration(
-                        //           border: InputBorder.none, hintText: 'Postal code'),
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
-              )
-
+                  )
                 ),
                   Center(child: finishButton)
                 ],
