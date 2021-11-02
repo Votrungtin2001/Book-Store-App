@@ -1,6 +1,7 @@
 import 'package:book_store_application/MVP/Presenter/accoutAdministration_presenter.dart';
 import 'package:book_store_application/MVP/View/accountAdministration_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
+import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/favourite/myfavourite_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/login/login_screen.dart';
@@ -9,6 +10,7 @@ import 'package:book_store_application/screens/profile/profile_ava.dart';
 import 'package:book_store_application/screens/profile/profile_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import 'edit_profile_screen.dart';
 
@@ -28,12 +30,26 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
 
   @override
   Widget build(BuildContext context) {
+    final user_model = Provider.of<UserProvider>(context);
+    String photo = user_model.user.getPhoto();
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
           getAppBarUI(),
-          ProfileAvatar(),
+          SizedBox(
+            height: 130,
+            width: 130,
+            child: Stack(
+              fit: StackFit.expand,
+              clipBehavior: Clip.none,
+              children: [
+                CircleAvatar(
+                  backgroundImage: Image.network(photo, fit: BoxFit.fill).image,
+                ),
+              ],
+            ),
+          ),
           SizedBox(height: 20),
           ProfileMenu(
             text: "My Account",

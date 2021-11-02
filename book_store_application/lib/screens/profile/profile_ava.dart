@@ -47,15 +47,14 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
     final user_model = Provider.of<UserProvider>(context);
     String photo = user_model.user.getPhoto();
     return SizedBox(
-      height: 115,
-      width: 115,
+      height: 130,
+      width: 130,
       child: Stack(
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
           CircleAvatar(
-            child: image!= null ? Image.file(image!, fit:BoxFit.cover)
-                : Image.network(photo, fit: BoxFit.cover),
+            backgroundImage: image!= null ? Image.file(image!, fit:BoxFit.fill).image : Image.network(photo, fit: BoxFit.fill).image,
           ),
           Positioned(
             right: -16,
@@ -84,13 +83,6 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
     );
   }
 
-  Widget uploadArea(){
-    return Column(
-      children: <Widget>[
-
-      ],
-    );
-  }
 }
 
 
