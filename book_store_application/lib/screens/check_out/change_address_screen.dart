@@ -26,6 +26,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   TextEditingController _villageController = TextEditingController();
   TextEditingController _districtController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final user_model = Provider.of<UserProvider>(context);

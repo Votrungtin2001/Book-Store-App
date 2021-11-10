@@ -2,18 +2,19 @@ import 'package:book_store_application/MVP/Presenter/accoutAdministration_presen
 import 'package:book_store_application/MVP/View/accountAdministration_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
+import 'package:book_store_application/screens/admin_orders/orders_admin.dart';
 import 'package:book_store_application/screens/change_password/change_password_screen.dart';
 import 'package:book_store_application/screens/favourite/myfavourite_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/login/login_screen.dart';
 import 'package:book_store_application/screens/my_orders/my_orders_screen.dart';
+import 'package:book_store_application/screens/profile/edit_profile_screen.dart';
 import 'package:book_store_application/screens/profile/profile_ava.dart';
 import 'package:book_store_application/screens/profile/profile_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import 'edit_profile_screen.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -64,24 +65,12 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
             },
           ),
           ProfileMenu(
-            text: "My Orders",
+            text: "Customer Orders",
             icon: "assets/icons/shopping_bag.svg",
             press: () {
               Navigator.push<dynamic>( context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => MyOrdersScreen(),
-                ),
-              );
-            },
-          ),
-          ProfileMenu(
-            text: "My Favourite",
-            icon: "assets/icons/heart.svg",
-            press: () {
-              Navigator.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => MyFavouriteScreen(),
+                  builder: (BuildContext context) => OrdersAdmin(),
                 ),
               );
             },
@@ -91,12 +80,12 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
             icon: "assets/icons/Lock.svg",
             press: () {
               Navigator.push<dynamic>(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => ChangePasswordScreen(),
-              ),
-            );
-              },
+                context,
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => ChangePasswordScreen(),
+                ),
+              );
+            },
           ),
           ProfileMenu(
             text: "About Us",

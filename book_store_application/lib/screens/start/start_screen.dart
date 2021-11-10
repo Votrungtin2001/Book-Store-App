@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_store_application/screens/start/body.dart';
+import 'package:book_store_application/screens/start/components/body.dart';
 
 class StartScreen extends StatelessWidget {
   @override

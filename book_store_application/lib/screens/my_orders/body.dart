@@ -22,6 +22,7 @@ class Body extends StatefulWidget {
 
 
 class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
+
   final DatabaseReference refOrders = FirebaseDatabase.instance.reference().child('Orders');
   final DatabaseReference refInventory = FirebaseDatabase.instance.reference().child('Inventory');
 
@@ -107,8 +108,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                  return Center(child:Text("You have O order"));
              else
                return ListView.builder(
-                 itemCount: orders.length,
-                 itemBuilder:(context,index){
+                   scrollDirection: Axis.vertical,
+                   itemCount: orders.length,
+                   itemBuilder:(context,index){
                    return Padding(
                        padding: EdgeInsets.symmetric(horizontal: 10),
                        child: Dismissible(
@@ -158,8 +160,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                    toastLength: Toast.LENGTH_SHORT,
                                    gravity: ToastGravity.BOTTOM);
                            });
-
-
                          },
                          background: Container(
                            height: 200,

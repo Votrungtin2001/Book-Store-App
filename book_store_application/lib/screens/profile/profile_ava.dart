@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:provider/provider.dart';
 import 'package:path/path.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
@@ -18,28 +17,24 @@ class ProfileAvatar extends StatefulWidget {
   @override
   _ProfileAvatarState createState() => _ProfileAvatarState();
 }
-late File image;
-late String filename;
 
 class _ProfileAvatarState extends State<ProfileAvatar> {
   File? image;
   String? filename;
 
   Future _getImage() async{
-    try{
-   final image = await ImagePicker().pickImage(
-        source: ImageSource.gallery
-    );
-    final imageTemporaty = File(image!.path);
-    setState(() {
-      this.image = imageTemporaty;
-      this.filename = basename(image.path);
-    }) ;
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final imageTemporaty = File(image!.path);
+      setState(() {
+        this.image = imageTemporaty;
+        this.filename = basename(image.path);
+      }
+      ) ;
     }
     on PlatformException catch(e){
       print('Failed o pick image: $e');
     }
-
   }
 
   @override
