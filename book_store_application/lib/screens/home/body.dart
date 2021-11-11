@@ -111,8 +111,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
                                           child: Column(
                                             children: [
                                               RichText(
-                                                  text: const TextSpan(
-                                                      text: 'Hello there, Minh Thi\n',
+                                                  text: TextSpan(
+                                                      text: "Hello there, " + user_model.user.getName().toString() + "\n",
                                                       style: TextStyle( fontSize: 24, fontWeight: FontWeight.bold,color: Colors.black),
                                                       children: <TextSpan>[
                                                         TextSpan( text: 'Keep reading, you’ll fall in love ',

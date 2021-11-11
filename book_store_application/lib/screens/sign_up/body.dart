@@ -238,7 +238,7 @@ class _BodyState extends State<Body> implements SignUpView{
                                                 .visiblePassword,
                                             obscureText: true,
                                             validator: (value) {
-                                              if(value!.trim() != password.trim()) {
+                                              if(value! != password) {
                                                 return "Please check re-enter password and pasword";
                                               } else return null;
                                             },

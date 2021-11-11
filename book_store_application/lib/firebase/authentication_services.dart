@@ -120,6 +120,7 @@ class AuthenticationServices {
       User_Model user_model = new User_Model(user.uid, name, 1, "", "", "", "", "");
       await DatabaseManager().createUserData(user_model);
       await DatabaseManager().createFavorites(user_model);
+      await _auth.signOut();
     }
   }
 

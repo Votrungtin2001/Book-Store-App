@@ -271,7 +271,7 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
                     shrinkWrap: true,
                     padding: const EdgeInsets.only(top: 0, bottom: 0, right: 16, left: 16),
                     itemCount: booksOfPublisher.length,
-                    scrollDirection: Axis.vertical,
+                    scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
                       int count = booksOfPublisher.length > 10
                           ? 10

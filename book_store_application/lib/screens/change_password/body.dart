@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -8,6 +10,19 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final formKey = GlobalKey<FormState>();
+
+  String current_password = "";
+  String new_password = "";
+  String re_password = "";
+
+  TextEditingController _currentPasswordController = TextEditingController();
+  TextEditingController _newPasswordController = TextEditingController();
+  TextEditingController _rePasswordController = TextEditingController();
+
+  final auth = FirebaseAuth.instance;
+  late User user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +66,7 @@ class _BodyState extends State<Body> {
           children: <Widget>[
             SizedBox(
                 child: Form (
+                  key: formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,8 +74,19 @@ class _BodyState extends State<Body> {
                       Container(
                         padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                         child: TextFormField(
+                          controller: _currentPasswordController,
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: true,
+                          validator: (value) {
+                            if(value!.isEmpty) {
+                              return "Please enter your current password";
+                            } else return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              current_password = value;
+                            });
+                          },
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
                             fillColor: Colors.transparent,
@@ -70,7 +97,6 @@ class _BodyState extends State<Body> {
                             filled: true,
                             hintStyle: const TextStyle(color: Colors.black38),
                             hintText: 'Current Password',
-
                           ),
 
                         ),
@@ -79,8 +105,19 @@ class _BodyState extends State<Body> {
                       Container(
                         padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                         child: TextFormField(
+                          controller: _newPasswordController,
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: true,
+                          validator: (value) {
+                            if(value!.length < 6) {
+                              return "Please enter a password which contains more 6 chars";
+                            } else return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              new_password = value;
+                            });
+                          },
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
                             fillColor: Colors.transparent,
@@ -99,8 +136,19 @@ class _BodyState extends State<Body> {
                       Container(
                         padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
                         child: TextFormField(
+                          controller: _rePasswordController,
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: true,
+                          validator: (value) {
+                            if( value! != new_password) {
+                              return "Please check re-enter password and pasword";
+                            } else return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              re_password = value;
+                            });
+                          },
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
                             fillColor: Colors.transparent,
@@ -137,6 +185,12 @@ class _BodyState extends State<Body> {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      if(formKey.currentState!.validate()) {
+                        changePassword(current_password, new_password);
+                        _currentPasswordController.clear();
+                        _newPasswordController.clear();
+                        _rePasswordController.clear();
+                      }
                     },
                     color: Colors.blue,
                     padding: EdgeInsets.symmetric(horizontal: 50),
@@ -160,5 +214,30 @@ class _BodyState extends State<Body> {
     )
     );
 
+  }
+  void changePassword(String current_password, String new_password) async {
+    user = auth.currentUser!;
+    String email = user.email.toString();
+
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: current_password,
+      );
+
+      user.updatePassword(new_password).then((_){
+        Fluttertoast.showToast(msg: 'Your password changed successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+        Navigator.of(context).pop();
+      }).catchError((error){
+        Fluttertoast.showToast(msg: 'Some errors occur. Your password not changed', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+        //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(msg: 'No user found for that email', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(msg: 'Not match with your current password', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+      }
+    }
   }
 }

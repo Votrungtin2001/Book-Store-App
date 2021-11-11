@@ -24,6 +24,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String name = "";
   String phone = "";
   String address = "";
+  String selectedPhoto = "";
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -48,6 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         this.image = imageTemporaty;
         this.filename = basename(image.path);
+        selectedPhoto = basename(image.path);
       }) ;
     }
     on PlatformException catch(e){
@@ -232,18 +234,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       RaisedButton(
                         onPressed: () {
                           // Store image in storage
-                          firebase_storage.FirebaseStorage storage =
-                              firebase_storage.FirebaseStorage.instance;
-                          firebase_storage.Reference ref = storage.ref().child(filename!);
-                          firebase_storage.UploadTask uploadTask = ref.putFile(image!);
-                          uploadTask.whenComplete(() async {
-                            url = await ref.getDownloadURL();
-                            if(url != "") {
-                              //Save image in firestore
-                              _firestore.collection(collection).doc(user_id).update({'photo': url});
-                              user_model.updatePhoto(url);
-                            }
-                          });
+                          if(selectedPhoto != "") {
+                            firebase_storage.FirebaseStorage storage =
+                                firebase_storage.FirebaseStorage.instance;
+                            firebase_storage.Reference ref = storage.ref().child(filename!);
+                            firebase_storage.UploadTask uploadTask = ref.putFile(image!);
+                            uploadTask.whenComplete(() async {
+                              url = await ref.getDownloadURL();
+                              if(url != "") {
+                                //Save image in firestore
+                                _firestore.collection(collection).doc(user_id).update({'photo': url});
+                                user_model.updatePhoto(url);
+                              }
+                            });
+                          }
                           ////
 
                           if(name != "") {

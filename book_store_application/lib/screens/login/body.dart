@@ -1,10 +1,13 @@
 import 'package:book_store_application/MVP/Presenter/logIn_presenter.dart';
 import 'package:book_store_application/MVP/View/logIn_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
+import 'package:book_store_application/firebase/providers/user_provider.dart';
+import 'package:book_store_application/screens/admin_main_page.dart';
 import 'package:book_store_application/screens/forgot_password/forgot_password_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/home_test.dart';
 import 'package:book_store_application/screens/sign_up/sign_up_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -15,6 +18,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../main_page.dart';
@@ -34,6 +38,10 @@ class _BodyState extends State<Body> implements LogInView{
   TextEditingController _passwordController = TextEditingController();
 
   final AuthenticationServices _auth = AuthenticationServices();
+  String collection = "User";
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
+  late User user;
 
   late LogInPresenter presenter;
 
@@ -345,11 +353,18 @@ class _BodyState extends State<Body> implements LogInView{
   Future<void> logInWithEmailAndPassword() async {
     dynamic result = await _auth.signInWithEmailAndPassword(email, password);
     if(result != null) {
-      // Scaffold.of(context).showSnackBar(
-      //   const SnackBar(content: Text('Logged in successfully.'),)
-      // );
-      Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+      user = auth.currentUser!;
+      String user_id = await user.uid.toString();
+      if(user_id == "nI8SJUbcVcMOnG8bcyk0B5FAzX12") { // tried to find admin with its uid
+        Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainPageAdmin()));
+      }
+      else {
+        Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+      }
+
     }
   }
 
