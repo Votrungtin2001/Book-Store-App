@@ -4,21 +4,33 @@ import 'package:book_store_application/screens/my_orders/order_detail_card.dart'
 import 'package:flutter/material.dart';
 
 class OrdersDetailAdminScreen extends StatefulWidget {
+  late String order_id;
+  late String user_id;
   late List<BookInCart> books;
+  late int status;
 
-  OrdersDetailAdminScreen(List<BookInCart> list) {
+  OrdersDetailAdminScreen(List<BookInCart> list, String order_id, String user_id, int status) {
     this.books = list;
+    this.order_id = order_id;
+    this.user_id = user_id;
+    this.status = status;
   }
 
 
   @override
-  _OrdersDetailAdminScreenState createState() => _OrdersDetailAdminScreenState(this.books);
+  _OrdersDetailAdminScreenState createState() => _OrdersDetailAdminScreenState(this.books, this.order_id, this.user_id, this.status);
 }
 
 class _OrdersDetailAdminScreenState extends State<OrdersDetailAdminScreen> {
   late List<BookInCart> books;
-  _OrdersDetailAdminScreenState(List<BookInCart> list) {
+  late String order_id;
+  late String user_id;
+  late int status;
+  _OrdersDetailAdminScreenState(List<BookInCart> list, String order_id, String user_id, int status) {
     this.books = list;
+    this.order_id = order_id;
+    this.user_id = user_id;
+    this.status = status;
   }
 
   @override
@@ -55,7 +67,7 @@ class _OrdersDetailAdminScreenState extends State<OrdersDetailAdminScreen> {
           )
         ],
       ) ,
-      bottomNavigationBar: ChangeStatusCard(),
+      bottomNavigationBar: ChangeStatusCard(order_id, user_id, status),
     );
   }
 }

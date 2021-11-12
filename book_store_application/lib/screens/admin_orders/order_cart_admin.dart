@@ -29,7 +29,7 @@ class _OrderCardAdminState extends State<OrderCardAdmin> {
         onTap: (){
           Navigator.push( context,
             MaterialPageRoute(
-              builder: (context) => OrdersDetailAdminScreen(order.getBooksInCart()),
+              builder: (context) => OrdersDetailAdminScreen(order.getBooksInCart(), order.getID(), order.getUSER_ID(), order.status),
             ),
           );
         },

@@ -1,15 +1,41 @@
+import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
+import 'package:book_store_application/screens/admin_profile/ProfileAdmin.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
+import '../admin_main_page.dart';
 
 class ChangeStatusCard extends StatefulWidget {
-  const ChangeStatusCard({Key? key}) : super(key: key);
+  late String order_id;
+  late String user_id;
+  late int status;
+  ChangeStatusCard(String order_id, String user_id, int status) {
+    this.order_id = order_id;
+    this.user_id = user_id;
+    this.status = status;
+  }
 
   @override
-  _ChangeStatusCardState createState() => _ChangeStatusCardState();
+  _ChangeStatusCardState createState() => _ChangeStatusCardState(this.order_id, this.user_id, this.status);
 }
 
 class _ChangeStatusCardState extends State<ChangeStatusCard> {
+  late String order_id;
+  late String user_id;
+  late int status;
+
+  final DatabaseReference refOrders = FirebaseDatabase.instance.reference().child('Orders');
+  
+  _ChangeStatusCardState(String order_id, String user_id, int status) {
+    this.order_id = order_id;
+    this.user_id = user_id;
+    this.status = status;
+  }
   @override
   Widget build(BuildContext context) {
+    final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15,),
       decoration: BoxDecoration(
@@ -53,7 +79,28 @@ class _ChangeStatusCardState extends State<ChangeStatusCard> {
                       primary: Colors.white,
                       backgroundColor: Colors.blue,
                     ),
-                    onPressed: ()  {},
+                    onPressed: ()  {
+                      if(status == 0) {
+                        refOrders.child(user_id).child(order_id).update(
+                            {'status': 1});
+                        defaultWaitingOrdersProvider.updateStatus(order_id, 1);
+                      }
+                      else if(status == 1) {
+                        refOrders.child(user_id).child(order_id).update(
+                            {'status': 2});
+                        defaultWaitingOrdersProvider.updateStatus(order_id, 2);
+                      }
+                      else if(status == 2) {
+                        refOrders.child(user_id).child(order_id).update(
+                            {'status': 3});
+                        defaultWaitingOrdersProvider.updateStatus(order_id, 3);
+                      }
+
+                      Navigator.pop(context);
+
+                      Fluttertoast.showToast(msg: "Updated order's status successully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                      
+                    },
                     child: Text(
                       "Next",
                       style: TextStyle(

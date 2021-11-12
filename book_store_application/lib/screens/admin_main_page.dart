@@ -1,6 +1,8 @@
+import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
 import 'package:book_store_application/screens/admin_profile/ProfileAdmin.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../bottom_nav_bar.dart';
 import 'admin_edit_books/edit_book_screen.dart';
@@ -20,6 +22,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
           bottomIcons == BottomIcons.Explore

@@ -1,4 +1,5 @@
 import 'package:book_store_application/MVP/Model/Order.dart';
+import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/main_page.dart';
@@ -35,6 +36,7 @@ class _BodyState extends State<Body> {
     double total = orderProvider.total_price + deliveryCost + subTotal;
 
     final user_model = Provider.of<UserProvider>(context);
+    final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
 
     return Scaffold(
       body: Stack(
@@ -290,6 +292,10 @@ class _BodyState extends State<Body> {
                                   'total_price': order.getBooksInCart()[i].getTOTAL_PRICE()});
                                 count++;
                                 if(count == order.getBooksInCart().length) {
+                                  Order default_order = new Order(id, user_model.user.getID(), user_model.user.getName(), user_model.user.getPhone(),
+                                      user_model.user.getAddress(), orderProvider.booksInCart, total, 0, date);
+                                  defaultWaitingOrdersProvider.addOrder(default_order);
+
                                   orderProvider.throwBookSInCart();
                                   showModalBottomSheet(
                                       shape: const RoundedRectangleBorder(

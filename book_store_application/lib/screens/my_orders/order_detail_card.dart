@@ -30,6 +30,7 @@ class _OrderDetailCardState extends State<OrderDetailCard> {
     final booksProvider = Provider.of<BooksProvider>(context);
     for (int i = 0; i < booksProvider.books.length; i++) {
       if(booksProvider.books[i].getID() == bookInCart.getID()) book = booksProvider.books[i];
+
     }
     return Container(
       width: double.infinity,

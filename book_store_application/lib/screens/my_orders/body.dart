@@ -1,6 +1,7 @@
 import 'package:book_store_application/MVP/Model/BookInCart.dart';
 import 'package:book_store_application/MVP/Model/Order.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
+import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
 import 'package:book_store_application/screens/cart/cart_screen.dart';
 import 'package:book_store_application/screens/my_orders/order_detail.dart';
@@ -97,6 +98,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   }
 
   Widget OrderPlaceWidgetWaiting(BuildContext context,int status, user_id) {
+    final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
+    List<Order> defaultWaitingOrders = defaultWaitingOrdersProvider.orders;
      return FutureBuilder(
          future: getOrdersByStatus(user_id, status),
          builder: (context, snapshot){
@@ -116,8 +119,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                        child: Dismissible(
                          key: Key(orders[index].getID().toString()),
                          direction: DismissDirection.endToStart,
-                         onDismissed: (direction) {
-                           setState(() async {
+                         onDismissed: (direction) async {
                              if (status == 0) {
                                int count = 0;
                                for (int i = 0; i < orders[index]
@@ -136,7 +138,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                          orders[index].getBooksInCart()[i]
                                              .getQUANTITY();
                                      refInventory.child(
-                                         orders[i].getBooksInCart()[i]
+                                         orders[index].getBooksInCart()[i]
                                              .getID()
                                              .toString()).update(
                                          {'quantity': update_available});
@@ -147,6 +149,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                      .length) {
                                    await refOrders.child(user_id).child(
                                        orders[index].getID()).remove();
+                                   defaultWaitingOrdersProvider.removeOrder(orders[index].getID());
                                    Fluttertoast.showToast(
                                        msg: 'Delete this order successfully',
                                        toastLength: Toast.LENGTH_SHORT,
@@ -159,7 +162,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                    msg: "You can't delete this order. Please contact with us",
                                    toastLength: Toast.LENGTH_SHORT,
                                    gravity: ToastGravity.BOTTOM);
-                           });
                          },
                          background: Container(
                            height: 200,
@@ -212,7 +214,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   Future<List<Order>> getOrdersByStatus(String User_ID, int Status) async {
     List<Order> orders = [];
-    refOrders.child(User_ID).limitToLast(10).once().then((DataSnapshot snapshot1){
+    await refOrders.child(User_ID).orderByChild('created').limitToLast(10).once().then((DataSnapshot snapshot1){
       Map<dynamic, dynamic> values1 = snapshot1.value;
       values1.forEach((key,values1) async {
         List<BookInCart> books = [];

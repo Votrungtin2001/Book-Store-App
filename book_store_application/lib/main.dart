@@ -1,4 +1,5 @@
 import 'package:book_store_application/firebase/providers/books_provider.dart';
+import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
 import 'package:book_store_application/screens/splash/splash_screen.dart';
 import 'package:book_store_application/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,7 @@ void main() async {
       ChangeNotifierProvider.value(value: PublisherProvider.initialize()),
       ChangeNotifierProvider.value(value: OrderProvider.initialize()),
       ChangeNotifierProvider.value(value: UserProvider.initialize()),
+      ChangeNotifierProvider.value(value: DefaultWaitingOrderProvider.initialize()),
     ],
     child: const MyApp(),
   ));
