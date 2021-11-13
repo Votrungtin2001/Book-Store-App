@@ -240,7 +240,11 @@ class _BodyState extends State<Body> {
                             });
                           }
                           if(sign == true) {
-                            orderProvider.throwBookSInCart();
+                            setState(() {
+                              orderProvider.throwBookSInCart();
+                              orderProvider.calculateTotalPrice();
+                            });
+
                             Navigator.push<dynamic>( context,
                               MaterialPageRoute<dynamic>(
                                 builder: (BuildContext context) => MainPage(),
@@ -296,7 +300,10 @@ class _BodyState extends State<Body> {
                                       user_model.user.getAddress(), orderProvider.booksInCart, total, 0, date);
                                   defaultWaitingOrdersProvider.addOrder(default_order);
 
-                                  orderProvider.throwBookSInCart();
+                                  setState(() {
+                                    orderProvider.throwBookSInCart();
+                                    orderProvider.calculateTotalPrice();
+                                  });
                                   showModalBottomSheet(
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.only(

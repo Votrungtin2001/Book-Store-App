@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../dismissible_widget.dart';
 import 'order_card.dart';
 
 class Body extends StatefulWidget {
@@ -26,6 +27,11 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   final DatabaseReference refOrders = FirebaseDatabase.instance.reference().child('Orders');
   final DatabaseReference refInventory = FirebaseDatabase.instance.reference().child('Inventory');
+
+  List<Order> listWaitingOrders = [];
+  List<Order> listPreparingOrders = [];
+  List<Order> listDeliveringOrders = [];
+  List<Order> listReceivedOrders = [];
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +89,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                     child: TabBarView(
                       children: [
                         OrderPlaceWidgetWaiting(context, 0, user_id),
-                        OrderPlaceWidget(context, 1, user_id),
-                        OrderPlaceWidget(context, 2, user_id),
-                        OrderPlaceWidget(context, 3, user_id),
+                        OrderPlaceWidgetPreparing(context, 1, user_id),
+                        OrderPlaceWidgetDelivering(context, 2, user_id),
+                        OrderPlaceWidgetReceived(context, 3, user_id),
                       ],
                     )
                 )
@@ -99,7 +105,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   Widget OrderPlaceWidgetWaiting(BuildContext context,int status, user_id) {
     final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
-    List<Order> defaultWaitingOrders = defaultWaitingOrdersProvider.orders;
      return FutureBuilder(
          future: getOrdersByStatus(user_id, status),
          builder: (context, snapshot){
@@ -107,87 +112,129 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
              return Center(child: CircularProgressIndicator());
            else{
              var orders = snapshot.data as List<Order>;
-             if (orders == null || orders.length == 0)
-                 return Center(child:Text("You have O order"));
-             else
-               return ListView.builder(
-                   scrollDirection: Axis.vertical,
-                   itemCount: orders.length,
-                   itemBuilder:(context,index){
-                   return Padding(
-                       padding: EdgeInsets.symmetric(horizontal: 10),
-                       child: Dismissible(
-                         key: Key(orders[index].getID().toString()),
-                         direction: DismissDirection.endToStart,
-                         onDismissed: (direction) async {
-                             if (status == 0) {
-                               int count = 0;
-                               for (int i = 0; i < orders[index]
-                                   .getBooksInCart()
-                                   .length; i++) {
-                                 count++;
-                                 await refInventory.child(
-                                     orders[index].getBooksInCart()[i]
-                                         .getID()
-                                         .toString()).once().then((
-                                     DataSnapshot dataSnapshot) {
-                                   if (dataSnapshot.exists) {
-                                     int available = dataSnapshot
-                                         .value['quantity'];
-                                     int update_available = available +
-                                         orders[index].getBooksInCart()[i]
-                                             .getQUANTITY();
-                                     refInventory.child(
-                                         orders[index].getBooksInCart()[i]
-                                             .getID()
-                                             .toString()).update(
-                                         {'quantity': update_available});
+             if (orders == null || orders.length == 0) {
+               listWaitingOrders =
+                   defaultWaitingOrdersProvider.getWaitingOrdersOfUser(user_id);
+               if (listWaitingOrders.length == 0)
+                 return Center(child: Text("You have O order"));
+               else {
+                 return ListView.builder(
+                     scrollDirection: Axis.vertical,
+                     itemCount: listWaitingOrders.length,
+                     itemBuilder:(context,index){
+                       final item = listWaitingOrders[index];
+                       return Padding(
+                           padding: EdgeInsets.symmetric(horizontal: 10),
+                         child: Dismissible(
+                             key: ObjectKey(item),
+                             background: buildSwipeActionRight(),
+                             direction: DismissDirection.endToStart,
+                             child: OrderCard(item),
+                             onDismissed: (direction) async {
+                               setState(() {
+                                 listWaitingOrders.removeAt(index);
+                               });
+                               switch (direction) {
+                                 case DismissDirection.endToStart:
+                                   int count = 0;
+                                   for (int i = 0; i < item.getBooksInCart().length; i++) {
+                                     count++;
+                                     await refInventory.child(item.getBooksInCart()[i].getID().toString()).once().then((DataSnapshot dataSnapshot) {
+                                       if (dataSnapshot.exists) {
+                                         int available = dataSnapshot.value['quantity'];
+                                         int update_available = available + item.getBooksInCart()[i].getQUANTITY();
+                                         refInventory.child(item.getBooksInCart()[i].getID().toString()).update(
+                                             {'quantity': update_available});
+                                       }
+                                     });
+                                     if (count == item.getBooksInCart().length) {
+                                       await refOrders.child(item.getUSER_ID()).child(item.getID()).remove();
+                                       defaultWaitingOrdersProvider.removeOrder(item.getID());
+                                       Fluttertoast.showToast(
+                                           msg: 'Delete this order successfully',
+                                           toastLength: Toast.LENGTH_SHORT,
+                                           gravity: ToastGravity.BOTTOM);
+                                     }
                                    }
-                                 });
-                                 if (count == orders[index]
-                                     .getBooksInCart()
-                                     .length) {
-                                   await refOrders.child(user_id).child(
-                                       orders[index].getID()).remove();
-                                   defaultWaitingOrdersProvider.removeOrder(orders[index].getID());
-                                   Fluttertoast.showToast(
-                                       msg: 'Delete this order successfully',
-                                       toastLength: Toast.LENGTH_SHORT,
-                                       gravity: ToastGravity.BOTTOM);
-                                 }
+                                   break;
+                                 default:
+                                   break;
                                }
                              }
-                             else
-                               Fluttertoast.showToast(
-                                   msg: "You can't delete this order. Please contact with us",
-                                   toastLength: Toast.LENGTH_SHORT,
-                                   gravity: ToastGravity.BOTTOM);
-                         },
-                         background: Container(
-                           height: 200,
-                           padding: EdgeInsets.symmetric(horizontal: 20),
-                           decoration: BoxDecoration(
-                             color: Color(0xFFFFE6E6),
-                             borderRadius: BorderRadius.circular(15),
-                           ),
-                           child: Row(
-                             children: [
-                               Spacer(),
-                               SvgPicture.asset("assets/icons/Trash.svg"),
-                             ],
-                           ),
                          ),
-                         child: OrderCard(orders[index]),
-                       ));
-                  }
-
+                       );
+                     }
+                 );
+               }
+             }
+             else {
+               List<Order> tempList = defaultWaitingOrdersProvider.getPreparingOrdersOfUser(user_id);
+               if(tempList.length > orders.length) listWaitingOrders = tempList;
+               else listWaitingOrders = orders;
+               return ListView.builder(
+                   scrollDirection: Axis.vertical,
+                   itemCount: listWaitingOrders.length,
+                   itemBuilder:(context,index){
+                     final item = listWaitingOrders[index];
+                     return Padding(
+                       padding: EdgeInsets.symmetric(horizontal: 10),
+                       child: Dismissible(
+                           key: ObjectKey(item),
+                           background: buildSwipeActionRight(),
+                           direction: DismissDirection.endToStart,
+                           child: OrderCard(item),
+                           onDismissed: (direction) async {
+                             setState(() {
+                               listWaitingOrders.removeAt(index);
+                             });
+                             switch (direction) {
+                               case DismissDirection.endToStart:
+                                 int count = 0;
+                                 for (int i = 0; i < item.getBooksInCart().length; i++) {
+                                   count++;
+                                   await refInventory.child(item.getBooksInCart()[i].getID().toString()).once().then((DataSnapshot dataSnapshot) {
+                                     if (dataSnapshot.exists) {
+                                       int available = dataSnapshot.value['quantity'];
+                                       int update_available = available + item.getBooksInCart()[i].getQUANTITY();
+                                       refInventory.child(item.getBooksInCart()[i].getID().toString()).update(
+                                           {'quantity': update_available});
+                                     }
+                                   });
+                                   if (count == item.getBooksInCart().length) {
+                                     await refOrders.child(item.getUSER_ID()).child(item.getID()).remove();
+                                     defaultWaitingOrdersProvider.removeOrder(item.getID());
+                                     Fluttertoast.showToast(
+                                         msg: 'Delete this order successfully',
+                                         toastLength: Toast.LENGTH_SHORT,
+                                         gravity: ToastGravity.BOTTOM);
+                                   }
+                                 }
+                                 break;
+                               default:
+                                 break;
+                             }
+                           }
+                       ),
+                     );
+                   }
                );
+             }
+
             }
            }
            );
   }
 
-  Widget OrderPlaceWidget(BuildContext context,int status, user_id) {
+  Widget buildSwipeActionRight() => Container(
+    height: 200,
+    alignment: Alignment.centerRight,
+    padding: EdgeInsets.symmetric(horizontal: 20),
+    color: Colors.red,
+    child: Icon(Icons.delete, color: Colors.white, size: 32),
+  );
+
+  Widget OrderPlaceWidgetPreparing(BuildContext context,int status, String user_id) {
+    final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
     return FutureBuilder(
         future: getOrdersByStatus(user_id, status),
         builder: (context, snapshot){
@@ -195,18 +242,139 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
             return Center(child: CircularProgressIndicator());
           else{
             var orders = snapshot.data as List<Order>;
-            if (orders == null || orders.length == 0)
-              return Center(child:Text("You have O order"));
-            else
+            if (orders == null || orders.length == 0) {
+              listPreparingOrders = defaultWaitingOrdersProvider.getPreparingOrdersOfUser(user_id);
+              if(listPreparingOrders.length == 0) return Center(child:Text("You have O order"));
+              else {
+                return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: listPreparingOrders.length,
+                    itemBuilder:(context,index){
+                      final item = listPreparingOrders[index];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: OrderCard(item),
+                      );
+                    }
+                );
+              }
+            }
+            else {
+              List<Order> tempList = defaultWaitingOrdersProvider.getPreparingOrdersOfUser(user_id);
+              if(tempList.length > orders.length) listPreparingOrders = tempList;
+              else listPreparingOrders = orders;
               return ListView.builder(
-                  itemCount: orders.length,
+                  scrollDirection: Axis.vertical,
+                  itemCount: listPreparingOrders.length,
                   itemBuilder:(context,index){
+                    final item = listPreparingOrders[index];
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: OrderCard(orders[index]),
-                        );
+                      child: OrderCard(item),
+                    );
                   }
+
               );
+            }
+
+          }
+        }
+    );
+  }
+
+  Widget OrderPlaceWidgetDelivering(BuildContext context,int status, String user_id) {
+    final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
+    return FutureBuilder(
+        future: getOrdersByStatus(user_id, status),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting)
+            return Center(child: CircularProgressIndicator());
+          else{
+            var orders = snapshot.data as List<Order>;
+            if (orders == null || orders.length == 0) {
+              listDeliveringOrders = defaultWaitingOrdersProvider.getDeliveringOrdersOfUser(user_id);
+              if(listDeliveringOrders.length == 0) return Center(child:Text("You have O order"));
+              else {
+                return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: listDeliveringOrders.length,
+                    itemBuilder:(context,index){
+                      final item = listDeliveringOrders[index];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: OrderCard(item),
+                      );
+                    }
+                );
+              }
+            }
+            else {
+              List<Order> tempList = defaultWaitingOrdersProvider.getDeliveringOrdersOfUser(user_id);
+              if(tempList.length > orders.length) listDeliveringOrders = tempList;
+              else listDeliveringOrders = orders;
+              return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: listDeliveringOrders.length,
+                  itemBuilder:(context,index){
+                    final item = listDeliveringOrders[index];
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: OrderCard(item),
+                    );
+                  }
+
+              );
+            }
+
+          }
+        }
+    );
+  }
+
+  Widget OrderPlaceWidgetReceived(BuildContext context,int status, String user_id) {
+    final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
+    return FutureBuilder(
+        future: getOrdersByStatus(user_id, status),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting)
+            return Center(child: CircularProgressIndicator());
+          else{
+            var orders = snapshot.data as List<Order>;
+            if (orders == null || orders.length == 0) {
+              listReceivedOrders = defaultWaitingOrdersProvider.getReceivedOrdersOfUser(user_id);
+              if(listReceivedOrders.length == 0) return Center(child:Text("You have O order"));
+              else {
+                return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: listReceivedOrders.length,
+                    itemBuilder:(context,index){
+                      final item = listReceivedOrders[index];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: OrderCard(item),
+                      );
+                    }
+                );
+              }
+            }
+            else {
+              List<Order> tempList = defaultWaitingOrdersProvider.getReceivedOrdersOfUser(user_id);
+              if(tempList.length > orders.length) listReceivedOrders = tempList;
+              else listReceivedOrders = orders;
+              return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: listReceivedOrders.length,
+                  itemBuilder:(context,index){
+                    final item = listReceivedOrders[index];
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: OrderCard(item),
+                    );
+                  }
+
+              );
+            }
+
           }
         }
     );
@@ -228,6 +396,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
         String user_id = values1['user_id'].toString();
         if(status == Status) {
           refOrders.child(User_ID).child(order_id).child('book_id').once().then((DataSnapshot snapshot2) {
+            print(snapshot2.value);
             List<dynamic> result = snapshot2.value;
             result.forEach((value) {
               int book_id = int.parse(value['id'].toString());
