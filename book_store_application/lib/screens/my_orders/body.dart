@@ -103,6 +103,14 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     );
   }
 
+  Widget buildSwipeActionRight() => Container(
+    height: 200,
+    alignment: Alignment.centerRight,
+    padding: EdgeInsets.symmetric(horizontal: 20),
+    color: Colors.red,
+    child: Icon(Icons.delete, color: Colors.white, size: 32),
+  );
+
   Widget OrderPlaceWidgetWaiting(BuildContext context,int status, user_id) {
     final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
      return FutureBuilder(
@@ -118,13 +126,21 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                if (listWaitingOrders.length == 0)
                  return Center(child: Text("You have O order"));
                else {
-                 return ListView.builder(
+                 return SingleChildScrollView(
+                     child: Container(
+                     height: MediaQuery.of(context).size.height - 125,
+                     width: MediaQuery.of(context).size.width,
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(20),
+                     ),
+                   child: ListView.builder(
+                     physics: BouncingScrollPhysics(),
                      scrollDirection: Axis.vertical,
                      itemCount: listWaitingOrders.length,
                      itemBuilder:(context,index){
                        final item = listWaitingOrders[index];
                        return Padding(
-                           padding: EdgeInsets.symmetric(horizontal: 10),
+                         padding: EdgeInsets.symmetric(horizontal: 10),
                          child: Dismissible(
                              key: ObjectKey(item),
                              background: buildSwipeActionRight(),
@@ -164,6 +180,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                          ),
                        );
                      }
+                     )
+                 )
                  );
                }
              }
@@ -171,7 +189,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                List<Order> tempList = defaultWaitingOrdersProvider.getPreparingOrdersOfUser(user_id);
                if(tempList.length > orders.length) listWaitingOrders = tempList;
                else listWaitingOrders = orders;
-               return ListView.builder(
+               return SingleChildScrollView(
+                 child:Container(
+                     height: MediaQuery.of(context).size.height - 125,
+                     width: MediaQuery.of(context).size.width,
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(20),
+                     ),
+                     child: ListView.builder(
+                   physics: BouncingScrollPhysics(),
                    scrollDirection: Axis.vertical,
                    itemCount: listWaitingOrders.length,
                    itemBuilder:(context,index){
@@ -217,6 +243,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                        ),
                      );
                    }
+                   )
+                 )
                );
              }
 
@@ -224,14 +252,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
            }
            );
   }
-
-  Widget buildSwipeActionRight() => Container(
-    height: 200,
-    alignment: Alignment.centerRight,
-    padding: EdgeInsets.symmetric(horizontal: 20),
-    color: Colors.red,
-    child: Icon(Icons.delete, color: Colors.white, size: 32),
-  );
 
   Widget OrderPlaceWidgetPreparing(BuildContext context,int status, String user_id) {
     final defaultWaitingOrdersProvider = Provider.of<DefaultWaitingOrderProvider>(context);
@@ -246,7 +266,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               listPreparingOrders = defaultWaitingOrdersProvider.getPreparingOrdersOfUser(user_id);
               if(listPreparingOrders.length == 0) return Center(child:Text("You have O order"));
               else {
-                return ListView.builder(
+                return SingleChildScrollView(
+                    child:Container(
+                        height: MediaQuery.of(context).size.height - 125,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ListView.builder(
+                            physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: listPreparingOrders.length,
                     itemBuilder:(context,index){
@@ -256,6 +284,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                         child: OrderCard(item),
                       );
                     }
+                    )
+                )
                 );
               }
             }
@@ -263,20 +293,28 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               List<Order> tempList = defaultWaitingOrdersProvider.getPreparingOrdersOfUser(user_id);
               if(tempList.length > orders.length) listPreparingOrders = tempList;
               else listPreparingOrders = orders;
-              return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: listPreparingOrders.length,
-                  itemBuilder:(context,index){
-                    final item = listPreparingOrders[index];
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: OrderCard(item),
-                    );
-                  }
-
+              return SingleChildScrollView(
+                  child:Container(
+                      height: MediaQuery.of(context).size.height - 125,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child:ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount: listPreparingOrders.length,
+                          itemBuilder:(context,index){
+                            final item = listPreparingOrders[index];
+                            return Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: OrderCard(item),
+                            );
+                          }
+                      )
+                  )
               );
             }
-
           }
         }
     );
@@ -295,7 +333,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               listDeliveringOrders = defaultWaitingOrdersProvider.getDeliveringOrdersOfUser(user_id);
               if(listDeliveringOrders.length == 0) return Center(child:Text("You have O order"));
               else {
-                return ListView.builder(
+                return SingleChildScrollView(
+                    child:Container(
+                    height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: listDeliveringOrders.length,
                     itemBuilder:(context,index){
@@ -305,6 +351,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                         child: OrderCard(item),
                       );
                     }
+                    )
+                    )
                 );
               }
             }
@@ -312,7 +360,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               List<Order> tempList = defaultWaitingOrdersProvider.getDeliveringOrdersOfUser(user_id);
               if(tempList.length > orders.length) listDeliveringOrders = tempList;
               else listDeliveringOrders = orders;
-              return ListView.builder(
+              return SingleChildScrollView(
+                  child:Container(
+                  height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: listDeliveringOrders.length,
                   itemBuilder:(context,index){
@@ -322,7 +378,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                       child: OrderCard(item),
                     );
                   }
-
+                  )
+                  )
               );
             }
 
@@ -344,7 +401,15 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               listReceivedOrders = defaultWaitingOrdersProvider.getReceivedOrdersOfUser(user_id);
               if(listReceivedOrders.length == 0) return Center(child:Text("You have O order"));
               else {
-                return ListView.builder(
+                return SingleChildScrollView(
+                    child:Container(
+                    height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: listReceivedOrders.length,
                     itemBuilder:(context,index){
@@ -354,14 +419,22 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                         child: OrderCard(item),
                       );
                     }
-                );
+          )));
               }
             }
             else {
               List<Order> tempList = defaultWaitingOrdersProvider.getReceivedOrdersOfUser(user_id);
               if(tempList.length > orders.length) listReceivedOrders = tempList;
               else listReceivedOrders = orders;
-              return ListView.builder(
+              return SingleChildScrollView(
+                  child:Container(
+                  height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: listReceivedOrders.length,
                   itemBuilder:(context,index){
@@ -371,7 +444,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                       child: OrderCard(item),
                     );
                   }
-
+          )
+                  )
               );
             }
 

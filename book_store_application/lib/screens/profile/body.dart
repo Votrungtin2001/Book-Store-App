@@ -2,6 +2,7 @@ import 'package:book_store_application/MVP/Presenter/accoutAdministration_presen
 import 'package:book_store_application/MVP/View/accountAdministration_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
+import 'package:book_store_application/screens/about_us/about_us_screen.dart';
 import 'package:book_store_application/screens/change_password/change_password_screen.dart';
 import 'package:book_store_application/screens/favourite/myfavourite_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
@@ -34,6 +35,7 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
     final user_model = Provider.of<UserProvider>(context);
     String photo = user_model.user.getPhoto();
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
@@ -52,71 +54,93 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
             ),
           ),
           SizedBox(height: 20),
-          ProfileMenu(
-            text: "My Account",
-            icon: "assets/icons/account.svg",
-            press: () {
-              Navigator.push<dynamic>( context,
-                MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => EditProfileScreen(),
+          SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  height: MediaQuery.of(context).size.height - 100,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      ProfileMenu(
+                        text: "My Account",
+                        icon: "assets/icons/account.svg",
+                        press: () {
+                          Navigator.push<dynamic>( context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => EditProfileScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      ProfileMenu(
+                        text: "My Orders",
+                        icon: "assets/icons/shopping_bag.svg",
+                        press: () {
+                          Navigator.push<dynamic>( context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => MyOrdersScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      ProfileMenu(
+                        text: "My Favourite",
+                        icon: "assets/icons/heart.svg",
+                        press: () {
+                          Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => MyFavouriteScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      ProfileMenu(
+                        text: "Change Password",
+                        icon: "assets/icons/Lock.svg",
+                        press: () {
+                          Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => ChangePasswordScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      ProfileMenu(
+                        text: "About Us",
+                        icon: "assets/icons/Question.svg",
+                        press: () {
+                          Navigator.push<dynamic>(
+                            context,
+                            MaterialPageRoute<dynamic>(
+                              builder: (BuildContext context) => AboutUsScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      ProfileMenu(
+                        text: "Log Out",
+                        icon: "assets/icons/Log out.svg",
+                        press: () {
+                          presenter.logOut();
+                          Fluttertoast.showToast(msg: 'Logged out successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => LoginScreen()));
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              );
-            },
-          ),
-          ProfileMenu(
-            text: "My Orders",
-            icon: "assets/icons/shopping_bag.svg",
-            press: () {
-              Navigator.push<dynamic>( context,
-                MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => MyOrdersScreen(),
-                ),
-              );
-            },
-          ),
-          ProfileMenu(
-            text: "My Favourite",
-            icon: "assets/icons/heart.svg",
-            press: () {
-              Navigator.push<dynamic>(
-                context,
-                MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => MyFavouriteScreen(),
-                ),
-              );
-            },
-          ),
-          ProfileMenu(
-            text: "Change Password",
-            icon: "assets/icons/Lock.svg",
-            press: () {
-              Navigator.push<dynamic>(
-              context,
-              MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => ChangePasswordScreen(),
-              ),
-            );
-              },
-          ),
-          ProfileMenu(
-            text: "About Us",
-            icon: "assets/icons/Question.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Log Out",
-            icon: "assets/icons/Log out.svg",
-            press: () {
-              presenter.logOut();
-              Fluttertoast.showToast(msg: 'Logged out successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
-            },
-          ),
+              )
         ],
       ),
     );
   }
+
   Widget getAppBarUI() {
     return Container(
       width: AppBar().preferredSize.height + 40,

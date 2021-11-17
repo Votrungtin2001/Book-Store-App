@@ -101,80 +101,92 @@ class _BodyState extends State<Body> {
     return FutureBuilder(
         future: getOrdersByStatus(status),
         builder: (context, snapshot){
-
           if(snapshot.connectionState == ConnectionState.waiting)
             return Center(child: CircularProgressIndicator());
-          else{
+          else
+            {
             var orders = snapshot.data as List<Order>;
             if (orders == null || orders.length == 0) {
                 listWaitingOrders = defaultWaitingOrdersProvider.getWaitingOrders();
                 if(listWaitingOrders.length == 0) return Center(child:Text("You have O order"));
                 else {
-                  return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: listWaitingOrders.length,
-                      itemBuilder:(context,index){
-                        final item = listWaitingOrders[index];
-                        return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: DismissibleWidget(
-                              item: item,
-                              child: OrderCardAdmin(item),
-                                onDismissed: (direction) async {
-                                  setState(() {
-                                    listWaitingOrders.removeAt(index);
-                                  });
-                                  switch (direction) {
-                                    case DismissDirection.endToStart:
-                                      int count = 0;
-                                      for (int i = 0; i < item.getBooksInCart().length; i++) {
-                                        count++;
-                                        await refInventory.child(item.getBooksInCart()[i].getID().toString()).once().then((DataSnapshot dataSnapshot) {
-                                          if (dataSnapshot.exists) {
-                                            int available = dataSnapshot.value['quantity'];
-                                            int update_available = available + item.getBooksInCart()[i].getQUANTITY();
-                                            refInventory.child(item.getBooksInCart()[i].getID().toString()).update(
-                                                {'quantity': update_available});
+                  return SingleChildScrollView(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 125,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: listWaitingOrders.length,
+                        itemBuilder:(context,index){
+                          final item = listWaitingOrders[index];
+                          return Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: DismissibleWidget(
+                                    item: item,
+                                    child: OrderCardAdmin(item),
+                                    onDismissed: (direction) async {
+                                      setState(() {
+                                        listWaitingOrders.removeAt(index);
+                                      });
+                                      switch (direction) {
+                                        case DismissDirection.endToStart:
+                                          int count = 0;
+                                          for (int i = 0; i < item.getBooksInCart().length; i++) {
+                                            count++;
+                                            await refInventory.child(item.getBooksInCart()[i].getID().toString()).once().then((DataSnapshot dataSnapshot) {
+                                              if (dataSnapshot.exists) {
+                                                int available = dataSnapshot.value['quantity'];
+                                                int update_available = available + item.getBooksInCart()[i].getQUANTITY();
+                                                refInventory.child(item.getBooksInCart()[i].getID().toString()).update(
+                                                    {'quantity': update_available});
+                                              }
+                                            });
+                                            if (count == item.getBooksInCart().length) {
+                                              await refOrders.child(item.getUSER_ID()).child(item.getID()).remove();
+                                              defaultWaitingOrdersProvider.removeOrder(item.getID());
+                                              Fluttertoast.showToast(
+                                                  msg: 'Delete this order successfully',
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.BOTTOM);
+                                            }
                                           }
-                                        });
-                                        if (count == item.getBooksInCart().length) {
-                                          await refOrders.child(item.getUSER_ID()).child(item.getID()).remove();
-                                          defaultWaitingOrdersProvider.removeOrder(item.getID());
+                                          break;
+                                        case DismissDirection.startToEnd:
+                                          print('here');
+                                          String user_id = item.getUSER_ID();
+                                          String order_id = item.getID();
+                                          refOrders.child(user_id).child(order_id).update(
+                                              {'status': 1});
+                                          defaultWaitingOrdersProvider.updateStatus(order_id, 1);
+                                          setState(() {
+                                            List<Order> updateList = [];
+                                            for(int i = 0; i < listWaitingOrders.length; i++) {
+                                              if(listWaitingOrders[i].getID() == order_id) listWaitingOrders[i].setSTATUS(1);
+                                              if(listWaitingOrders[i].getSTATUS() == 1) updateList.add(listWaitingOrders[i]);
+                                            }
+                                            listWaitingOrders = updateList;
+                                          });
+
                                           Fluttertoast.showToast(
-                                              msg: 'Delete this order successfully',
+                                              msg: 'Move this order to next stage successfully',
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.BOTTOM);
-                                        }
+                                          break;
+                                        default:
+                                          break;
                                       }
-                                      break;
-                                    case DismissDirection.startToEnd:
-                                      print('here');
-                                      String user_id = item.getUSER_ID();
-                                      String order_id = item.getID();
-                                        refOrders.child(user_id).child(order_id).update(
-                                            {'status': 1});
-                                        defaultWaitingOrdersProvider.updateStatus(order_id, 1);
-                                        setState(() {
-                                          List<Order> updateList = [];
-                                          for(int i = 0; i < listWaitingOrders.length; i++) {
-                                            if(listWaitingOrders[i].getID() == order_id) listWaitingOrders[i].setSTATUS(1);
-                                            if(listWaitingOrders[i].getSTATUS() == 1) updateList.add(listWaitingOrders[i]);
-                                          }
-                                          listWaitingOrders = updateList;
-                                        });
+                                    }
+                                )
 
-                                      Fluttertoast.showToast(
-                                          msg: 'Move this order to next stage successfully',
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.BOTTOM);
-                                      break;
-                                    default:
-                                      break;
-                                  }
-                                }
-                            )
-                        );
-                      }
+                          );
+
+                        }
+                    ),
+                    )
                   );
                 }
               }
@@ -182,7 +194,15 @@ class _BodyState extends State<Body> {
               List<Order> tempList = defaultWaitingOrdersProvider.getWaitingOrders();
               if(tempList.length > orders.length) listWaitingOrders = tempList;
               else listWaitingOrders = orders;
-              return ListView.builder(
+              return SingleChildScrollView(
+                  child: Container(
+                      height: MediaQuery.of(context).size.height - 125,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: listWaitingOrders.length,
                   itemBuilder:(context,index){
@@ -248,9 +268,10 @@ class _BodyState extends State<Body> {
                     );
                   }
 
+              )
+                  )
               );
             }
-
           }
         }
     );
@@ -269,7 +290,16 @@ class _BodyState extends State<Body> {
               listPreparingOrders = defaultWaitingOrdersProvider.getPreparingOrders();
               if(listPreparingOrders.length == 0) return Center(child:Text("You have O order"));
               else {
-                return ListView.builder(
+                return
+                  SingleChildScrollView(
+                      child:Container(
+                      height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: listPreparingOrders.length,
                     itemBuilder:(context,index){
@@ -333,14 +363,24 @@ class _BodyState extends State<Body> {
                           )
                       );
                     }
-                );
+                    )
+                      )
+                  );
               }
             }
             else {
               List<Order> tempList = defaultWaitingOrdersProvider.getPreparingOrders();
               if(tempList.length > orders.length) listPreparingOrders = tempList;
               else listPreparingOrders = orders;
-              return ListView.builder(
+              return SingleChildScrollView(
+                  child:Container(
+                  height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: listPreparingOrders.length,
                   itemBuilder:(context,index){
@@ -405,7 +445,7 @@ class _BodyState extends State<Body> {
                         )
                     );
                   }
-
+          ))
               );
             }
 
@@ -427,7 +467,15 @@ class _BodyState extends State<Body> {
               listDeliveringOrders = defaultWaitingOrdersProvider.getDeliveringOrders();
               if(listDeliveringOrders.length == 0) return Center(child:Text("You have O order"));
               else {
-                return ListView.builder(
+                return SingleChildScrollView(
+                    child:Container(
+                    height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+          physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: listDeliveringOrders.length,
                     itemBuilder:(context,index){
@@ -470,14 +518,22 @@ class _BodyState extends State<Body> {
                         ),
                       );
                     }
-                );
+          )));
               }
             }
             else {
               List<Order> tempList = defaultWaitingOrdersProvider.getDeliveringOrders();
               if(tempList.length > orders.length) listDeliveringOrders = tempList;
               else listDeliveringOrders = orders;
-              return ListView.builder(
+              return SingleChildScrollView(
+                  child:Container(
+                  height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: listDeliveringOrders.length,
                   itemBuilder:(context,index){
@@ -520,7 +576,8 @@ class _BodyState extends State<Body> {
                         ),
                     );
                   }
-
+          )
+                  )
               );
             }
 
@@ -551,7 +608,15 @@ Widget buildSwipeActionLeft() => Container(
               listReceivedOrders = defaultWaitingOrdersProvider.getReceivedOrders();
               if(listReceivedOrders.length == 0) return Center(child:Text("You have O order"));
               else {
-                return ListView.builder(
+                return SingleChildScrollView(
+                    child:Container(
+                    height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
+              physics: BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount: listReceivedOrders.length,
                     itemBuilder:(context,index){
@@ -561,6 +626,8 @@ Widget buildSwipeActionLeft() => Container(
                         child: OrderCardAdmin(item),
                       );
                     }
+          )
+                    )
                 );
               }
             }
@@ -568,7 +635,14 @@ Widget buildSwipeActionLeft() => Container(
               List<Order> tempList = defaultWaitingOrdersProvider.getReceivedOrders();
               if(tempList.length > orders.length) listReceivedOrders = tempList;
               else listReceivedOrders = orders;
-              return ListView.builder(
+              return SingleChildScrollView(
+                  child:Container(
+                  height: MediaQuery.of(context).size.height - 125,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          ),
+          child:ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: listReceivedOrders.length,
                   itemBuilder:(context,index){
@@ -578,7 +652,8 @@ Widget buildSwipeActionLeft() => Container(
                       child: OrderCardAdmin(item),
                     );
                   }
-
+                  )
+                  )
               );
             }
 

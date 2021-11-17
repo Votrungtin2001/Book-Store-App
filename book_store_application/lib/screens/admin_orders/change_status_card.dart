@@ -57,7 +57,7 @@ class _ChangeStatusCardState extends State<ChangeStatusCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text.rich(
                   TextSpan(

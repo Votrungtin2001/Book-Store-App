@@ -61,9 +61,10 @@ class _OrderDetailCardState extends State<OrderDetailCard> {
                   style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                   maxLines: 2,
                 ),
+                SizedBox(height: 10,),
                 Text(
                   bookInCart.getQUANTITY().toString(),
-                  style: TextStyle(color: Colors.black12, fontSize: 14),
+                  style: TextStyle(color: Colors.black38, fontSize: 14),
                 ),
                 SizedBox(height: 10,),
                 Text(currencyformat.format(bookInCart.getTOTAL_PRICE()) + "đ"),

@@ -10,6 +10,7 @@ import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/category_provider.dart';
 import 'package:book_store_application/firebase/providers/publisher_provider.dart';
 import 'package:book_store_application/screens/admin_edit_books/edit_book_screen.dart';
+import 'package:book_store_application/screens/admin_update_book/update_book_screen.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -514,7 +515,7 @@ class BooksOfCategoryView extends StatelessWidget {
               onTap: () => Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => EditBookScreen(),
+                  builder: (BuildContext context) => UpdateBookScreen(),
                 ),
               ),
               child: SizedBox(
@@ -571,19 +572,7 @@ class BooksOfCategoryView extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                             ),
-                                            Container(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                borderRadius: const BorderRadius.all(
-                                                  Radius.circular(32.0),
-                                                ),
-                                                onTap: () {},
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.favorite_border_outlined),
-                                                ),
-                                              ),
-                                            )
+
                                           ],
                                         ),
                                       ),
@@ -661,7 +650,7 @@ class BooksOfAuthorView extends StatelessWidget {
               onTap: () => Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => EditBookScreen(),
+                  builder: (BuildContext context) => UpdateBookScreen(),
                 ),
               ),
               child: SizedBox(
@@ -718,19 +707,7 @@ class BooksOfAuthorView extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                             ),
-                                            Container(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                borderRadius: const BorderRadius.all(
-                                                  Radius.circular(32.0),
-                                                ),
-                                                onTap: () {},
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.favorite_border_outlined),
-                                                ),
-                                              ),
-                                            )
+
                                           ],
                                         ),
                                       ),
@@ -809,7 +786,7 @@ class BooksOfPublisherView extends StatelessWidget {
               onTap: () => Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => EditBookScreen(),
+                  builder: (BuildContext context) => UpdateBookScreen(),
                 ),
               ),
               child: SizedBox(
@@ -866,19 +843,19 @@ class BooksOfPublisherView extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                             ),
-                                            Container(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                borderRadius: const BorderRadius.all(
-                                                  Radius.circular(32.0),
-                                                ),
-                                                onTap: () {},
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.favorite_border_outlined),
-                                                ),
-                                              ),
-                                            )
+                                            // Container(
+                                            //   color: Colors.transparent,
+                                            //   child: InkWell(
+                                            //     borderRadius: const BorderRadius.all(
+                                            //       Radius.circular(32.0),
+                                            //     ),
+                                            //     onTap: () {},
+                                            //     child: const Padding(
+                                            //       padding: EdgeInsets.all(8.0),
+                                            //       child: Icon(Icons.favorite_border_outlined),
+                                            //     ),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),

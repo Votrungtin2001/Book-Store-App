@@ -95,7 +95,6 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
                                         ],
                                       ),
                                     ),
-                                    BookListViewAdmin(),
                                   ]
                               );
                             }, childCount: 1)
@@ -111,10 +110,23 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
                           onTap: () {
                             FocusScope.of(context).requestFocus(FocusNode());
                           },
+                          child: SingleChildScrollView(
+                            child: Container(
+                                height: MediaQuery.of(context).size.height - 10,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: SingleChildScrollView(
+                                  physics: BouncingScrollPhysics(),
+                                  child: BookListViewAdmin(),
+                                )
+                            ),
                         )
                     ),
                   ),
                 ),
+                )
               ],
             ),
           )
@@ -172,7 +184,7 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
                       Radius.circular(32.0),
                     ),
                     onTap: () {
-                      // showSearch(context: context, delegate: DataSearch(presenter.books, presenter.suggestionBook, presenter.authors));
+                      showSearch(context: context, delegate: DataSearch(presenter.books, presenter.suggestionBook, presenter.authors));
                     },
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -184,31 +196,6 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Widget getSearchBarUI() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-      child: TextFormField(
-        style: const TextStyle(fontSize: 16,),
-        decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-            fillColor: Colors.transparent,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: const BorderSide(
-                    color: Colors.black)
-            ),
-            filled: true,
-            hintText: "Search your book..",
-            hintStyle: const TextStyle(color: Colors.black38),
-            prefixIcon: const Icon(Icons.search, color: Colors.black,)
-        ),
-        onEditingComplete: (){
-          //  showSearch(context: context, delegate: DataSearch());
-        },
       ),
     );
   }

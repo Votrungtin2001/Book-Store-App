@@ -1,4 +1,3 @@
-
 import 'package:book_store_application/MVP/Presenter/signUp_presenter.dart';
 import 'package:book_store_application/MVP/View/signUp_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';

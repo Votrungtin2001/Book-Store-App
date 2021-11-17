@@ -99,24 +99,38 @@ class _BooksListViewState extends State<BooksListView> with TickerProviderStateM
         ),
         Padding(
           padding: const EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
-              presenter.categories.length,
-                  (index) => CategoryCard(
-                icon: presenter.categories[index].getIMAGE_URL(),
-                text: presenter.categories[index].getNAME(),
-                press: () {
-                  setState(() {
-                    category_id = presenter.categories[index].getID();
-                    getBooksOfCategory(category_id);
-                    print('leng: ' + booksOfCategory.length.toString());
-                  });
-                },
-              ),
-            ),
+              child: Container(
+                height: 60 ,
+               // width: MediaQuery.of(context).size.width - 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:  List.generate(
+                        presenter.categories.length,
+                            (index) => CategoryCard(
+                          icon: presenter.categories[index].getIMAGE_URL(),
+                          text: presenter.categories[index].getNAME(),
+                          press: () {
+                            setState(() {
+                              category_id = presenter.categories[index].getID();
+                              getBooksOfCategory(category_id);
+                              print('leng: ' + booksOfCategory.length.toString());
+                            });
+                          },
+                        ),
+                      ),
+                    )
+                  ]
+
           ),
+              )
         ),
         Padding(
           padding: const EdgeInsets.only( bottom: 16),
@@ -571,19 +585,19 @@ class BooksOfCategoryView extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                             ),
-                                            Container(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                borderRadius: const BorderRadius.all(
-                                                  Radius.circular(32.0),
-                                                ),
-                                                onTap: () {},
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.favorite_border_outlined),
-                                                ),
-                                              ),
-                                            )
+                                            // Container(
+                                            //   color: Colors.transparent,
+                                            //   child: InkWell(
+                                            //     borderRadius: const BorderRadius.all(
+                                            //       Radius.circular(32.0),
+                                            //     ),
+                                            //     onTap: () {},
+                                            //     child: const Padding(
+                                            //       padding: EdgeInsets.all(8.0),
+                                            //       child: Icon(Icons.favorite_border_outlined),
+                                            //     ),
+                                            //   ),
+                                            // )
                                           ],
                                         ),
                                       ),
@@ -718,19 +732,7 @@ class BooksOfAuthorView extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                             ),
-                                            Container(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                borderRadius: const BorderRadius.all(
-                                                  Radius.circular(32.0),
-                                                ),
-                                                onTap: () {},
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.favorite_border_outlined),
-                                                ),
-                                              ),
-                                            )
+
                                           ],
                                         ),
                                       ),
@@ -866,19 +868,6 @@ class BooksOfPublisherView extends StatelessWidget {
                                                 color: Colors.grey,
                                               ),
                                             ),
-                                            Container(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                borderRadius: const BorderRadius.all(
-                                                  Radius.circular(32.0),
-                                                ),
-                                                onTap: () {},
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.favorite_border_outlined),
-                                                ),
-                                              ),
-                                            )
                                           ],
                                         ),
                                       ),
@@ -960,7 +949,7 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: press,
       child: SizedBox(
-        width: 46,
+        width: 100,
         child: Column(
           children: [
             Container(

@@ -24,9 +24,6 @@ class _MainPageState extends State<MainPage> {
           bottomIcons == BottomIcons.Message
               ? const Center( child: Text( "Hi, this is Chat page", style: TextStyle(fontSize: 18),),)
               : Container(),
-          bottomIcons == BottomIcons.Notification
-              ? const Center( child: Text( "Hi, this is Notification page", style: TextStyle(fontSize: 18),),)
-              : Container(),
           bottomIcons == BottomIcons.Account
               ? const ProfileScreen()
               : Container(),
@@ -56,15 +53,6 @@ class _MainPageState extends State<MainPage> {
                       bottomIcons: bottomIcons == BottomIcons.Message ? true : false,
                       icons: Icons.chat_bubble_outline_outlined,
                       text: "Chat"),
-                  BottomBar(
-                      onPressed: () {
-                        setState(() {
-                          bottomIcons = BottomIcons.Notification;
-                        });
-                      },
-                      bottomIcons: bottomIcons == BottomIcons.Notification ? true : false,
-                      icons: Icons.notifications_none_outlined,
-                      text: "Notification"),
                   BottomBar(
                       onPressed: () {
                         setState(() {
