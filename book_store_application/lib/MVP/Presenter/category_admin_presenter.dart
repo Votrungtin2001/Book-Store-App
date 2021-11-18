@@ -19,4 +19,11 @@ class CategoryAdminPresenter {
   void getBookList(){
     books = view.getBookList();
   }
+
+  String getCategoryName(int category_id) {
+    for(int i = 0; i < categories.length; i++) {
+      if(categories[i].getID() == category_id) return categories[i].getNAME();
+    }
+    return "";
+  }
 }

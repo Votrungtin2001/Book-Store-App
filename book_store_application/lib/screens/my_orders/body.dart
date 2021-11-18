@@ -186,7 +186,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                }
              }
              else {
-               List<Order> tempList = defaultWaitingOrdersProvider.getPreparingOrdersOfUser(user_id);
+               List<Order> tempList = defaultWaitingOrdersProvider.getWaitingOrdersOfUser(user_id);
                if(tempList.length > orders.length) listWaitingOrders = tempList;
                else listWaitingOrders = orders;
                return SingleChildScrollView(
