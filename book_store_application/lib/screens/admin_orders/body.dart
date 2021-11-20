@@ -84,7 +84,7 @@ class _BodyState extends State<Body> {
                             OrderPlaceWidgetWaiting(context, 0),
                             OrderPlaceWidgetPreparing(context, 1),
                             OrderPlaceWidgetDelivering(context, 2),
-                            OrderPlaceWidgetReceived(context, 4),
+                            OrderPlaceWidgetReceived(context, 3),
                           ],
                         )
                     )
@@ -156,7 +156,6 @@ class _BodyState extends State<Body> {
                                           }
                                           break;
                                         case DismissDirection.startToEnd:
-                                          print('here');
                                           String user_id = item.getUSER_ID();
                                           String order_id = item.getID();
                                           refOrders.child(user_id).child(order_id).update(

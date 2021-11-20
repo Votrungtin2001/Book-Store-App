@@ -223,6 +223,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_absolute_path:
+    dependency: "direct main"
+    description:
+      name: flutter_absolute_path
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
+  flutter_easyloading:
+    dependency: "direct main"
+    description:
+      name: flutter_easyloading
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -244,6 +258,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
+  flutter_spinkit:
+    dependency: transitive
+    description:
+      name: flutter_spinkit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.0"
   flutter_staggered_grid_view:
     dependency: transitive
     description:

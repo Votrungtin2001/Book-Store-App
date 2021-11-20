@@ -1,5 +1,6 @@
 import 'package:book_store_application/MVP/Model/Author.dart';
 import 'package:book_store_application/MVP/Model/Book.dart';
+import 'package:book_store_application/MVP/Model/Category.dart';
 import 'package:book_store_application/MVP/Model/Publisher.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/MVP/Presenter/category_presenter.dart';
@@ -8,7 +9,10 @@ import 'package:book_store_application/MVP/View/homeScreen_admin_view.dart';
 import 'package:book_store_application/firebase/helpers/books_services.dart';
 import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
+import 'package:book_store_application/firebase/providers/category_provider.dart';
+import 'package:book_store_application/firebase/providers/publisher_provider.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
+import 'package:book_store_application/screens/admin_book_detail/admin_book_detail_screen.dart';
 import 'package:book_store_application/screens/admin_edit_books/edit_book_screen.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,6 +57,10 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
     presenter.getSuggestionBookList();
     presenter.getAuthorList();
 
+
+    final publisherProvider = Provider.of<PublisherProvider>(context);
+    final categoryProvider = Provider.of<CategoryProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -66,7 +74,7 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
             },
             child: Column(
               children: [
-                getAppBarUI(),
+                getAppBarUI(publisherProvider.publishers, categoryProvider.categories),
                 Expanded(
                   child: NestedScrollView(
                     headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
@@ -136,7 +144,7 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
 
   }
 
-  Widget getAppBarUI() {
+  Widget getAppBarUI(List<Publisher> publishers, List<Category> categories) {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.transparent,
@@ -184,7 +192,7 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
                       Radius.circular(32.0),
                     ),
                     onTap: () {
-                      showSearch(context: context, delegate: DataSearch(presenter.books, presenter.suggestionBook, presenter.authors));
+                      showSearch(context: context, delegate: DataSearch(presenter.books, presenter.suggestionBook, presenter.authors, categories, publishers));
                     },
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -260,16 +268,59 @@ class DataSearch extends SearchDelegate<String>{
   List<Book> books = [];
   List<Book> suggestBooks = [];
   List<Author> authors = [];
+  List<Category> categories = [];
+  List<Publisher> publishers = [];
 
-  DataSearch(List<Book> list1, List<Book> list2, List<Author> list3) {
+  DataSearch(List<Book> list1, List<Book> list2, List<Author> list3, List<Category> list4, List<Publisher> list5) {
     this.books = list1;
     this.suggestBooks = list2;
     this.authors = list3;
+    this.categories = list4;
+    this.publishers = list5;
   }
 
   String getAuthor(List<Author> list, int ID) {
     for(int i = 0; i < list.length; i++) {
       if(list[i].getID() == ID) return list[i].getNAME();
+    }
+    return "";
+  }
+
+  String getAuthorName(List<Author> authors, List<Book> books, int book_id) {
+    int author_id = 0;
+    for(int i = 0; i < books.length; i++) {
+      if(books[i].getID() == book_id) author_id = books[i].getAUTHOR_ID();
+    }
+    for(int i = 0; i < authors.length; i++) {
+      if(authors[i].getID() == author_id) {
+        return authors[i].getNAME();
+      }
+    }
+    return "";
+  }
+
+  String getCategoryName(List<Category> categories, List<Book> books, int book_id) {
+    int category_id = 0;
+    for(int i = 0; i < books.length; i++) {
+      if(books[i].getID() == book_id) category_id = books[i].getCATEGORY_ID();
+    }
+    for(int i = 0; i < categories.length; i++) {
+      if(categories[i].getID() == category_id) {
+        return categories[i].getNAME();
+      }
+    }
+    return "";
+  }
+
+  String getPublisherName(List<Publisher> publishers, List<Book> books, int book_id) {
+    int publisher_id = 0;
+    for(int i = 0; i < books.length; i++) {
+      if(books[i].getID() == book_id) publisher_id = books[i].getPUBLISHER_ID();
+    }
+    for(int i = 0; i < publishers.length; i++) {
+      if(publishers[i].getID() == publisher_id) {
+        return publishers[i].getNAME();
+      }
     }
     return "";
   }
@@ -325,7 +376,10 @@ class DataSearch extends SearchDelegate<String>{
           onTap: ()=> Navigator.push<dynamic>(
             context,
             MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => EditBookScreen(),
+              builder: (BuildContext context) => AdminBookDetailScreen(results[index],
+                  getCategoryName(categories, books, results[index].getID()),
+                  getAuthorName(authors, books, results[index].getID()),
+                  getPublisherName(publishers, books, results[index].getID())),
             ),
           ),
           leading: Image.network(results[index].getIMAGE_URL(), fit: BoxFit.cover), // image book

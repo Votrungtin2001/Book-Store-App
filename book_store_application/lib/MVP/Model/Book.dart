@@ -36,10 +36,12 @@ class Book {
   void setAUTHOR_ID(int AUTHOR_ID) {this.author_id = AUTHOR_ID;}
 
   String getGENRE() {return this.genre;}
+  void setGENRE(String GENRE) {this.genre = GENRE;}
+
   void setFAVORITE(String GENRE) {this.genre = GENRE;}
 
   int getCATEGORY_ID() {return this.category_id;}
-  void setGENRE_ID(int CATEGORY_ID) {this.category_id = CATEGORY_ID;}
+  void setCATEGORY_ID(int CATEGORY_ID) {this.category_id = CATEGORY_ID;}
 
   List<String> getList_IMAGE_URL() {return this.image_url;}
   void setIMAGE_URL(List<String> IMAGE_URL) {this.image_url = IMAGE_URL;}

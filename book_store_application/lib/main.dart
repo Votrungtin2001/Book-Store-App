@@ -5,6 +5,7 @@ import 'package:book_store_application/screens/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:book_store_application/shared_preferences.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 import 'MVP/Model/User.dart';
@@ -30,7 +31,26 @@ void main() async {
     ],
     child: const MyApp(),
   ));
+  configLoading();
 }
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+    //..customAnimation = CustomAnimation();
+}
+
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -61,6 +81,7 @@ class MyAppState extends State<MyApp> {
       value: AuthenticationServices().user,
       child: MaterialApp(
         home: Wrapper(),
+        builder: EasyLoading.init(),
         debugShowCheckedModeBanner: false,
         title: 'Book Store App',
         theme: ThemeData(

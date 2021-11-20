@@ -20,6 +20,76 @@ class BooksProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void addBook(Book book) {
+    books.add(book);
+    notifyListeners();
+  }
+
+  void updateTitle(int book_id, String title) {
+    for(int i = 0; i < books.length; i++) {
+      if(book_id == books[i].getID()) {
+        books[i].setTITLE(title);
+        notifyListeners();
+      }
+    }
+  }
+
+  void updateCategory_Author_Publisher(int book_id, int category_id, int author_id, int publisher_id) {
+    for(int i = 0; i < books.length; i++) {
+      if(book_id == books[i].getID()) {
+        books[i].setCATEGORY_ID(category_id);
+        books[i].setAUTHOR_ID(author_id);
+        books[i].setPUBLISHER_ID(publisher_id);
+        notifyListeners();
+      }
+    }
+  }
+
+  void updateGenre(int book_id, String genre) {
+    for(int i = 0; i < books.length; i++) {
+      if(book_id == books[i].getID()) {
+        books[i].setGENRE(genre);
+        notifyListeners();
+      }
+    }
+  }
+
+  void updatePublishing_Year(int book_id, int publishing_year) {
+    for(int i = 0; i < books.length; i++) {
+      if(book_id == books[i].getID()) {
+        books[i].setPUBLISHING_YEAR(publishing_year);
+        notifyListeners();
+      }
+    }
+  }
+
+  void updatePrice(int book_id, double price) {
+    for(int i = 0; i < books.length; i++) {
+      if(book_id == books[i].getID()) {
+        books[i].setPRICE(price);
+        notifyListeners();
+      }
+    }
+  }
+
+  void updateSummary(int book_id, String summary) {
+    for(int i = 0; i < books.length; i++) {
+      if(book_id == books[i].getID()) {
+        books[i].setSUMMARY(summary);
+        notifyListeners();
+      }
+    }
+  }
+
+  void updateImageUrl(int book_id, List<String> image_url) {
+    for(int i = 0; i < books.length; i++) {
+      if(book_id == books[i].getID()) {
+        books[i].setIMAGE_URL(image_url);
+        notifyListeners();
+      }
+    }
+  }
+
   loadSuggestionBooks({int? id})async{
     sugesstionBooks = await _booksServices.getSuggestionBooks();
     notifyListeners();

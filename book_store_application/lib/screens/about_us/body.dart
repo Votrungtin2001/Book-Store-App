@@ -1,20 +1,31 @@
 import 'package:book_store_application/screens/login/login_screen.dart';
 import 'package:book_store_application/screens/sign_up/sign_up_screen.dart';
 import 'package:book_store_application/screens/start/components/background.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 
 class Body extends StatefulWidget {
+
   @override
   _BodyState createState() => _BodyState();
 
 }
 
 class _BodyState extends State<Body>{
+  String owner = "";
+  String address = "";
+  String phone = "";
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String collection = "Information";
+
   @override
   Widget build(BuildContext context) {
+    getOwnerName();
+    getAddress();
+    getPhone();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -62,21 +73,52 @@ class _BodyState extends State<Body>{
                 style: TextStyle(fontFamily: 'AH-Little Missy', fontSize: 80)
             ),
             SizedBox(height: 10,),
-            const Text('MINH THI ĐẸP TRAI',
+            Text(owner,
                 style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700)
             ),
             SizedBox(height: 10,),
-            const Text('Address: 15/9 đường 19, Linh Chiểu, Thủ Đức',
+            Text('Address: ' + address,
                 style: TextStyle(fontSize: 13)
             ),
             SizedBox(height: 10,),
-            const Text('Contact: 012343653',
+            Text('Contact: ' + phone,
                 style: TextStyle(fontSize: 13)
             ),
           ],
         )
       )
     );
+  }
+
+  Future<void> getOwnerName() async {
+    await _firestore.collection(collection).doc('Bibliophile').get().then((result) {
+      if(result.exists) {
+        setState(() {
+          owner = result.get('owner');
+        });
+      }
+
+    });
+  }
+
+  Future<void> getAddress() async {
+    await _firestore.collection(collection).doc('Bibliophile').get().then((result) {
+      if(result.exists) {
+        setState(() {
+          address = result.get('address');
+        });
+      }
+    });
+  }
+
+  Future<void> getPhone() async {
+    await _firestore.collection(collection).doc('Bibliophile').get().then((result) {
+      if(result.exists) {
+        setState(() {
+          phone = result.get('phone');
+        });
+      }
+    });
   }
 }
 

@@ -1,9 +1,11 @@
 import 'package:book_store_application/screens/login/login_screen.dart';
 import 'package:book_store_application/screens/sign_up/sign_up_screen.dart';
 import 'package:book_store_application/screens/start/components/background.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class Body extends StatefulWidget {
@@ -13,8 +15,22 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body>{
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String collection = "Information";
+
+  final formKey = GlobalKey<FormState>();
+  String owner = "";
+  String hint_owner = "";
+  TextEditingController _ownerController = TextEditingController();
+
+  String address = "";
+  String hint_address = "";
+  TextEditingController _addressController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    getOwnerName();
+    getAddress();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -62,36 +78,101 @@ class _BodyState extends State<Body>{
                     style: TextStyle(fontFamily: 'AH-Little Missy', fontSize: 80)
                 ),
                 SizedBox(height: 10,),
-                Container(
-                  padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-                        fillColor: Colors.transparent,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: const BorderSide(color: Colors.black)
-                        ),
-                        filled: true,
-                        hintStyle: const TextStyle(color: Colors.black38),
-                        hintText: 'Name'
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-                        fillColor: Colors.transparent,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: const BorderSide(color: Colors.black)
-                        ),
-                        filled: true,
-                        hintStyle: const TextStyle(color: Colors.black38),
-                        hintText: 'Address'
+                SizedBox(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
+                            child: TextFormField(
+                              controller: _ownerController,
+                              onChanged: (value) {
+                                setState(() {
+                                  owner = value;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                  fillColor: Colors.transparent,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: const BorderSide(color: Colors.black)
+                                  ),
+                                  filled: true,
+                                  hintStyle: const TextStyle(color: Colors.black38),
+                                  hintText: hint_owner,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
+                          Container(
+                            padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
+                            child: TextFormField(
+                              controller: _addressController,
+                              onChanged: (value) {
+                                setState(() {
+                                  address = value;
+                                });
+                              },
+                              decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                  fillColor: Colors.transparent,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderSide: const BorderSide(color: Colors.black)
+                                  ),
+                                  filled: true,
+                                  hintStyle: const TextStyle(color: Colors.black38),
+                                  hintText: hint_address,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RaisedButton(
+                                onPressed: () {
+                                  if(owner != "") {
+                                    _firestore.collection(collection).doc('Bibliophile').update({'owner': owner});
+                                    setState(() {
+                                      hint_owner = owner;
+                                      owner = "";
+                                    });
+                                  }
+                                  if(address != "") {
+                                    _firestore.collection(collection).doc('Bibliophile').update({'address': address});
+                                    setState(() {
+                                      hint_address = address;
+                                      address = "";
+                                    });
+                                  }
+
+                                  _ownerController.text = "";
+                                  _addressController.text = "";
+                                  Fluttertoast.showToast(msg: "Updated Bibliophile's information successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                                },
+
+
+                                color: Colors.blue,
+                                padding: EdgeInsets.symmetric(horizontal: 50),
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Text(
+                                  "SAVE",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      letterSpacing: 2.2,
+                                      color: Colors.white),
+                                ),
+                              )
+                            ],
+                          )
+
+                        ]
                     ),
                   ),
                 ),
@@ -99,6 +180,27 @@ class _BodyState extends State<Body>{
             )
         )
     );
+  }
+
+  Future<void> getOwnerName() async {
+    await _firestore.collection(collection).doc('Bibliophile').get().then((result) {
+      if(result.exists) {
+        setState(() {
+          hint_owner = result.get('owner');
+        });
+      }
+
+    });
+  }
+
+  Future<void> getAddress() async {
+    await _firestore.collection(collection).doc('Bibliophile').get().then((result) {
+      if(result.exists) {
+        setState(() {
+          hint_address = result.get('address');
+        });
+      }
+    });
   }
 }
 

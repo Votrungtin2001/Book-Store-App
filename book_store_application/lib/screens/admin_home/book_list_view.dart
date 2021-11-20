@@ -9,6 +9,7 @@ import 'package:book_store_application/firebase/providers/author_provider.dart';
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/category_provider.dart';
 import 'package:book_store_application/firebase/providers/publisher_provider.dart';
+import 'package:book_store_application/screens/admin_book_detail/admin_book_detail_screen.dart';
 import 'package:book_store_application/screens/admin_edit_books/edit_book_screen.dart';
 import 'package:book_store_application/screens/admin_update_book/update_book_screen.dart';
 import 'package:book_store_application/screens/book_detail/book_detail_screen.dart';
@@ -150,7 +151,9 @@ class _BookListViewAdminState extends State<BookListViewAdmin> with TickerProvid
                       animationController?.forward();
                       return BooksOfCategoryView(
                         book: booksOfCategory[index],
+                        category: presenter.getCategoryName(booksOfCategory[index].getCATEGORY_ID()),
                         author: getAuthorName(booksOfCategory[index].getAUTHOR_ID()),
+                        publisher: getPublisherName(booksOfCategory[index].getPUBLISHER_ID()),
                         animation: animation,
                         animationController: animationController,
                       );
@@ -219,7 +222,9 @@ class _BookListViewAdminState extends State<BookListViewAdmin> with TickerProvid
                       animationController?.forward();
                       return BooksOfAuthorView(
                         book: booksOfAuthor[index],
+                        category: presenter.getCategoryName(booksOfAuthor[index].getCATEGORY_ID()),
                         author: getAuthorName(booksOfAuthor[index].getAUTHOR_ID()),
+                        publisher: getPublisherName(booksOfAuthor[index].getPUBLISHER_ID()),
                         animation: animation,
                         animationController: animationController,
                       );
@@ -289,7 +294,9 @@ class _BookListViewAdminState extends State<BookListViewAdmin> with TickerProvid
                       animationController?.forward();
                       return BooksOfPublisherView(
                         book: booksOfPublisher[index],
+                        category: presenter.getCategoryName(booksOfPublisher[index].getCATEGORY_ID()),
                         author: getAuthorName(booksOfPublisher[index].getAUTHOR_ID()),
+                        publisher: getPublisherName(booksOfPublisher[index].getPUBLISHER_ID()),
                         animation: animation,
                         animationController: animationController,
                       );
@@ -490,7 +497,9 @@ class BooksOfCategoryView extends StatelessWidget {
   BooksOfCategoryView(
       {Key? key,
         this.book,
+        this.category,
         this.author,
+        this.publisher,
         this.animationController,
         this.animation})
       : super(key: key);
@@ -499,6 +508,8 @@ class BooksOfCategoryView extends StatelessWidget {
   final AnimationController? animationController;
   final Animation<double>? animation;
   final String? author;
+  final String? publisher;
+  final String? category;
   @override
   Widget build(BuildContext context) {
     final currencyformat = new NumberFormat("#,###,##0");
@@ -515,7 +526,7 @@ class BooksOfCategoryView extends StatelessWidget {
               onTap: () => Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => UpdateBookScreen(),
+                  builder: (BuildContext context) => AdminBookDetailScreen(book, category, author, publisher),
                 ),
               ),
               child: SizedBox(
@@ -628,12 +639,14 @@ class BooksOfCategoryView extends StatelessWidget {
 }
 
 class BooksOfAuthorView extends StatelessWidget {
-  BooksOfAuthorView({Key? key, this.book, this.author, this.animationController, this.animation}) : super(key: key);
+  BooksOfAuthorView({Key? key, this.book, this.category, this.author, this.publisher, this.animationController, this.animation}) : super(key: key);
 
   final Book? book;
+  final String? category;
   final AnimationController? animationController;
   final Animation<double>? animation;
   final String? author;
+  final String? publisher;
   @override
   Widget build(BuildContext context) {
     final currencyformat = new NumberFormat("#,###,##0");
@@ -650,7 +663,7 @@ class BooksOfAuthorView extends StatelessWidget {
               onTap: () => Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => UpdateBookScreen(),
+                  builder: (BuildContext context) => AdminBookDetailScreen(book, category, author, publisher),
                 ),
               ),
               child: SizedBox(
@@ -763,12 +776,14 @@ class BooksOfAuthorView extends StatelessWidget {
 }
 
 class BooksOfPublisherView extends StatelessWidget {
-  BooksOfPublisherView({Key? key, this.book, this.author, this.animationController,this.animation}) : super(key: key);
+  BooksOfPublisherView({Key? key, this.book, this.category, this.author, this.publisher, this.animationController,this.animation}) : super(key: key);
 
   final Book? book;
+  final String? category;
   final AnimationController? animationController;
   final Animation<double>? animation;
   final String? author;
+  final String? publisher;
 
   @override
   Widget build(BuildContext context) {
@@ -786,7 +801,7 @@ class BooksOfPublisherView extends StatelessWidget {
               onTap: () => Navigator.push<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => UpdateBookScreen(),
+                  builder: (BuildContext context) => AdminBookDetailScreen(book, category, author, publisher),
                 ),
               ),
               child: SizedBox(
