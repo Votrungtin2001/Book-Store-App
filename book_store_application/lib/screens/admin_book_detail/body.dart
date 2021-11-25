@@ -39,13 +39,70 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   centerTitle: true,
+      //   // leading: TextButton(
+      //   //   child: Row(
+      //   //     children: const [
+      //   //       Icon(Icons.navigate_before, color: Colors.black, size: 25,),
+      //   //       Text("Back", style: TextStyle(color: Colors.black,
+      //   //           fontSize: 15,
+      //   //           fontWeight: FontWeight.w400),
+      //   //       )
+      //   //     ],
+      //   //   ),
+      //   //   onPressed: () {
+      //   //     Navigator.pop(context);
+      //   //   },
+      //   // ),
+      //   //title:
+      //   actions: <Widget>[
+      //     Container(
+      //       width: MediaQuery.of(context).size.width,
+      //       height: 30,
+      //       child: Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: [
+      //           TextButton(
+      //             child: Row(
+      //               children: const [
+      //                 Icon(
+      //                   Icons.navigate_before, color: Colors.black, size: 35,),
+      //                 Text("Back", style: TextStyle(color: Colors.black,
+      //                     fontSize: 17,
+      //                     fontWeight: FontWeight.w400),
+      //                 )
+      //               ],
+      //             ),
+      //             onPressed: () { Navigator.pop(context);},
+      //           ),
+      //           Text('Book Detail',
+      //             style: TextStyle(
+      //                 fontWeight: FontWeight.w700,
+      //                 fontSize: 18,
+      //                 color: Colors.black
+      //             ),
+      //           ),
+      //
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           getAppBarUI(),
           AdminBookImages(book),
-          Expanded(
+          Container(
+                height: MediaQuery.of(context).size.height -406 ,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: TopRoundedContainer(
                   color: Colors.white,
                   child: Column(
@@ -59,8 +116,7 @@ class _BodyState extends State<Body> {
                             TopRoundedContainer(
                               color: Colors.white,
                               child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 5, right: 5,),
+                                padding: const EdgeInsets.only(left: 5, right: 5,),
                                 child: AdminCustomTabBar(book),
                               ),
                             ),
@@ -71,7 +127,8 @@ class _BodyState extends State<Body> {
                   ),
                 ),
               )
-          ),
+            )
+
         ],
       ),
     );
@@ -88,7 +145,7 @@ class _BodyState extends State<Body> {
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
-              width: AppBar().preferredSize.height + 40,
+              width: AppBar().preferredSize.height + 38,
               height: AppBar().preferredSize.height,
               child: Material(
                 color: Colors.transparent,
@@ -106,24 +163,24 @@ class _BodyState extends State<Body> {
                                 fontWeight: FontWeight.w400),)
                           ],
                         ),
-                        onPressed: () { Navigator.pop(context);},
+                        onPressed: () {
+                          Navigator.pop(context);
+                          },
                       )
                   ),
                 ),
               ),
             ),
-            const Expanded(
-              child: Center(
+           Center(
                 child: Text(
-                  'Book Detail',
+                  '              Book Detail',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
-
                   ),
                 ),
               ),
-            ),
+
           ],
         ),
       ),

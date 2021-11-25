@@ -58,7 +58,11 @@ class _AdminCustomTabBarState extends State<AdminCustomTabBar> with SingleTicker
 
     getQuantity(booksProvider.books[index_book].getID());
 
-    return Padding(
+    return Container(
+      height: MediaQuery.of(context).size.height - 326,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+      ),
       padding: const EdgeInsets.only(left: 10.0),
       child: Column (
           children: <Widget>[
@@ -85,7 +89,7 @@ class _AdminCustomTabBarState extends State<AdminCustomTabBar> with SingleTicker
                 ]
             ),
             SizedBox(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height - 374,
                 child: TabBarView(
                     controller: _tabController,
                     children: [

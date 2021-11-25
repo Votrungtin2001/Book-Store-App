@@ -60,24 +60,6 @@ class _AdminBookDescriptionState extends State<AdminBookDescription> with Single
                 ),
               )
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Container(
-              padding: const EdgeInsets.all(1),
-              width: 42,
-              decoration: const BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                ),
-              ),
-              child: IconButton( onPressed: () {
-              },
-
-                  icon: Icon(Icons.favorite_rounded, color: Colors.white)),
-            ),
-          ),
         ],
       ),
     );

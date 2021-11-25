@@ -103,25 +103,38 @@ class _BookListViewAdminState extends State<BookListViewAdmin> with TickerProvid
             )
         ),
         Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
-              presenter.categories.length,
-                  (index) => CategoryCard(
-                icon: presenter.categories[index].getIMAGE_URL(),
-                text: presenter.categories[index].getNAME(),
-                press: () {
-                  setState(() {
-                    category_id = presenter.categories[index].getID();
-                    getBooksOfCategory(category_id);
-                    print('leng: ' + booksOfCategory.length.toString());
-                  });
-                },
-              ),
-            ),
-          ),
+            padding: const EdgeInsets.all(8),
+            child: Container(
+                height: 60 ,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: List.generate(
+                          presenter.categories.length,
+                              (index) => CategoryCard(
+                            icon: presenter.categories[index].getIMAGE_URL(),
+                            text: presenter.categories[index].getNAME(),
+                            press: () {
+                              setState(() {
+                                category_id = presenter.categories[index].getID();
+                                getBooksOfCategory(category_id);
+                                print('leng: ' + booksOfCategory.length.toString());
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ]
+                )
+            )
         ),
         Padding(
           padding: const EdgeInsets.only( bottom: 16),
@@ -952,7 +965,7 @@ class CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: press,
       child: SizedBox(
-        width: 46,
+        width: 100,
         child: Column(
           children: [
             Container(

@@ -1,4 +1,5 @@
 import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
+import 'package:book_store_application/screens/admin_chat/chat_screen_admin.dart';
 import 'package:book_store_application/screens/admin_profile/ProfileAdmin.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               ? HomeScreenAdmin()
               : Container(),
           bottomIcons == BottomIcons.Message
-              ? const Center( child: Text( "Hi, this is Chat page", style: TextStyle(fontSize: 18),),)
+              ? ChatScreenAdmin()
               : Container(),
           bottomIcons == BottomIcons.Book
               ? const EditBookScreen()

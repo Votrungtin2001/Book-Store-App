@@ -78,7 +78,8 @@ class _BodyState extends State<Body>{
                     style: TextStyle(fontFamily: 'AH-Little Missy', fontSize: 80)
                 ),
                 SizedBox(height: 10,),
-                SizedBox(
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Form(
                     key: formKey,
                     child: Column(
@@ -130,8 +131,9 @@ class _BodyState extends State<Body>{
                               ),
                             ),
                           ),
+                          SizedBox(height: 20,),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               RaisedButton(
                                 onPressed: () {

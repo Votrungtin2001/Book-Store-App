@@ -41,7 +41,7 @@ class _AdminEditBookButtonState extends State<AdminEditBookButton> with TickerPr
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [

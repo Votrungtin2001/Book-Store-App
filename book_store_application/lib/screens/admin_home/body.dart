@@ -154,57 +154,35 @@ class _BodyState extends State<Body> implements HomeScreenAdminView{
             top: MediaQuery.of(context).padding.top, left: 8, right: 8),
         child: Row(
           children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              width: AppBar().preferredSize.height + 40,
-              height: AppBar().preferredSize.height,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: const BorderRadius.all(Radius.circular(32.0),),
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.menu)),
-                  ),
-                ),
-              ),
-            ),
-            const Expanded(
+            Expanded(
               child: Center(
                 child: Text(
-                  'bibliophile',
+                  '   bibliophile',
                   style: TextStyle(
                     fontFamily: 'AH-Little Missy',
                     fontWeight: FontWeight.w400,
                     fontSize: 36,
                   ),
                 ),
+                )
+
+            ),
+            Material(
+            color: Colors.transparent,
+              child: InkWell(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(32.0),
+                ),
+                onTap: () {
+                  showSearch(context: context, delegate: DataSearch(presenter.books, presenter.suggestionBook, presenter.authors, categories, publishers));
+                },
+                child: Icon( Icons.search_outlined ),
               ),
             ),
-            Row(
-              children: [
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(32.0),
-                    ),
-                    onTap: () {
-                      showSearch(context: context, delegate: DataSearch(presenter.books, presenter.suggestionBook, presenter.authors, categories, publishers));
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon( Icons.search_outlined ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
+          ]
+        )
+      )
+
     );
   }
 
