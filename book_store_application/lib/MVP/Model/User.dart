@@ -21,6 +21,7 @@ class User_Model {
     this.photo = Photo;
   }
 
+
   String getID() {return this.id;}
   void setID(String ID) {this.id = ID;}
 
