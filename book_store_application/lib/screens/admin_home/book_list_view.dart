@@ -685,9 +685,7 @@ class BooksOfAuthorView extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        const SizedBox(
-                          width: 48,
-                        ),
+                        const SizedBox(width: 48,),
                         Expanded(
                           child: Container(
                             decoration: const BoxDecoration(

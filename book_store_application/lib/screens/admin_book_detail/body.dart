@@ -173,7 +173,7 @@ class _BodyState extends State<Body> {
             ),
            Center(
                 child: Text(
-                  '              Book Detail',
+                  '           Book Detail',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,

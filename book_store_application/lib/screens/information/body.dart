@@ -63,122 +63,134 @@ class _BodyState extends State<Body>{
             ),
           ],
         ),
-        body: Background(
-            child: Column(
-              children: <Widget>[
-                const SizedBox(height: 135,),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: SvgPicture.asset("assets/images/aboutus.svg",
-                    height: size.height*0.35,
+        body: SingleChildScrollView(
+            child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height,
+                  maxWidth: MediaQuery.of(context).size.width,
+                ),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/bg2.png"),
+                    fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 20,),
-                const Text('bibliophile',
-                    style: TextStyle(fontFamily: 'AH-Little Missy', fontSize: 80)
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
-                            child: TextFormField(
-                              controller: _ownerController,
-                              onChanged: (value) {
-                                setState(() {
-                                  owner = value;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-                                  fillColor: Colors.transparent,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: const BorderSide(color: Colors.black)
-                                  ),
-                                  filled: true,
-                                  hintStyle: const TextStyle(color: Colors.black38),
-                                  hintText: hint_owner,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10,),
-                          Container(
-                            padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
-                            child: TextFormField(
-                              controller: _addressController,
-                              onChanged: (value) {
-                                setState(() {
-                                  address = value;
-                                });
-                              },
-                              decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
-                                  fillColor: Colors.transparent,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                      borderSide: const BorderSide(color: Colors.black)
-                                  ),
-                                  filled: true,
-                                  hintStyle: const TextStyle(color: Colors.black38),
-                                  hintText: hint_address,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 20,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              RaisedButton(
-                                onPressed: () {
-                                  if(owner != "") {
-                                    _firestore.collection(collection).doc('Bibliophile').update({'owner': owner});
-                                    setState(() {
-                                      hint_owner = owner;
-                                      owner = "";
-                                    });
-                                  }
-                                  if(address != "") {
-                                    _firestore.collection(collection).doc('Bibliophile').update({'address': address});
-                                    setState(() {
-                                      hint_address = address;
-                                      address = "";
-                                    });
-                                  }
-
-                                  _ownerController.text = "";
-                                  _addressController.text = "";
-                                  Fluttertoast.showToast(msg: "Updated Bibliophile's information successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-                                },
-
-
-                                color: Colors.blue,
-                                padding: EdgeInsets.symmetric(horizontal: 50),
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Text(
-                                  "SAVE",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      letterSpacing: 2.2,
-                                      color: Colors.white),
-                                ),
-                              )
-                            ],
-                          )
-
-                        ]
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 135,),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: SvgPicture.asset("assets/images/aboutus.svg",
+                        height: size.height*0.35,
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                    SizedBox(height: 20,),
+                    const Text('bibliophile',
+                        style: TextStyle(fontFamily: 'AH-Little Missy', fontSize: 80)
+                    ),
+                    SizedBox(height: 10,),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
+                                child: TextFormField(
+                                  controller: _ownerController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      owner = value;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: const BorderSide(color: Colors.black)
+                                    ),
+                                    filled: true,
+                                    hintStyle: const TextStyle(color: Colors.black38),
+                                    hintText: hint_owner,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10,),
+                              Container(
+                                padding: EdgeInsets.only( top: 4.0, bottom: 4.0),
+                                child: TextFormField(
+                                  controller: _addressController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      address = value;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        borderSide: const BorderSide(color: Colors.black)
+                                    ),
+                                    filled: true,
+                                    hintStyle: const TextStyle(color: Colors.black38),
+                                    hintText: hint_address,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 20,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  RaisedButton(
+                                    onPressed: () {
+                                      if(owner != "") {
+                                        _firestore.collection(collection).doc('Bibliophile').update({'owner': owner});
+                                        setState(() {
+                                          hint_owner = owner;
+                                          owner = "";
+                                        });
+                                      }
+                                      if(address != "") {
+                                        _firestore.collection(collection).doc('Bibliophile').update({'address': address});
+                                        setState(() {
+                                          hint_address = address;
+                                          address = "";
+                                        });
+                                      }
+
+                                      _ownerController.text = "";
+                                      _addressController.text = "";
+                                      Fluttertoast.showToast(msg: "Updated Bibliophile's information successfully", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+                                    },
+
+
+                                    color: Colors.blue,
+                                    padding: EdgeInsets.symmetric(horizontal: 50),
+                                    elevation: 2,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Text(
+                                      "SAVE",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          letterSpacing: 2.2,
+                                          color: Colors.white),
+                                    ),
+                                  )
+                                ],
+                              )
+
+                            ]
+                        ),
+                      ),
+                    ),
+                  ],
+                )
             )
         )
     );
@@ -205,5 +217,4 @@ class _BodyState extends State<Body>{
     });
   }
 }
-
 

@@ -60,7 +60,7 @@ class _CustomTabBarState extends State<CustomTabBar> with SingleTickerProviderSt
                 labelColor: Colors.black,
                 isScrollable: true,
                 labelPadding: const EdgeInsets.only(right: 45.0),
-                unselectedLabelColor: const Color(0xFFCDCDCD),
+                unselectedLabelColor: Colors.grey,
                 tabs: const [
                   Tab(
                     child: Text(

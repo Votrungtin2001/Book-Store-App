@@ -43,27 +43,10 @@ class _AdminEditBookButtonState extends State<AdminEditBookButton> with TickerPr
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.remove),
-            onPressed: () {
-
-            },
-          ),
-          const SizedBox(width: 10),
-          Text("0"),
-          const SizedBox(width: 10),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-
-            },
-          ),
-          Spacer(),
-          TextButton(
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
+        child: Center(
+            child: TextButton(
+              style: TextButton.styleFrom(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               primary: Colors.white,
               backgroundColor: Colors.blue,
@@ -83,9 +66,7 @@ class _AdminEditBookButtonState extends State<AdminEditBookButton> with TickerPr
               ),
             ),
           ),
-        ],
-      ),
+        )
     );
   }
-
 }
