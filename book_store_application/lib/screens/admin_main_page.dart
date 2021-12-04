@@ -30,7 +30,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               ? HomeScreenAdmin()
               : Container(),
           bottomIcons == BottomIcons.Message
-              ? ChatScreenAdmin()
+              ? Center(child: Text('Chat'),)
               : Container(),
           bottomIcons == BottomIcons.Book
               ? const EditBookScreen()
