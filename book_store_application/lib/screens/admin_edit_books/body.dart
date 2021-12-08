@@ -536,7 +536,7 @@ class _BodyState extends State<Body> {
                                   if(fileImageArray.length == 1) {
                                     firebase_storage.Reference ref = storage.ref().child(fileImageArray[0].path);
                                     firebase_storage.UploadTask uploadTask = ref.putFile(fileImageArray[0]);
-                                    uploadTask.whenComplete(() async {
+                                    await uploadTask.whenComplete(() async {
                                       String url = await ref.getDownloadURL();
                                       if(url != "") {
                                         await Books.doc(newIDBook.toString()).update({'image_url': FieldValue.arrayUnion([url])});
@@ -560,7 +560,7 @@ class _BodyState extends State<Body> {
                                     List<String> image_url = [];
                                     firebase_storage.Reference ref1 = storage.ref().child(fileImageArray[0].path);
                                     firebase_storage.UploadTask uploadTask1 = ref1.putFile(fileImageArray[0]);
-                                    uploadTask1.whenComplete(() async {
+                                    await uploadTask1.whenComplete(() async {
                                       String url1 = await ref1.getDownloadURL();
                                       if(url1 != "") {
                                         await Books.doc(newIDBook.toString()).update({'image_url': FieldValue.arrayUnion([url1])});
@@ -570,7 +570,7 @@ class _BodyState extends State<Body> {
 
                                     firebase_storage.Reference ref2 = storage.ref().child(fileImageArray[1].path);
                                     firebase_storage.UploadTask uploadTask2 = ref2.putFile(fileImageArray[1]);
-                                    uploadTask2.whenComplete(() async {
+                                    await uploadTask2.whenComplete(() async {
                                       String url2 = await ref2.getDownloadURL();
                                       if(url2 != "") {
                                         await Books.doc(newIDBook.toString()).update({'image_url': FieldValue.arrayUnion([url2])});
@@ -591,7 +591,7 @@ class _BodyState extends State<Body> {
                                     List<String> image_url = [];
                                     firebase_storage.Reference ref1 = storage.ref().child(fileImageArray[0].path);
                                     firebase_storage.UploadTask uploadTask1 = ref1.putFile(fileImageArray[0]);
-                                    uploadTask1.whenComplete(() async {
+                                    await uploadTask1.whenComplete(() async {
                                       String url1 = await ref1.getDownloadURL();
                                       if(url1 != "") {
                                         await Books.doc(newIDBook.toString()).update({'image_url': FieldValue.arrayUnion([url1])});
@@ -601,7 +601,7 @@ class _BodyState extends State<Body> {
 
                                     firebase_storage.Reference ref2 = storage.ref().child(fileImageArray[1].path);
                                     firebase_storage.UploadTask uploadTask2 = ref2.putFile(fileImageArray[1]);
-                                    uploadTask2.whenComplete(() async {
+                                    await uploadTask2.whenComplete(() async {
                                       String url2 = await ref2.getDownloadURL();
                                       if(url2 != "") {
                                         await Books.doc(newIDBook.toString()).update({'image_url': FieldValue.arrayUnion([url2])});
@@ -611,7 +611,7 @@ class _BodyState extends State<Body> {
 
                                     firebase_storage.Reference ref3 = storage.ref().child(fileImageArray[2].path);
                                     firebase_storage.UploadTask uploadTask3 = ref3.putFile(fileImageArray[2]);
-                                    uploadTask3.whenComplete(() async {
+                                    await uploadTask3.whenComplete(() async {
                                       String url3 = await ref3.getDownloadURL();
                                       if(url3 != "") {
                                         await Books.doc(newIDBook.toString()).update({'image_url': FieldValue.arrayUnion([url3])});
