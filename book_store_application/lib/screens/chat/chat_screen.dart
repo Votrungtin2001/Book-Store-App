@@ -1,7 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
-// import 'package:book_store_application/MVP/Model/User.dart' as us;
+// import 'package:book_store_application/screens/chat/model/chat_user.dart' as us;
 //
 //
 // class ChatScreen extends StatefulWidget {
@@ -19,11 +19,11 @@
 //   late DocumentReference _sender;
 //   late DocumentReference _receiver;
 //   late Query _chatRef;
-//   late us.User_Model _senderInfo;
-//   late us.User_Model _receiverInfo;
+//   late us.User _senderInfo;
+//   late us.User _receiverInfo;
 //
 //   Future<void> _sendMessage() async {
-//     String userId = _auth.currentUser.uid;
+//     String userId = _auth.currentUser!.uid;
 //     String message = _messageController.text.trim();
 //     final chatRef = _firestore
 //         .collection("users")
@@ -48,8 +48,8 @@
 //     final senderInfo = (await _sender.get()).data();
 //     final receiverInfo = (await _receiver.get()).data();
 //     setState(() {
-//       _senderInfo = us.User_Model.fromJson(senderInfo);
-//       _receiverInfo = us.User_Model.fromJson(receiverInfo);
+//       _senderInfo = us.User.fromJson(senderInfo as Map<String, dynamic> );
+//       _receiverInfo = us.User.fromJson(receiverInfo as Map<String, dynamic>);
 //     });
 //
 //     final chat = await _firestore
@@ -106,8 +106,8 @@
 //         title: Row(
 //           children: [
 //             CircleAvatar(
-//               backgroundImage: _receiverInfo != null
-//                   ? NetworkImage(_receiverInfo.avatarURL)
+//               backgroundImage: _receiverInfo  != null
+//                   ? NetworkImage(_receiverInfo.avatarURL) as ImageProvider<Object>
 //                   : AssetImage('assets/images/avatar.png'),
 //             ),
 //             SizedBox(width: 10),
@@ -131,7 +131,7 @@
 //                   return Center(child: Text('Error'));
 //                 }
 //                 if (stream.hasData) {
-//                   QuerySnapshot querySnapshot = stream.data;
+//                   QuerySnapshot querySnapshot = stream.data as QuerySnapshot;
 //                   final messages = querySnapshot.docs;
 //                   return ListView.builder(
 //                       reverse: true,
@@ -204,8 +204,8 @@
 //   final String photoUrl;
 //   final String message;
 //   Message({
-//     @required this.photoUrl,
-//     @required this.message,
+//     required this.photoUrl,
+//     required this.message,
 //   });
 //
 //   @override

@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../bottom_nav_bar.dart';
 import 'admin_edit_books/edit_book_screen.dart';
 import 'admin_home/home_screen_admin.dart';
+import 'chat/chat_screen.dart';
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               ? HomeScreenAdmin()
               : Container(),
           bottomIcons == BottomIcons.Message
-              ? Center(child: Text('Chat'),)
+              ? ChatScreenAdmin()
               : Container(),
           bottomIcons == BottomIcons.Book
               ? const EditBookScreen()

@@ -34,7 +34,6 @@ class User_Model {
   String getPhoto() {return this.photo;}
   void setPhoto(String Photo) {this.photo = Photo;}
 
-
   String getAddress() {return this.address;}
   void setAddress(String Address) {this.address = Address;}
 
@@ -57,6 +56,8 @@ class User_Model {
     photo = snapshot.get('photo');
     role = snapshot.get('role');
   }
+
+
 }
 
 class User_MD {
@@ -66,3 +67,4 @@ class User_MD {
   User_MD({this.uid});
 
 }
+
