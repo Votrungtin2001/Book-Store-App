@@ -1,3 +1,5 @@
+
+import 'package:book_store_application/screens/chat_user/chatroom.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +24,7 @@ class _MainPageState extends State<MainPage> {
               ? HomeScreen()
               : Container(),
           bottomIcons == BottomIcons.Message
-              ? const Center( child: Text( "Hi, this is Chat page", style: TextStyle(fontSize: 18),),)
+              ? ChatRoom()
               : Container(),
           bottomIcons == BottomIcons.Account
               ? const ProfileScreen()

@@ -3,6 +3,9 @@ import 'package:book_store_application/MVP/View/logIn_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/admin_main_page.dart';
+import 'package:book_store_application/screens/chat_user/database.dart';
+import 'package:book_store_application/screens/chat_user/helperfunctions.dart';
+
 import 'package:book_store_application/screens/forgot_password/forgot_password_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/home_test.dart';
@@ -133,7 +136,7 @@ class _BodyState extends State<Body> implements LogInView{
                             padding: const EdgeInsets.all(24.0),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              //crossAxisAlignment: CrossAxisAlignment.center,
+
                               children: [
                                 Container(
                                     alignment: Alignment.center,
@@ -217,7 +220,7 @@ class _BodyState extends State<Body> implements LogInView{
                                       side: const BorderSide(color: Colors.black)
                                   ),
                                   padding: const EdgeInsets.symmetric(vertical: 10),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if(formKey.currentState!.validate()) {{
                                       presenter.logInWithEmailAndPassword();
                                     }}

@@ -5,8 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 class DatabaseManager {
   final List<int> book_id = [];
-  final CollectionReference Users =
-  FirebaseFirestore.instance.collection('Users');
+  final CollectionReference Users = FirebaseFirestore.instance.collection('Users');
 
   final DatabaseReference refFavorite = FirebaseDatabase.instance.reference().child('Favorites');
 
@@ -15,8 +14,11 @@ class DatabaseManager {
     return await Users
         .doc(user_model.id)
         .set({'id': user_model.id, 'name': user_model.name, 'role': user_model.role, 'address': user_model.address,
-                'phone': user_model.phone, 'dob': user_model.dob, 'gender': user_model.gender, 'photo': "https://firebasestorage.googleapis.com/v0/b/book-store-app-3d8a6.appspot.com/o/none_avatar.jpg?alt=media&token=41662994-4635-45ef-ae01-0d929fbd8f91"});
+                'phone': user_model.phone, 'dob': user_model.dob, 'gender': user_model.gender, 'photo': "https://firebasestorage.googleapis.com/v0/b/book-store-app-3d8a6.appspot.com/o/none_avatar.jpg?alt=media&token=41662994-4635-45ef-ae01-0d929fbd8f91"}
+                );
   }
+
+
 
   Future<void> createFavorites(User_Model user_model) async {
     return await refFavorite

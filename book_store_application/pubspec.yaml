@@ -58,6 +58,8 @@ dependencies:
   multi_image_picker: ^4.7.14
   flutter_absolute_path: ^1.0.6
   flutter_easyloading: ^3.0.3
+  tap_debouncer: ^2.0.1
+
 
 dev_dependencies:
   flutter_test:

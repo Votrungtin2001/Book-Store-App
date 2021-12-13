@@ -1,12 +1,16 @@
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
+
 import 'package:book_store_application/screens/splash/splash_screen.dart';
 import 'package:book_store_application/screens/wrapper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:book_store_application/shared_preferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'MVP/Model/User.dart';
 import 'firebase/authentication_services.dart';
@@ -16,10 +20,12 @@ import 'firebase/providers/order_provider.dart';
 import 'firebase/providers/publisher_provider.dart';
 import 'firebase/providers/user_provider.dart';
 
+
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(
+  runApp( MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: BooksProvider.initialize()),
       ChangeNotifierProvider.value(value: CategoryProvider.initialize()),
@@ -63,15 +69,17 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+
+
   bool isLoggedIn = false;
-  MyAppState() {
-    MySharedPreferences.instance
-        .getBooleanValue("isfirstRun")
-        .then((value) =>
-        setState(() {
-          isLoggedIn = value;
-        }));
-  }
+  // MyAppState() {
+  //   MySharedPreferences.instance
+  //       .getBooleanValue("isfirstRun")
+  //       .then((value) =>
+  //       setState(() {
+  //         isLoggedIn = value;
+  //       }));
+  // }
 
   @override
   Widget build(BuildContext context) {

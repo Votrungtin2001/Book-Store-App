@@ -8,9 +8,7 @@ class UserProvider with ChangeNotifier{
   String collection = "Users";
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  UserProvider.initialize(){
-
-  }
+  UserProvider.initialize(){}
 
   UserProvider(){}
 
@@ -44,38 +42,4 @@ class UserProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> addChatRoom(chatRoom, chatRoomId) async {
-    _firestore.collection("chatRoom")
-        .doc(chatRoomId)
-        .set(chatRoom)
-        .catchError((e) {
-      print(e);
-    });
-  }
-
-  getChats(String chatRoomId) async{
-    return _firestore
-        .collection("chatRoom")
-        .doc(chatRoomId)
-        .collection("chats")
-        .orderBy('time')
-        .snapshots();
-  }
-
-
-  Future<void> addMessage(String chatRoomId, chatMessageData) async {
-    _firestore.collection("chatRoom")
-        .doc(chatRoomId)
-        .collection("chats")
-        .add(chatMessageData).catchError((e){
-      print(e.toString());
-    });
-  }
-
-  getUserChats(String itIsMyName) async {
-    return await _firestore
-        .collection("chatRoom")
-        .where('users', arrayContains: itIsMyName)
-        .snapshots();
-  }
 }

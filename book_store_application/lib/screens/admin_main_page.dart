@@ -1,6 +1,8 @@
 import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
 import 'package:book_store_application/screens/admin_chat/chat_screen_admin.dart';
 import 'package:book_store_application/screens/admin_profile/ProfileAdmin.dart';
+
+import 'package:book_store_application/screens/chat_user/chatroom.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../bottom_nav_bar.dart';
 import 'admin_edit_books/edit_book_screen.dart';
 import 'admin_home/home_screen_admin.dart';
-import 'chat/chat_screen.dart';
+
 
 class MainPageAdmin extends StatefulWidget {
   const MainPageAdmin({Key? key}) : super(key: key);
@@ -31,7 +33,7 @@ class _MainPageAdminState extends State<MainPageAdmin> {
               ? HomeScreenAdmin()
               : Container(),
           bottomIcons == BottomIcons.Message
-              ? ChatScreenAdmin()
+              ? ChatRoom()
               : Container(),
           bottomIcons == BottomIcons.Book
               ? const EditBookScreen()
