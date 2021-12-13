@@ -39,7 +39,7 @@ class _ChatState extends State<Chat> {
                 message: snapshot.data!.docs[index]["message"],
                 sendByMe: user_id == snapshot.data!.docs[index]["sendBy"],
               );
-            }) : Container(child: Text("Banj chuaw nhan gi "));
+            }) : Container(child: Text("Ban chua nhan gi "));
       },
     );
   }
@@ -74,12 +74,25 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: appBarMain(context),
-      body: Container(
-        child: Stack(
-          children: [
+      body: SingleChildScrollView(
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          // decoration: const BoxDecoration(
+          //   image: DecorationImage(
+          //     image: AssetImage("assets/images/bg2.png"),
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+        child:Stack(
+          children: <Widget>[
             chatMessages(),
-            Container(alignment: Alignment.bottomCenter,
+            Container(
+              alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
+              height: 80,
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
                 color: Colors.grey,
@@ -97,7 +110,8 @@ class _ChatState extends State<Chat> {
                               ),
                               border: InputBorder.none
                           ),
-                        )),
+                        )
+                    ),
                     SizedBox(width: 16,),
                     GestureDetector(
                       onTap: () {
@@ -118,9 +132,15 @@ class _ChatState extends State<Chat> {
                 ),
               ),
             ),
+
+            Container(
+              height: 30,
+              alignment: Alignment.bottomCenter,
+            )
           ],
-        ),
+          ),
       ),
+      )
     );
   }
 
@@ -153,14 +173,14 @@ class MessageTile extends StatelessWidget {
                 topLeft: Radius.circular(23),
                 topRight: Radius.circular(23),
                 bottomLeft: Radius.circular(23)
-            ) :
-            BorderRadius.only(
+            ) : BorderRadius.only(
                 topLeft: Radius.circular(23),
                 topRight: Radius.circular(23),
-                bottomRight: Radius.circular(23)),
+                bottomRight: Radius.circular(23)
+            ),
             gradient: LinearGradient(
               colors: sendByMe ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
-                  : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)],
+                  : [const Color(0x1A171414), const Color(0x1A393232)],
             )
         ),
         child: Text(
@@ -169,7 +189,8 @@ class MessageTile extends StatelessWidget {
             style: TextStyle(
                 color: sendByMe ? Colors.white : Colors.black,
                 fontSize: 16,
-                fontWeight: FontWeight.w300)),
+                fontWeight: FontWeight.w300)
+        ),
       ),
     );
   }

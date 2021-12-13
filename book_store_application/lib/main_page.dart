@@ -19,6 +19,7 @@ enum BottomIcons { Explore, Message, Notification, Account }
 
 class _MainPageState extends State<MainPage> {
   BottomIcons bottomIcons = BottomIcons.Explore;
+
   @override
   Widget build(BuildContext context) {
     final user_model = Provider.of<UserProvider>(context);
