@@ -1,3 +1,4 @@
+import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/firebase/DatabaseManager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,11 +6,12 @@ import 'package:flutter/material.dart';
 
 class ChatAdmin extends StatefulWidget {
   final String chatRoomId;
-  final String user_id;
-  ChatAdmin({required this.chatRoomId, required this.user_id});
+  final String admin_id;
+  final User_Model user;
+  ChatAdmin({required this.chatRoomId, required this.admin_id, required this.user});
 
   @override
-  _ChatAdminState createState() => _ChatAdminState(this.chatRoomId, this.user_id);
+  _ChatAdminState createState() => _ChatAdminState(this.chatRoomId, this.admin_id, this.user);
 }
 
 class _ChatAdminState extends State<ChatAdmin> {
@@ -17,12 +19,14 @@ class _ChatAdminState extends State<ChatAdmin> {
   Stream<QuerySnapshot>? chats;
   TextEditingController messageEditingController = new TextEditingController();
   String chatRoomId = "";
-  String user_id = "";
+  String admin_id = "";
+  User_Model user = new User_Model('', '', 1, '', '', '', '', '');
   DatabaseManager database = new DatabaseManager();
 
-  _ChatAdminState(String chatRoomID, String userID) {
+  _ChatAdminState(String chatRoomID, String adminID, User_Model User) {
     this.chatRoomId = chatRoomID;
-    this.user_id = userID;
+    this.admin_id = adminID;
+    this.user = User;
   }
 
   Widget chatMessages(){
@@ -34,7 +38,7 @@ class _ChatAdminState extends State<ChatAdmin> {
             itemBuilder: (context, index){
               return MessageTile(
                 message: snapshot.data!.docs[index]["message"],
-                sendByMe: user_id == snapshot.data!.docs[index]["sendBy"],
+                sendByMe: admin_id == snapshot.data!.docs[index]["sendBy"],
               );
             }) : Container(child: Text("Banj chuaw nhan gi "));
       },
@@ -43,13 +47,14 @@ class _ChatAdminState extends State<ChatAdmin> {
 
   addMessage() {
     if (messageEditingController.text.isNotEmpty) {
+      int time = DateTime.now().millisecondsSinceEpoch;
       Map<String, dynamic> chatMessageMap = {
-        "sendBy": user_id,
+        "sendBy": admin_id,
         "message": messageEditingController.text,
-        'time': DateTime.now().millisecondsSinceEpoch,
+        'time': time,
       };
 
-      database.addMessage(chatRoomId, chatMessageMap);
+      database.addMessage(chatRoomId, chatMessageMap, messageEditingController.text, time, true);
 
       setState(() {
         messageEditingController.text = "";

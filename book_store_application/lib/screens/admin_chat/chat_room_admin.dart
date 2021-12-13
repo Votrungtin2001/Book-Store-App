@@ -1,11 +1,9 @@
+import 'package:book_store_application/MVP/Model/ChatRoom.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
+import 'package:book_store_application/firebase/DatabaseManager.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/admin_chat/chat_admin.dart';
 import 'package:book_store_application/screens/admin_chat/search_chat_room_admin.dart';
-import 'package:book_store_application/screens/chat_user/chat.dart';
-import 'package:book_store_application/screens/chat_user/constants.dart';
-import 'package:book_store_application/screens/chat_user/database.dart';
-import 'package:book_store_application/screens/chat_user/search.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,8 +20,11 @@ class _ChatRoomState extends State<ChatRoomAdmin> {
   Stream<QuerySnapshot>? chatRoom;
   final FirebaseAuth auth = FirebaseAuth.instance;
   User_Model user_model = new User_Model('', '', 1, '', '', '', '', '');
+  DatabaseManager database = new DatabaseManager();
 
-  Widget chatRoomsList() {
+  List<User_Model> users = [];
+
+  Widget chatRoomsList(String admin_id) {
     return StreamBuilder<QuerySnapshot>(
       stream: chatRoom,
       builder: (context, snapshot) {
@@ -33,11 +34,11 @@ class _ChatRoomState extends State<ChatRoomAdmin> {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return ChatRoomsTile(
-                userName: snapshot.data!.docs[index]['chatRoomId']
-                    .toString()
-                    .replaceAll("_", "")
-                    .replaceAll(auth.currentUser!.displayName.toString(), ""),
-                chatRoomId:snapshot.data!.docs[index]["chatRoomId"] ,
+                users: users,
+                chatRoomId:snapshot.data!.docs[index]["chatRoomID"] ,
+                admin_id: admin_id,
+                latestMessage: snapshot.data!.docs[index]["latestMessage"],
+                isSeenByAdmin: snapshot.data!.docs[index]["isSeenByAdmin"],
               );
             })
             : Container(child: Text("Bạn chưa chat với ai"),);
@@ -47,26 +48,36 @@ class _ChatRoomState extends State<ChatRoomAdmin> {
 
   @override
   void initState() {
-    getUserInfogetChats();
+    getUsers();
+    getChatRooms();
     super.initState();
   }
-  List<User_Model> users = [];
 
-  getUserInfogetChats() async {
-    // Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
-    DatabaseMethods().getUserChats(auth.currentUser!.displayName.toString()).then((snapshots) {
+  getChatRooms() async {
+    database.getChatRooms().then((snapshots) {
       setState(() {
         chatRoom = snapshots;
-        print(
-            "we got the data + ${chatRoom.toString()} this is name  ${Constants.myName}");
+      });
+    });
+  }
+
+  getUsers() async {
+    database.getUsers().then((snapshots) {
+      List<User_Model> list = [];
+      for (DocumentSnapshot user in snapshots.docs) {
+        list.add(User_Model.fromSnapshot(user));
+      }
+      setState(() {
+        users = list;
       });
     });
   }
 
 
-
   @override
   Widget build(BuildContext context) {
+    final user_model = Provider.of<UserProvider>(context);
+    String admin_id = user_model.user.getID();
     return Scaffold(
       appBar: AppBar(
         title: Icon(Icons.ten_k),
@@ -85,29 +96,40 @@ class _ChatRoomState extends State<ChatRoomAdmin> {
         ],
       ),
       body: Container(
-        child: chatRoomsList(),
+        child: chatRoomsList(admin_id),
       ),
     );
   }
 }
 
 class ChatRoomsTile extends StatelessWidget {
-  final String userName;
   final String chatRoomId;
+  final String admin_id;
+  final List<User_Model> users;
+  final String latestMessage;
+  final bool isSeenByAdmin;
 
-  ChatRoomsTile({required this.userName, required this.chatRoomId});
+  ChatRoomsTile({required this.users ,required this.chatRoomId, required this.admin_id,
+    required this.latestMessage, required this.isSeenByAdmin});
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    final user_model = Provider.of<UserProvider>(context);
-    String admin_id = user_model.user.getID();
+    User_Model user = new User_Model('', '', 1, '', '', '', '', '');
+    for(int i = 0; i < users.length; i++) {
+      if(users[i].getID() == chatRoomId) {
+        user = users[i];
+      }
+    }
+
     return GestureDetector(
       onTap: (){
+        DatabaseManager().seen(chatRoomId);
         Navigator.push(context, MaterialPageRoute(
             builder: (context) => ChatAdmin(
               chatRoomId: chatRoomId,
-              user_id: admin_id,
+              admin_id: admin_id,
+              user: user,
             )
         ));
       },
@@ -124,7 +146,7 @@ class ChatRoomsTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)
               ),
               child: Text(
-                  userName.substring(0, 1),
+                  user.getName(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.white,
@@ -133,7 +155,7 @@ class ChatRoomsTile extends StatelessWidget {
             ),
             SizedBox(width: 12,),
             Text(
-                userName,
+                user.getName(),
                 textAlign: TextAlign.start,
                 style: TextStyle(
                     color: Colors.black,
@@ -146,5 +168,6 @@ class ChatRoomsTile extends StatelessWidget {
     );
   }
 }
+
 
 

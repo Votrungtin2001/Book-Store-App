@@ -1,19 +1,12 @@
 import 'package:book_store_application/MVP/Presenter/logIn_presenter.dart';
 import 'package:book_store_application/MVP/View/logIn_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
-import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/admin_main_page.dart';
-import 'package:book_store_application/screens/chat_user/database.dart';
-import 'package:book_store_application/screens/chat_user/helperfunctions.dart';
-
 import 'package:book_store_application/screens/forgot_password/forgot_password_screen.dart';
-import 'package:book_store_application/screens/home/home_screen.dart';
-import 'package:book_store_application/screens/home_test.dart';
 import 'package:book_store_application/screens/sign_up/sign_up_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +14,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../main_page.dart';

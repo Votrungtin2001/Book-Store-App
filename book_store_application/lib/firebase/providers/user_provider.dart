@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class UserProvider with ChangeNotifier{
   User_Model user = new User_Model("", "", 0, "", "", "", "", "");
   String collection = "Users";
+  User_Model user_temp = new User_Model("", "", 0, "", "", "", "", "");
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   UserProvider.initialize(){}
@@ -16,6 +17,14 @@ class UserProvider with ChangeNotifier{
       _firestore.collection(collection).where('id', isEqualTo: User_ID).get().then((result) {
         for (DocumentSnapshot User in result.docs) {
           user = User_Model.fromSnapshot(User);
+          notifyListeners();
+        }
+      });
+
+  Future<void> getUserForChatRoom(String User_ID) async =>
+      _firestore.collection(collection).where('id', isEqualTo: User_ID).get().then((result) {
+        for (DocumentSnapshot User in result.docs) {
+          user_temp = User_Model.fromSnapshot(User);
           notifyListeners();
         }
       });

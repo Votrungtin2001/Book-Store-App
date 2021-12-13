@@ -155,31 +155,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
     );
   }
 
-  Widget getSearchBarUI() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-      child: TextFormField(
-            style: const TextStyle(fontSize: 16,),
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                fillColor: Colors.transparent,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    borderSide: const BorderSide(
-                        color: Colors.black)
-                ),
-                filled: true,
-                hintText: "Search your book..",
-                hintStyle: const TextStyle(color: Colors.black38),
-                prefixIcon: const Icon(Icons.search, color: Colors.black,)
-            ),
-            onEditingComplete: (){
-            //  showSearch(context: context, delegate: DataSearch());
-            },
-          ),
-    );
-  }
-
   Widget getAppBarUI() {
     return Container(
       decoration: const BoxDecoration(

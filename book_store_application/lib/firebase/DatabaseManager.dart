@@ -33,6 +33,19 @@ class DatabaseManager {
         .get();
   }
 
+  searchUserByID(String id) {
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .where('id', isEqualTo: id)
+        .get();
+  }
+
+  searchChatRoom(String user_id) {
+    return FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .where('chatRoomID', isEqualTo: user_id)
+        .get();
+  }
   Future<void> addChatRoom(chatRoomId) async {
     return await FirebaseFirestore.instance
         .collection("ChatRoom")
@@ -46,12 +59,29 @@ class DatabaseManager {
     });
   }
 
-  Future<void> addMessage(chatRoomId, chatMessageData) async {
+  Future<void> addMessage(chatRoomId, chatMessageData, message, time, isSeenByAdmin) async {
     FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
         .collection("Chat")
         .add(chatMessageData)
+        .catchError((e){
+      print(e.toString());
+    });
+    FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .update({'isSeenByAdmin': isSeenByAdmin,'latestMessage': message, 'latestMessageTime': time})
+        .catchError((e){
+      print(e.toString());
+    });
+  }
+
+  seen(String chatRoomId) async {
+    return FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .update({'isSeenByAdmin': true})
         .catchError((e){
       print(e.toString());
     });
@@ -66,6 +96,18 @@ class DatabaseManager {
         .snapshots();
   }
 
+  getChatRooms() async {
+    return FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .orderBy('latestMessageTime', descending: true)
+        .snapshots();
+  }
+
+  getUsers() async {
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .get();
+  }
 
 
 

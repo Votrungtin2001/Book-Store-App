@@ -2,11 +2,8 @@ import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/firebase/DatabaseManager.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/admin_chat/chat_admin.dart';
-import 'package:book_store_application/screens/chat_user/chat.dart';
-import 'package:book_store_application/screens/chat_user/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +30,6 @@ class _SearchState extends State<SearchChatRoomAdmin> {
       });
       await database.searchByName(searchEditingController.text).then((snapshot){
         searchResultSnapshot = snapshot;
-        print("$searchResultSnapshot");
         setState(() {
           isLoading = false;
           haveUserSearched = true;
@@ -54,6 +50,7 @@ class _SearchState extends State<SearchChatRoomAdmin> {
               searchResultSnapshot!.docs[index]["name"],
               searchResultSnapshot!.docs[index]["id"],
               admin_id,
+                searchResultSnapshot!.docs[index]["photo"]
             );
           },
         )) : Container();
@@ -62,7 +59,8 @@ class _SearchState extends State<SearchChatRoomAdmin> {
 
 
 
-  Widget userTile(String name, String user_id, String admin_id){
+  Widget userTile(String name, String user_id, String admin_id, String photo){
+    User_Model user = new User_Model('', name, 1, '', '', '', '', photo);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
@@ -90,11 +88,12 @@ class _SearchState extends State<SearchChatRoomAdmin> {
           GestureDetector(
             onTap: () async {
               String chatRoomId = user_id;
-
+              database.seen(chatRoomId);
               Navigator.push(context, MaterialPageRoute(
                   builder: (context) => ChatAdmin(
                     chatRoomId: chatRoomId,
-                    user_id: admin_id,
+                    admin_id: admin_id,
+                    user: user,
                   )
               ));
             },
@@ -115,15 +114,6 @@ class _SearchState extends State<SearchChatRoomAdmin> {
       ),
     );
   }
-
-  getChatRoomId(String a, String b) {
-    if (a.indexOf(a) < b.indexOf(b)) {
-      return "$b\_$a";
-    } else {
-      return "$a\_$b";
-    }
-  }
-
   @override
   void initState() {
     super.initState();

@@ -1,6 +1,5 @@
 
 import 'package:book_store_application/screens/chat_user/chat.dart';
-import 'package:book_store_application/screens/chat_user/chatroom.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,7 +30,7 @@ class _MainPageState extends State<MainPage> {
               ? HomeScreen()
               : Container(),
           bottomIcons == BottomIcons.Message
-              ? Chat(chatRoomId: user_id, user_id: user_id,)
+              ? Chat(chatRoomId: user_id, user_id: user_id, user_name: "Bibliphiole")
               : Container(),
           bottomIcons == BottomIcons.Account
               ? const ProfileScreen()

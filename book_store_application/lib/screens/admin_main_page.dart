@@ -1,8 +1,6 @@
 import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
-import 'package:book_store_application/screens/admin_chat/chat_screen_admin.dart';
 import 'package:book_store_application/screens/admin_profile/ProfileAdmin.dart';
 
-import 'package:book_store_application/screens/chat_user/chatroom.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

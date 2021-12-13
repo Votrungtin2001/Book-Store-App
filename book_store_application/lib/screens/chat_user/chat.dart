@@ -1,18 +1,16 @@
 import 'package:book_store_application/firebase/DatabaseManager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
-import 'database.dart';
 
 class Chat extends StatefulWidget {
   final String chatRoomId;
   final String user_id;
-  Chat({required this.chatRoomId, required this.user_id});
+  final String user_name;
+  Chat({required this.chatRoomId, required this.user_id, required this.user_name});
 
   @override
-  _ChatState createState() => _ChatState(this.chatRoomId, this.user_id);
+  _ChatState createState() => _ChatState(this.chatRoomId, this.user_id, this.user_name);
 }
 
 class _ChatState extends State<Chat> {
@@ -21,11 +19,13 @@ class _ChatState extends State<Chat> {
   TextEditingController messageEditingController = new TextEditingController();
   String chatRoomId = "";
   String user_id = "";
+  String user_name = "";
   DatabaseManager database = new DatabaseManager();
 
-  _ChatState(String chatRoomID, String userID) {
+  _ChatState(String chatRoomID, String userID, String userName) {
     this.chatRoomId = chatRoomID;
     this.user_id = userID;
+    this.user_name = userName;
   }
 
   Widget chatMessages(){
@@ -46,13 +46,14 @@ class _ChatState extends State<Chat> {
 
   addMessage() {
     if (messageEditingController.text.isNotEmpty) {
+      int time = DateTime.now().millisecondsSinceEpoch;
       Map<String, dynamic> chatMessageMap = {
         "sendBy": user_id,
         "message": messageEditingController.text,
-        'time': DateTime.now().millisecondsSinceEpoch,
+        'time': time,
       };
 
-      database.addMessage(chatRoomId, chatMessageMap);
+      database.addMessage(chatRoomId, chatMessageMap, messageEditingController.text, time, false);
 
       setState(() {
         messageEditingController.text = "";
