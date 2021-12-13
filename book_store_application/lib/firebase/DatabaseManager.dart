@@ -40,12 +40,6 @@ class DatabaseManager {
         .get();
   }
 
-  searchChatRoom(String user_id) {
-    return FirebaseFirestore.instance
-        .collection("ChatRoom")
-        .where('chatRoomID', isEqualTo: user_id)
-        .get();
-  }
   Future<void> addChatRoom(chatRoomId) async {
     return await FirebaseFirestore.instance
         .collection("ChatRoom")
