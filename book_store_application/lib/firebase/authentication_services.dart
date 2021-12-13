@@ -120,6 +120,7 @@ class AuthenticationServices {
       User_Model user_model = new User_Model(user.uid, name, 1, "", "", "", "", "");
       await DatabaseManager().createUserData(user_model);
       await DatabaseManager().createFavorites(user_model);
+      await DatabaseManager().addChatRoom(user_model.getID());
       await _auth.signOut();
     }
   }
@@ -143,6 +144,7 @@ class AuthenticationServices {
           User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", "");
           await DatabaseManager().createUserData(user_model);
           await DatabaseManager().createFavorites(user_model);
+          await DatabaseManager().addChatRoom(user_model.getID());
         }
 
       }
@@ -182,6 +184,7 @@ class AuthenticationServices {
           User_Model user_model = new User_Model(user.uid, user.displayName!, 1, "", "", "", "", "");
           await DatabaseManager().createUserData(user_model);
           await DatabaseManager().createFavorites(user_model);
+          await DatabaseManager().addChatRoom(user_model.getID());
         }
 
       }

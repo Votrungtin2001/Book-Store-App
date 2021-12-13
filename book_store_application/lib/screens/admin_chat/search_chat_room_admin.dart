@@ -1,23 +1,24 @@
 import 'package:book_store_application/MVP/Model/User.dart';
+import 'package:book_store_application/firebase/DatabaseManager.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
+import 'package:book_store_application/screens/admin_chat/chat_admin.dart';
+import 'package:book_store_application/screens/chat_user/chat.dart';
+import 'package:book_store_application/screens/chat_user/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'chat.dart';
-import 'constants.dart';
-import 'database.dart';
 
-class Search extends StatefulWidget {
+class SearchChatRoomAdmin extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
 
-class _SearchState extends State<Search> {
+class _SearchState extends State<SearchChatRoomAdmin> {
 
-  DatabaseMethods databaseMethods = new DatabaseMethods();
+  DatabaseManager database = new DatabaseManager();
   TextEditingController searchEditingController = new TextEditingController();
   QuerySnapshot? searchResultSnapshot;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -30,7 +31,7 @@ class _SearchState extends State<Search> {
       setState(() {
         isLoading = true;
       });
-      await databaseMethods.searchByName(searchEditingController.text).then((snapshot){
+      await database.searchByName(searchEditingController.text).then((snapshot){
         searchResultSnapshot = snapshot;
         print("$searchResultSnapshot");
         setState(() {
@@ -41,26 +42,27 @@ class _SearchState extends State<Search> {
     }
   }
 
-  Widget userList(){
+  Widget userList(String admin_id){
     return haveUserSearched ? Container(
-      height: MediaQuery.of(context).size.height - 80,
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: searchResultSnapshot!.docs.length,
-        itemBuilder: (context, index){
-          return userTile(
-            searchResultSnapshot!.docs[index]["name"],
-            // searchResultSnapshot!.docs[index]["email"],
-          );
-        },
-    )) : Container();
+        height: MediaQuery.of(context).size.height - 80,
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: searchResultSnapshot!.docs.length,
+          itemBuilder: (context, index){
+            return userTile(
+              searchResultSnapshot!.docs[index]["name"],
+              searchResultSnapshot!.docs[index]["id"],
+              admin_id,
+            );
+          },
+        )) : Container();
   }
 
 
 
 
-  Widget userTile(String userName){
+  Widget userTile(String name, String user_id, String admin_id){
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
@@ -69,7 +71,7 @@ class _SearchState extends State<Search> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                userName,
+                name,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 16
@@ -86,21 +88,15 @@ class _SearchState extends State<Search> {
           ),
           Spacer(),
           GestureDetector(
-            onTap: (){
-              String chatRoomId = getChatRoomId(auth.currentUser!.displayName.toString(), userName);
-              List<String> name = [auth.currentUser!.displayName.toString(), userName];
-              Map<String, dynamic> chatRoom = {
-                "Users": name,
-                "chatRoomId" : chatRoomId,
-              };
+            onTap: () async {
+              String chatRoomId = user_id;
 
-              databaseMethods.addChatRoom(chatRoom, chatRoomId);
-
-              /*Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => Chat(
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ChatAdmin(
                     chatRoomId: chatRoomId,
+                    user_id: admin_id,
                   )
-              ));*/
+              ));
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12,vertical: 8),
@@ -127,13 +123,6 @@ class _SearchState extends State<Search> {
       return "$a\_$b";
     }
   }
-  // getChatRoomId(String a, String b) {
-  //   if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-  //     return "$b\_$a";
-  //   } else {
-  //     return "$a\_$b";
-  //   }
-  // }
 
   @override
   void initState() {
@@ -143,7 +132,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     final user_model = Provider.of<UserProvider>(context);
-    String name = user_model.user.getName();
+    String admin_id = user_model.user.getID();
     return Scaffold(
       body: isLoading ? Container(
         child: Center(child: CircularProgressIndicator(),),
@@ -194,7 +183,7 @@ class _SearchState extends State<Search> {
                 ],
               ),
             ),
-            userList()
+            userList(admin_id)
           ],
         ),
       ),

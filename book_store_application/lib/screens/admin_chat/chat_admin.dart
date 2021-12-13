@@ -3,19 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
-import 'database.dart';
-
-class Chat extends StatefulWidget {
+class ChatAdmin extends StatefulWidget {
   final String chatRoomId;
   final String user_id;
-  Chat({required this.chatRoomId, required this.user_id});
+  ChatAdmin({required this.chatRoomId, required this.user_id});
 
   @override
-  _ChatState createState() => _ChatState(this.chatRoomId, this.user_id);
+  _ChatAdminState createState() => _ChatAdminState(this.chatRoomId, this.user_id);
 }
 
-class _ChatState extends State<Chat> {
+class _ChatAdminState extends State<ChatAdmin> {
 
   Stream<QuerySnapshot>? chats;
   TextEditingController messageEditingController = new TextEditingController();
@@ -23,7 +20,7 @@ class _ChatState extends State<Chat> {
   String user_id = "";
   DatabaseManager database = new DatabaseManager();
 
-  _ChatState(String chatRoomID, String userID) {
+  _ChatAdminState(String chatRoomID, String userID) {
     this.chatRoomId = chatRoomID;
     this.user_id = userID;
   }
@@ -81,7 +78,7 @@ class _ChatState extends State<Chat> {
             Container(alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 color: Colors.grey,
                 child: Row(
                   children: [
@@ -107,7 +104,15 @@ class _ChatState extends State<Chat> {
                           height: 40,
                           width: 40,
                           decoration: BoxDecoration(
-                            color: Colors.grey,
+                              color: Colors.grey,
+                              // gradient: LinearGradient(
+                              //     colors: [
+                              //       const Color(0x36FFFFFF),
+                              //       const Color(0x0FFFFFFF)
+                              //     ],
+                              //     begin: FractionalOffset.topLeft,
+                              //     end: FractionalOffset.bottomRight
+                              // ),
                               borderRadius: BorderRadius.circular(40)
                           ),
                           padding: EdgeInsets.all(12),
@@ -167,7 +172,7 @@ class MessageTile extends StatelessWidget {
             message,
             textAlign: TextAlign.start,
             style: TextStyle(
-                color: sendByMe ? Colors.white : Colors.black,
+                color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w300)),
       ),

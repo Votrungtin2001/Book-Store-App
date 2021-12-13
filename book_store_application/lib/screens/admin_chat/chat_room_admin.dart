@@ -1,5 +1,10 @@
 import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
+import 'package:book_store_application/screens/admin_chat/chat_admin.dart';
+import 'package:book_store_application/screens/admin_chat/search_chat_room_admin.dart';
+import 'package:book_store_application/screens/chat_user/chat.dart';
+import 'package:book_store_application/screens/chat_user/constants.dart';
+import 'package:book_store_application/screens/chat_user/database.dart';
 import 'package:book_store_application/screens/chat_user/search.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,17 +12,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'chat.dart';
-import 'constants.dart';
-import 'database.dart';
-import 'helperfunctions.dart';
-
-class ChatRoom extends StatefulWidget {
+class ChatRoomAdmin extends StatefulWidget {
   @override
   _ChatRoomState createState() => _ChatRoomState();
 }
 
-class _ChatRoomState extends State<ChatRoom> {
+class _ChatRoomState extends State<ChatRoomAdmin> {
 
   Stream<QuerySnapshot>? chatRoom;
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -34,9 +34,9 @@ class _ChatRoomState extends State<ChatRoom> {
             itemBuilder: (context, index) {
               return ChatRoomsTile(
                 userName: snapshot.data!.docs[index]['chatRoomId']
-                     .toString()
-                     .replaceAll("_", "")
-                     .replaceAll(auth.currentUser!.displayName.toString(), ""),
+                    .toString()
+                    .replaceAll("_", "")
+                    .replaceAll(auth.currentUser!.displayName.toString(), ""),
                 chatRoomId:snapshot.data!.docs[index]["chatRoomId"] ,
               );
             })
@@ -53,7 +53,7 @@ class _ChatRoomState extends State<ChatRoom> {
   List<User_Model> users = [];
 
   getUserInfogetChats() async {
-   // Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
+    // Constants.myName = (await HelperFunctions.getUserNameSharedPreference())!;
     DatabaseMethods().getUserChats(auth.currentUser!.displayName.toString()).then((snapshots) {
       setState(() {
         chatRoom = snapshots;
@@ -75,7 +75,7 @@ class _ChatRoomState extends State<ChatRoom> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchChatRoomAdmin()));
             },
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -101,14 +101,15 @@ class ChatRoomsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user_model = Provider.of<UserProvider>(context);
-    String name = user_model.user.getID();
+    String admin_id = user_model.user.getID();
     return GestureDetector(
       onTap: (){
-        /*Navigator.push(context, MaterialPageRoute(
-            builder: (context) => Chat(
+        Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ChatAdmin(
               chatRoomId: chatRoomId,
+              user_id: admin_id,
             )
-        ));*/
+        ));
       },
       child: Container(
         color: Colors.blue,

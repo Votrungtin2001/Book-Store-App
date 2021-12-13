@@ -26,6 +26,46 @@ class DatabaseManager {
         .set({'user_id': user_model.id, 'book_id': book_id});
   }
 
+  searchByName(String searchField) {
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .where('name', isEqualTo: searchField)
+        .get();
+  }
+
+  Future<void> addChatRoom(chatRoomId) async {
+    return await FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .set({'chatRoomID': chatRoomId,
+          'latestMessage': "",
+          'latestMessageTime': DateTime.now().millisecondsSinceEpoch,
+          'isSeenByAdmin': false})
+        .catchError((e) {
+      print(e);
+    });
+  }
+
+  Future<void> addMessage(chatRoomId, chatMessageData) async {
+    FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection("Chat")
+        .add(chatMessageData)
+        .catchError((e){
+      print(e.toString());
+    });
+  }
+
+  getChats(String chatRoomId) async{
+    return FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection("Chat")
+        .orderBy('time')
+        .snapshots();
+  }
+
 
 
 

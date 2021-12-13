@@ -1,10 +1,14 @@
 
+import 'package:book_store_application/screens/chat_user/chat.dart';
 import 'package:book_store_application/screens/chat_user/chatroom.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:book_store_application/screens/profile/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:book_store_application/bottom_nav_bar.dart';
+import 'package:provider/provider.dart';
+
+import 'firebase/providers/user_provider.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -17,6 +21,8 @@ class _MainPageState extends State<MainPage> {
   BottomIcons bottomIcons = BottomIcons.Explore;
   @override
   Widget build(BuildContext context) {
+    final user_model = Provider.of<UserProvider>(context);
+    String user_id = user_model.user.getID();
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -24,7 +30,7 @@ class _MainPageState extends State<MainPage> {
               ? HomeScreen()
               : Container(),
           bottomIcons == BottomIcons.Message
-              ? ChatRoom()
+              ? Chat(chatRoomId: user_id, user_id: user_id,)
               : Container(),
           bottomIcons == BottomIcons.Account
               ? const ProfileScreen()
