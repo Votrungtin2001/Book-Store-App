@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 class ChatAdmin extends StatefulWidget {
@@ -33,6 +34,18 @@ class _ChatAdminState extends State<ChatAdmin> {
 
   String latestMessageUserID = "";
 
+  int Calculate(int a, int b){
+    DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(a);
+    final date1 = DateTime.now();
+    final diff = date1.difference(notificationDate);
+
+    DateTime notificationDate1 = DateTime.fromMillisecondsSinceEpoch(b);
+    final date2 = DateTime.now();
+    final diff1 = date2.difference(notificationDate1);
+
+    return diff.inMinutes - diff1.inMinutes;
+  }
+
   Widget chatMessages(){
     String id = latestMessageUserID;
     return StreamBuilder<QuerySnapshot>(
@@ -47,20 +60,23 @@ class _ChatAdminState extends State<ChatAdmin> {
               if(index == snapshot.data!.docs.length - 1) {
                 isDisplayTime = true;
               }
-              else{
-                if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"]){
+              else {
+                if(id == snapshot.data!.docs[index]["sendBy"]
+                    && Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 15)
+                  isDisplayTime = true;
+                if(
+                id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"]){
                   isDisplayTime = true;
                   id = snapshot.data!.docs[index+1]["sendBy"];
                 }
               }
-
               return MessageTile(
                 message: snapshot.data!.docs[index]["message"],
                 sendByMe: admin_id == snapshot.data!.docs[index]["sendBy"],
                 time: snapshot.data!.docs[index]["time"],
                 isDisplayTime: isDisplayTime,
               );
-            }) : Container(child: Text("Banj chuaw nhan gi "));
+            }) : Container();
       },
     );
   }
@@ -79,6 +95,9 @@ class _ChatAdminState extends State<ChatAdmin> {
       setState(() {
         messageEditingController.text = "";
       });
+    }
+    else {
+      Fluttertoast.showToast(msg: 'Nothing to send!', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM,backgroundColor: Colors.grey);
     }
   }
 
@@ -105,6 +124,7 @@ class _ChatAdminState extends State<ChatAdmin> {
 
   @override
   Widget build(BuildContext context) {
+   // String timeAgo = calculateTimeAgoSinceDate(latestMessageTime);
 
     return Scaffold(
       extendBody: true,
@@ -197,6 +217,9 @@ class _ChatAdminState extends State<ChatAdmin> {
                   child: FloatingActionButton(
                     onPressed: () {
                       addMessage();
+                      // setState(() {
+                      //   if()
+                      // });
                     },
                     child: Icon(
                       Icons.send,
@@ -215,6 +238,8 @@ class _ChatAdminState extends State<ChatAdmin> {
     );
   }
 
+
+
 }
 
 class MessageTile extends StatelessWidget {
@@ -222,62 +247,72 @@ class MessageTile extends StatelessWidget {
   final bool sendByMe;
   final int time;
   final bool isDisplayTime;
+
   MessageTile({required this.message, required this.sendByMe, required this.time, required this.isDisplayTime});
+
   @override
   Widget build(BuildContext context) {
+    String timeChat = calculateTimeAgoSinceDate(time);
+
     return Container(
       padding: EdgeInsets.only(top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
       alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
-
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
-          padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-          decoration: BoxDecoration(
-            borderRadius: sendByMe ? BorderRadius.only(
-                topLeft: Radius.circular(23),
-                topRight: Radius.circular(23),
-                bottomLeft: Radius.circular(23)
-            ) : BorderRadius.only(
-                topLeft: Radius.circular(23),
-                topRight: Radius.circular(23),
-                bottomRight: Radius.circular(23)),
-            color: sendByMe ? Colors.white : Colors.pink.shade100,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: Offset(0, 3),
+        child: Column(
+          crossAxisAlignment: sendByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+              padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+              decoration: BoxDecoration(
+                borderRadius: sendByMe ? BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomLeft: Radius.circular(23)
+                ) : BorderRadius.only(
+                    topLeft: Radius.circular(23),
+                    topRight: Radius.circular(23),
+                    bottomRight: Radius.circular(23)),
+                color: sendByMe ? Colors.white : Colors.pink.shade100,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 3,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Text(
-              message,
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500)
-          ),
-        ),
-        SizedBox(height: 10,),
+              child: Text(
+                  message,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500)
+              ),
+            ),
+            SizedBox(height: 10,),
+            isDisplayTime ? Container(
+              child: Text(
+                timeChat,
+                style: TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic,fontWeight: FontWeight.w600),
+              ),
+            ) : SizedBox(height: 1,)
 
-        isDisplayTime
-            ?
-        Container(
-          child: Text("19h20",
-            style: TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic,fontWeight: FontWeight.w600),
-          ),
-
+          ],
         )
-           : SizedBox.shrink()
-
-      ],
-    )
-
     );
+  }
+
+  String calculateTimeAgoSinceDate(int time) {
+    DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(time);
+    final date2 = DateTime.now();
+    final diff = date2.difference(notificationDate);
+
+    if(diff.inDays > 7) return DateFormat("kk:mm dd/MM/yyyy").format(notificationDate);
+    else if(diff.inDays >= 2 && diff.inDays <= 7) return DateFormat('kk:mm a EEEE').format(notificationDate);
+    else if(diff.inDays > 1 && diff.inDays < 2) return DateFormat("kk:mm a").format(notificationDate) + ' Yesterday';
+    else return DateFormat("kk:mm a").format(notificationDate);
+
   }
 }

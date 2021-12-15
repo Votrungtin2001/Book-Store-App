@@ -1,17 +1,10 @@
 import 'package:book_store_application/firebase/providers/books_provider.dart';
 import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
-
-import 'package:book_store_application/screens/splash/splash_screen.dart';
 import 'package:book_store_application/screens/wrapper.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:book_store_application/shared_preferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'MVP/Model/User.dart';
 import 'firebase/authentication_services.dart';
 import 'firebase/providers/author_provider.dart';

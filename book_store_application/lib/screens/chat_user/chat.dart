@@ -37,6 +37,18 @@ class _ChatState extends State<Chat> {
 
   }
 
+  int Calculate(int a, int b){
+    DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(a);
+    final date1 = DateTime.now();
+    final diff = date1.difference(notificationDate);
+
+    DateTime notificationDate1 = DateTime.fromMillisecondsSinceEpoch(b);
+    final date2 = DateTime.now();
+    final diff1 = date2.difference(notificationDate1);
+
+    return diff.inMinutes - diff1.inMinutes;
+  }
+
   Widget chatMessages(){
     String id = latestMessageUserID;
     return StreamBuilder<QuerySnapshot>(
@@ -51,12 +63,16 @@ class _ChatState extends State<Chat> {
                 isDisplayTime = true;
               }
               else{
-                if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"]){
+                if(id == snapshot.data!.docs[index]["sendBy"] && Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 15)
+                {
+                  isDisplayTime = true;
+                }
+                if(
+                id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"]){
                   isDisplayTime = true;
                   id = snapshot.data!.docs[index+1]["sendBy"];
                 }
               }
-
               return MessageTile(
                 message: snapshot.data!.docs[index]["message"],
                 sendByMe: user_id == snapshot.data!.docs[index]["sendBy"],
@@ -81,7 +97,11 @@ class _ChatState extends State<Chat> {
 
       setState(() {
         messageEditingController.text = "";
-      });
+      }
+       );
+    }
+    else {
+      Fluttertoast.showToast(msg: 'Nothing to send!', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM,backgroundColor: Colors.grey);
     }
   }
 
@@ -174,14 +194,26 @@ class MessageTile extends StatelessWidget {
   final bool isDisplayTime;
   MessageTile({required this.message, required this.sendByMe, required this.isDisplayTime, required this.time, });
 
+  String calculateTimeAgoSinceDate(int time) {
+    DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(time);
+    final date2 = DateTime.now();
+    final diff = date2.difference(notificationDate);
+
+    if(diff.inDays > 7) return DateFormat("kk:mm dd/MM/yyyy").format(notificationDate);
+    else if(diff.inDays >= 2 && diff.inDays <= 7) return DateFormat('kk:mm a EEEE').format(notificationDate);
+    else if(diff.inDays > 1 && diff.inDays < 2) return DateFormat("kk:mm a").format(notificationDate) + ' Yesterday';
+    else return DateFormat("kk:mm a").format(notificationDate);
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return
-      Container(
+    String timeChat = calculateTimeAgoSinceDate(time);
+    return Container(
       padding: EdgeInsets.only(top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
       alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Column(
+        crossAxisAlignment: sendByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children:[
           Container(
             margin: sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
@@ -215,15 +247,13 @@ class MessageTile extends StatelessWidget {
                     fontWeight: FontWeight.w500)
             ),
           ),
-          isDisplayTime
-              ?
-          Container(
-            child: Text("19h20",
+           SizedBox(height: 10,),
+          isDisplayTime ? Container(
+            child: Text(
+              timeChat,
               style: TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic,fontWeight: FontWeight.w600),
             ),
-
-          )
-              : SizedBox.shrink()
+          ) : SizedBox(height: 1,)
 
         ],
 

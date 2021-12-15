@@ -25,7 +25,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import '../search_bar.dart';
+
 import 'best_seller.dart';
 import 'carousel.dart';
 import 'book_all.dart';

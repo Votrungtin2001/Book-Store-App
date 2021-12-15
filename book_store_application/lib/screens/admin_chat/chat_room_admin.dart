@@ -177,8 +177,7 @@ class ChatRoomsTile extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.only(left: 24, right: 24, top: 15, bottom: 15),
-        // width: MediaQuery.of(context).size.width,
-        //height: 100,
+
         child: Row(
           children: [
             CircleAvatar(
@@ -196,24 +195,22 @@ class ChatRoomsTile extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                     )
                 ),
                 SizedBox(height: 5,),
                 Container(
-                  width: 160,
+                  width: 100,
                   child: Text(
                     displayLatestMessage,
-                    //    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    // minFontSize: 10,
                     softWrap: false,
                     style: TextStyle(
                       fontSize: 15,
                       color: isSeenByAdmin
                           ? Colors.grey.shade600
-                          : Colors.red,
-                      fontWeight: isSeenByAdmin ? FontWeight.w300 : FontWeight.w900 ,
+                          : Colors.black,
+                      fontWeight: isSeenByAdmin ? FontWeight.w300 : FontWeight.w700 ,
                     ),
                   ),
                 )
@@ -249,7 +246,7 @@ class ChatRoomsTile extends StatelessWidget {
     final date2 = DateTime.now();
     final diff = date2.difference(notificationDate);
 
-    if(diff.inDays > 8) return DateFormat("dd-MM-yyyy HH:mm:ss").format(notificationDate);
+    if(diff.inDays > 8) return DateFormat("dd/MM/yyyy HH:mm:ss").format(notificationDate);
     else if((diff.inDays / 7).floor() >= 1) return "last week";
     else if(diff.inDays >= 2) return '${diff.inDays} days ago';
     else if(diff.inDays >= 1) return "1 day ago";

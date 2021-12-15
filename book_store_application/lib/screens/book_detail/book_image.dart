@@ -1,8 +1,6 @@
 import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants.dart';
-import '../../size_config.dart';
 
 List<String> images = [
   "assets/images/img_2.png",

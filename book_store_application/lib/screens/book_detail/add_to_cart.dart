@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
-import '../../size_config.dart';
-
 class AddToCart extends StatefulWidget {
 
   Book? book;
