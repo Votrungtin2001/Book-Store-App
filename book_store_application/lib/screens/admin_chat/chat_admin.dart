@@ -31,7 +31,10 @@ class _ChatAdminState extends State<ChatAdmin> {
     this.user = User;
   }
 
+  String latestMessageUserID = "";
+
   Widget chatMessages(){
+    String id = latestMessageUserID;
     return StreamBuilder<QuerySnapshot>(
       stream: chats,
       builder: (context, snapshot){
@@ -40,9 +43,22 @@ class _ChatAdminState extends State<ChatAdmin> {
             physics: BouncingScrollPhysics(),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index){
+              bool isDisplayTime = false;
+              if(index == snapshot.data!.docs.length - 1) {
+                isDisplayTime = true;
+              }
+              else{
+                if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"]){
+                  isDisplayTime = true;
+                  id = snapshot.data!.docs[index+1]["sendBy"];
+                }
+              }
+
               return MessageTile(
                 message: snapshot.data!.docs[index]["message"],
                 sendByMe: admin_id == snapshot.data!.docs[index]["sendBy"],
+                time: snapshot.data!.docs[index]["time"],
+                isDisplayTime: isDisplayTime,
               );
             }) : Container(child: Text("Banj chuaw nhan gi "));
       },
@@ -58,7 +74,7 @@ class _ChatAdminState extends State<ChatAdmin> {
         'time': time,
       };
 
-      database.addMessage(chatRoomId, chatMessageMap, messageEditingController.text, time, true);
+      database.addMessage(chatRoomId, chatMessageMap, messageEditingController.text, time, true, admin_id, true);
 
       setState(() {
         messageEditingController.text = "";
@@ -68,6 +84,17 @@ class _ChatAdminState extends State<ChatAdmin> {
 
   @override
   void initState() {
+    FirebaseFirestore.instance.collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection("Chat")
+        .orderBy('time')
+        .get().then(((result) {
+      String id = result.docs[0].get("sendBy");
+      setState(() {
+        latestMessageUserID = id;
+      });
+    }));
+
     database.getChats(widget.chatRoomId).then((val) {
       setState(() {
         chats = val;
@@ -78,6 +105,7 @@ class _ChatAdminState extends State<ChatAdmin> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -192,9 +220,9 @@ class _ChatAdminState extends State<ChatAdmin> {
 class MessageTile extends StatelessWidget {
   final String message;
   final bool sendByMe;
-
-  MessageTile({required this.message, required this.sendByMe});
-
+  final int time;
+  final bool isDisplayTime;
+  MessageTile({required this.message, required this.sendByMe, required this.time, required this.isDisplayTime});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -237,19 +265,19 @@ class MessageTile extends StatelessWidget {
         ),
         SizedBox(height: 10,),
 
-        //isLastMessageLeft
-           // ?
+        isDisplayTime
+            ?
         Container(
           child: Text("19h20",
             style: TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic,fontWeight: FontWeight.w600),
           ),
 
         )
-        //    : SizedBox.shrink()
+           : SizedBox.shrink()
 
       ],
-    ) 
-       
+    )
+
     );
   }
 }

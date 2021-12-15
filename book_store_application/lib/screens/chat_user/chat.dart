@@ -28,6 +28,7 @@ class _ChatState extends State<Chat> {
 
 
   DatabaseManager database = new DatabaseManager();
+  String latestMessageUserID = "";
 
   _ChatState(String chatRoomID, String userID, String userName) {
     this.chatRoomId = chatRoomID;
@@ -37,6 +38,7 @@ class _ChatState extends State<Chat> {
   }
 
   Widget chatMessages(){
+    String id = latestMessageUserID;
     return StreamBuilder<QuerySnapshot>(
       stream: chats,
       builder: (context, snapshot){
@@ -44,10 +46,22 @@ class _ChatState extends State<Chat> {
             physics: BouncingScrollPhysics(),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index){
+              bool isDisplayTime = false;
+              if(index == snapshot.data!.docs.length - 1) {
+                isDisplayTime = true;
+              }
+              else{
+                if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"]){
+                  isDisplayTime = true;
+                  id = snapshot.data!.docs[index+1]["sendBy"];
+                }
+              }
+
               return MessageTile(
                 message: snapshot.data!.docs[index]["message"],
                 sendByMe: user_id == snapshot.data!.docs[index]["sendBy"],
                 time: snapshot.data!.docs[index]["time"],
+                isDisplayTime: isDisplayTime,
               );
             }) : Container();
       },
@@ -63,7 +77,7 @@ class _ChatState extends State<Chat> {
         'time': time,
       };
 
-      database.addMessage(chatRoomId, chatMessageMap, messageEditingController.text, time, false);
+      database.addMessage(chatRoomId, chatMessageMap, messageEditingController.text, time, false, user_id, false);
 
       setState(() {
         messageEditingController.text = "";
@@ -73,6 +87,17 @@ class _ChatState extends State<Chat> {
 
   @override
   void initState() {
+    FirebaseFirestore.instance.collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection("Chat")
+        .orderBy('time')
+        .get().then(((result) {
+      String id = result.docs[0].get("sendBy");
+      setState(() {
+        latestMessageUserID = id;
+      });
+    }));
+
     database.getChats(widget.chatRoomId).then((val) {
       setState(() {
         chats = val;
@@ -146,52 +171,13 @@ class MessageTile extends StatelessWidget {
   final String message;
   final bool sendByMe;
   final int time;
-
-  MessageTile({required this.message, required this.sendByMe, required this.time, });
+  final bool isDisplayTime;
+  MessageTile({required this.message, required this.sendByMe, required this.isDisplayTime, required this.time, });
 
 
   @override
   Widget build(BuildContext context) {
     return
-      // Container (
-      //   padding: EdgeInsets.only(top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
-      //   child: Column(
-      //   crossAxisAlignment: sendByMe
-      //       ? CrossAxisAlignment.end
-      //       : CrossAxisAlignment.start,
-      //   children: <Widget>[
-      //     //Text(time.toString()),
-      //     Card(
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.only(
-      //           topLeft: Radius.circular(8.0),
-      //           topRight: Radius.circular(8.0),
-      //           bottomLeft: Radius.circular(
-      //               sendByMe
-      //                   ? 8.0
-      //                   : 0.0),
-      //           bottomRight: Radius.circular(
-      //               sendByMe
-      //                   ? 0.0
-      //                   : 8.0),
-      //         ),
-      //       ),
-      //       color: sendByMe
-      //           ? Colors.blue
-      //           : Colors.blueGrey,
-      //       elevation: 0.0,
-      //       child: Padding(
-      //         padding: EdgeInsets.all(8.0),
-      //         child: Text(
-      //           message,
-      //           style: TextStyle(
-      //             color: Colors.white,
-      //             fontSize: 18.0,
-      //           ),
-      //         ),
-      //       ),
-      //     ),]));
-
       Container(
       padding: EdgeInsets.only(top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
       alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
@@ -229,16 +215,17 @@ class MessageTile extends StatelessWidget {
                     fontWeight: FontWeight.w500)
             ),
           ),
-          //isLastMessageLeft
-          // ?
+          isDisplayTime
+              ?
           Container(
             child: Text("19h20",
               style: TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic,fontWeight: FontWeight.w600),
             ),
 
           )
-          //    : SizedBox.shrink()
-        ]
+              : SizedBox.shrink()
+
+        ],
 
 
 

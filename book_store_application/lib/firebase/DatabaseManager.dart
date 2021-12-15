@@ -2,6 +2,7 @@ import 'package:book_store_application/MVP/Model/Book.dart';
 import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 
 class DatabaseManager {
   final List<int> book_id = [];
@@ -47,28 +48,61 @@ class DatabaseManager {
         .set({'chatRoomID': chatRoomId,
           'latestMessage': "",
           'latestMessageTime': DateTime.now().millisecondsSinceEpoch,
-          'isSeenByAdmin': false})
+          'isSeenByAdmin': false,
+          'latestMessageSendBy': "",
+          'latestMessageOfAdmin': "",
+          'latestMessageOfClient': ""})
         .catchError((e) {
       print(e);
     });
   }
 
-  Future<void> addMessage(chatRoomId, chatMessageData, message, time, isSeenByAdmin) async {
-    FirebaseFirestore.instance
-        .collection("ChatRoom")
-        .doc(chatRoomId)
-        .collection("Chat")
-        .add(chatMessageData)
-        .catchError((e){
-      print(e.toString());
-    });
-    FirebaseFirestore.instance
-        .collection("ChatRoom")
-        .doc(chatRoomId)
-        .update({'isSeenByAdmin': isSeenByAdmin,'latestMessage': message, 'latestMessageTime': time})
-        .catchError((e){
-      print(e.toString());
-    });
+  Future<void> addMessage(chatRoomId, chatMessageData, message, time, isSeenByAdmin, idSender, isAdmin) async {
+    if(isAdmin == false) {
+      FirebaseFirestore.instance
+          .collection("ChatRoom")
+          .doc(chatRoomId)
+          .collection("Chat")
+          .add(chatMessageData)
+          .catchError((e){
+        print(e.toString());
+      });
+
+      FirebaseFirestore.instance
+          .collection("ChatRoom")
+          .doc(chatRoomId)
+          .update({'isSeenByAdmin': isSeenByAdmin,
+                  'latestMessage': message,
+                  'latestMessageTime': time,
+                  'latestMessageSendBy': idSender,
+                  'latestMessageOfClient': message})
+          .catchError((e){
+        print(e.toString());
+      });
+    }
+    else {
+      FirebaseFirestore.instance
+          .collection("ChatRoom")
+          .doc(chatRoomId)
+          .collection("Chat")
+          .add(chatMessageData)
+          .catchError((e){
+        print(e.toString());
+      });
+
+      FirebaseFirestore.instance
+          .collection("ChatRoom")
+          .doc(chatRoomId)
+          .update({'isSeenByAdmin': isSeenByAdmin,
+        'latestMessage': message,
+        'latestMessageTime': time,
+        'latestMessageSendBy': idSender,
+        'latestMessageOfAdmin': message})
+          .catchError((e){
+        print(e.toString());
+      });
+    }
+
   }
 
   seen(String chatRoomId) async {
@@ -89,6 +123,17 @@ class DatabaseManager {
         .orderBy('time')
         .snapshots();
   }
+
+  Future<String> getFirstMesageUserID(String chatRoomId) async =>
+      FirebaseFirestore.instance.collection("ChatRoom")
+      .doc(chatRoomId)
+      .collection("Chat")
+      .orderBy('time')
+      .get().then(((result) {
+        String id = "";
+        id = result.docs[0].get("sendBy");
+        return id;
+      }));
 
   getChatRooms() async {
     return FirebaseFirestore.instance

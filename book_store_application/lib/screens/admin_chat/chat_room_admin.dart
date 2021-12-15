@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ChatRoomAdmin extends StatefulWidget {
@@ -41,6 +42,9 @@ class _ChatRoomState extends State<ChatRoomAdmin> {
                 admin_id: admin_id,
                 latestMessage: snapshot.data!.docs[index]["latestMessage"],
                 isSeenByAdmin: snapshot.data!.docs[index]["isSeenByAdmin"],
+                isSendByAdmin: snapshot.data!.docs[index]["latestMessageSendBy"] == admin_id,
+                latestMessageTime: snapshot.data!.docs[index]["latestMessageTime"],
+
               );
             }) : Container();
       },
@@ -139,9 +143,12 @@ class ChatRoomsTile extends StatelessWidget {
   final List<User_Model> users;
   final String latestMessage;
   final bool isSeenByAdmin;
+  final bool isSendByAdmin;
+  final int latestMessageTime;
 
   ChatRoomsTile({required this.users ,required this.chatRoomId, required this.admin_id,
-    required this.latestMessage, required this.isSeenByAdmin});
+    required this.latestMessage, required this.isSeenByAdmin, required this.isSendByAdmin,
+    required this.latestMessageTime});
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   @override
@@ -152,6 +159,10 @@ class ChatRoomsTile extends StatelessWidget {
         user = users[i];
       }
     }
+    String displayLatestMessage = "";
+    if(isSendByAdmin == true) displayLatestMessage = "You: " + latestMessage;
+    else displayLatestMessage = latestMessage;
+    String timeAgo = calculateTimeAgoSinceDate(latestMessageTime);
 
     return GestureDetector(
       onTap: (){
@@ -192,7 +203,7 @@ class ChatRoomsTile extends StatelessWidget {
                 Container(
                   width: 160,
                   child: Text(
-                    latestMessage,
+                    displayLatestMessage,
                     //    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     // minFontSize: 10,
@@ -212,7 +223,7 @@ class ChatRoomsTile extends StatelessWidget {
             Row(
               children: [
                 Text(
-                    "3 mins ago",
+                    timeAgo,
                   style: TextStyle(
                     fontWeight: isSeenByAdmin ? FontWeight.w300 : FontWeight.w700
                   ),
@@ -231,6 +242,23 @@ class ChatRoomsTile extends StatelessWidget {
         ),
       )
     );
+  }
+
+  String calculateTimeAgoSinceDate(int time) {
+    DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(time);
+    final date2 = DateTime.now();
+    final diff = date2.difference(notificationDate);
+
+    if(diff.inDays > 8) return DateFormat("dd-MM-yyyy HH:mm:ss").format(notificationDate);
+    else if((diff.inDays / 7).floor() >= 1) return "last week";
+    else if(diff.inDays >= 2) return '${diff.inDays} days ago';
+    else if(diff.inDays >= 1) return "1 day ago";
+    else if(diff.inHours >= 2) return '${diff.inHours} hours ago';
+    else if(diff.inHours >= 1) return "1 hour ago";
+    else if(diff.inMinutes >= 2) return '${diff.inMinutes} minutes ago';
+    else if(diff.inMinutes >= 1) return "1 minute ago";
+    else if(diff.inSeconds >= 3) return '${diff.inSeconds} seconds ago';
+    else return "Just now";
   }
 }
 
