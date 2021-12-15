@@ -81,8 +81,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin impleme
     presenter.getSuggestionBookList();
     presenter.getAuthorList();
 
-    return Scaffold(
-      body: Stack(
+    return Container(
+      child: Stack(
         children: <Widget>[
           InkWell(
             splashColor: Colors.transparent,

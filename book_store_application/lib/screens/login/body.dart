@@ -1,6 +1,7 @@
 import 'package:book_store_application/MVP/Presenter/logIn_presenter.dart';
 import 'package:book_store_application/MVP/View/logIn_view.dart';
 import 'package:book_store_application/firebase/authentication_services.dart';
+import 'package:book_store_application/home_page.dart';
 import 'package:book_store_application/screens/admin_main_page.dart';
 import 'package:book_store_application/screens/forgot_password/forgot_password_screen.dart';
 import 'package:book_store_application/screens/sign_up/sign_up_screen.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../constants.dart';
-import '../../main_page.dart';
+import '../../home_page_admin.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -353,11 +354,11 @@ class _BodyState extends State<Body> implements LogInView{
       if(user_id == "nI8SJUbcVcMOnG8bcyk0B5FAzX12") { // tried to find admin with its uid
         Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MainPageAdmin()));
+            context, MaterialPageRoute(builder: (context) => HomePageAdmin()));
       }
       else {
         Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
       }
 
     }
@@ -369,7 +370,7 @@ class _BodyState extends State<Body> implements LogInView{
     if(result != null) {
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MainPage()));
+          MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 
@@ -379,7 +380,7 @@ class _BodyState extends State<Body> implements LogInView{
     if(result != null) {
       Fluttertoast.showToast(msg: 'Logged in successfully.', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MainPage()));
+          MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 

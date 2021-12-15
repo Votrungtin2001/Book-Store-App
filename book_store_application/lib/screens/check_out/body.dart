@@ -2,7 +2,8 @@ import 'package:book_store_application/MVP/Model/Order.dart';
 import 'package:book_store_application/firebase/providers/default_waitingOrders_provider.dart';
 import 'package:book_store_application/firebase/providers/order_provider.dart';
 import 'package:book_store_application/firebase/providers/user_provider.dart';
-import 'package:book_store_application/main_page.dart';
+import 'package:book_store_application/home_page.dart';
+
 import 'package:book_store_application/screens/check_out/change_address_screen.dart';
 import 'package:book_store_application/screens/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -247,7 +248,7 @@ class _BodyState extends State<Body> {
 
                             Navigator.push<dynamic>( context,
                               MaterialPageRoute<dynamic>(
-                                builder: (BuildContext context) => MainPage(),
+                                builder: (BuildContext context) => HomePage(),
                               ),
                             );
                             Fluttertoast.showToast(msg: 'One of the books in your cart is not enough to provide. Please try again', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
@@ -344,7 +345,7 @@ class _BodyState extends State<Body> {
                                                   onPressed: () {
                                                     Navigator.push<dynamic>( context,
                                                       MaterialPageRoute<dynamic>(
-                                                        builder: (BuildContext context) => MainPage(),
+                                                        builder: (BuildContext context) => HomePage(),
                                                       ),
                                                     );
                                                   },

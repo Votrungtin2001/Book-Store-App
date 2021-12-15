@@ -57,31 +57,24 @@ class _SearchState extends State<SearchChatRoomAdmin> {
   }
 
 
-
-
   Widget userTile(String name, String user_id, String admin_id, String photo){
     User_Model user = new User_Model('', name, 1, '', '', '', '', photo);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
+          CircleAvatar(
+            backgroundImage: Image.network(user.getPhoto(), fit: BoxFit.fill).image,
+            maxRadius: 30,
+          ),
+          SizedBox(width: 15,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 name,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16
-                ),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
               ),
-              // Text(
-              //   userEmail,
-              //   style: TextStyle(
-              //       color: Colors.black,
-              //       fontSize: 16
-              //   ),
-              // )
             ],
           ),
           Spacer(),
@@ -103,7 +96,8 @@ class _SearchState extends State<SearchChatRoomAdmin> {
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(24)
               ),
-              child: Text("Message",
+              child: Text(
+                "Message",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16
@@ -124,8 +118,7 @@ class _SearchState extends State<SearchChatRoomAdmin> {
     final user_model = Provider.of<UserProvider>(context);
     String admin_id = user_model.user.getID();
     return Scaffold(
-      body: isLoading ? Container(
-        child: Center(child: CircularProgressIndicator(),),
+      body: isLoading ? Container(child: Center(child: CircularProgressIndicator(),),
       ) : SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -140,35 +133,34 @@ class _SearchState extends State<SearchChatRoomAdmin> {
                       controller: searchEditingController,
                       style: TextStyle(color: Colors.black,fontSize: 16),
                       decoration: InputDecoration(
-                          hintText: "Search name ...",
-                          hintStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 5.0,horizontal: 15),
+                          fillColor: Colors.transparent,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                              borderSide: const BorderSide(color: Colors.black)
                           ),
-                          border: InputBorder.none
+                          filled: true,
+                          hintText: "Search name...",
+                          hintStyle: const TextStyle(color: Colors.black38),
+
                       ),
                     ),
                   ),
+                  SizedBox(width: 10,),
                   GestureDetector(
                     onTap: (){
                       initiateSearch();
                     },
                     child: Container(
-                        height: 40,
-                        width: 40,
+                        height: 47,
+                        width: 47,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [
-                                  const Color(0x36FFFFFF),
-                                  const Color(0x0FFFFFFF)
-                                ],
-                                begin: FractionalOffset.topLeft,
-                                end: FractionalOffset.bottomRight
-                            ),
+                            color: Colors.grey,
                             borderRadius: BorderRadius.circular(40)
                         ),
-                        padding: EdgeInsets.all(12),
-                        child: Image.asset("assets/images/search_white.png", height: 25, width: 25,color: Colors.blue,)),
+                        padding: EdgeInsets.all(13),
+                        child: Image.asset("assets/images/search_white.png", height: 20, width: 20,)
+                    ),
                   )
                 ],
               ),
