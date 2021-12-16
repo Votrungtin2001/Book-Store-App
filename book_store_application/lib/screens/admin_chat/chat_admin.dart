@@ -47,7 +47,20 @@ class _ChatAdminState extends State<ChatAdmin> {
   }
 
   Widget chatMessages(){
+
+    String calculateTimeAgoSinceDate1(int time) {
+      DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(time);
+      final date2 = DateTime.now();
+      final diff = date2.difference(notificationDate);
+
+      if(diff.inDays > 7) return DateFormat("dd/MM/yyyy").format(notificationDate);
+      else if(diff.inDays >= 2 && diff.inDays <= 7) return DateFormat('EEEE').format(notificationDate);
+      else if(diff.inDays > 1 && diff.inDays < 2) return 'Yesterday';
+      else return DateFormat("kk:mm a").format(notificationDate);
+
+    }
     String id = latestMessageUserID;
+    String timeBreakSection = "";
     return StreamBuilder<QuerySnapshot>(
       stream: chats,
       builder: (context, snapshot){
@@ -59,14 +72,22 @@ class _ChatAdminState extends State<ChatAdmin> {
               bool isDisplayTime = false;
               if(index == snapshot.data!.docs.length - 1) {
                 isDisplayTime = true;
+                timeBreakSection = "";
               }
               else {
-                if(id == snapshot.data!.docs[index]["sendBy"]
-                    && Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 15)
+                if(id == snapshot.data!.docs[index]["sendBy"] && Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 60)
+                  {
+                    isDisplayTime = true;
+                    timeBreakSection = calculateTimeAgoSinceDate1(snapshot.data!.docs[index+1]["time"]);
+                  }
+                if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"])
+                {
+                  if(Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 60)
+                    {
+                      timeBreakSection = calculateTimeAgoSinceDate1(snapshot.data!.docs[index+1]["time"]);
+                    }
                   isDisplayTime = true;
-                if(
-                id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"]){
-                  isDisplayTime = true;
+
                   id = snapshot.data!.docs[index+1]["sendBy"];
                 }
               }
@@ -75,6 +96,7 @@ class _ChatAdminState extends State<ChatAdmin> {
                 sendByMe: admin_id == snapshot.data!.docs[index]["sendBy"],
                 time: snapshot.data!.docs[index]["time"],
                 isDisplayTime: isDisplayTime,
+                timeBreakSection: timeBreakSection,
               );
             }) : Container();
       },
@@ -178,8 +200,8 @@ class _ChatAdminState extends State<ChatAdmin> {
           ),
         ),
       ),
-      body: Container(
-        child:Padding(
+      body:  Container(
+        child: Padding(
           padding: const EdgeInsets.only(top: 10.0),
           child: Stack(
             children: [
@@ -217,9 +239,6 @@ class _ChatAdminState extends State<ChatAdmin> {
                   child: FloatingActionButton(
                     onPressed: () {
                       addMessage();
-                      // setState(() {
-                      //   if()
-                      // });
                     },
                     child: Icon(
                       Icons.send,
@@ -247,60 +266,76 @@ class MessageTile extends StatelessWidget {
   final bool sendByMe;
   final int time;
   final bool isDisplayTime;
+  final String timeBreakSection;
 
-  MessageTile({required this.message, required this.sendByMe, required this.time, required this.isDisplayTime});
+  MessageTile({required this.message, required this.sendByMe, required this.time, required this.isDisplayTime, required this.timeBreakSection});
 
   @override
   Widget build(BuildContext context) {
+
     String timeChat = calculateTimeAgoSinceDate(time);
+    return Column(
+        children:[
+          Container(
+              padding: EdgeInsets.only(top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+              alignment: sendByMe ? Alignment.bottomRight : Alignment.bottomLeft,
+              child: Column(
+                crossAxisAlignment: sendByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                     Container(
+                      margin: sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+                      padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: sendByMe ? BorderRadius.only(
+                            topLeft: Radius.circular(23),
+                            topRight: Radius.circular(23),
+                            bottomLeft: Radius.circular(23)
+                        ) : BorderRadius.only(
+                            topLeft: Radius.circular(23),
+                            topRight: Radius.circular(23),
+                            bottomRight: Radius.circular(23)),
+                        color: sendByMe ? Colors.white : Colors.pink.shade100,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 3,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                          message,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500)
+                      ),
+                    ),
+                  SizedBox(height: 10,),
+                  isDisplayTime ? Container(
+                    child: Text(
+                      timeChat,
+                      style: TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic,fontWeight: FontWeight.w600),
+                    ),
+                  ) : SizedBox(),
+                  SizedBox(height: 10,),
 
-    return Container(
-      padding: EdgeInsets.only(top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
-      alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
-        child: Column(
-          crossAxisAlignment: sendByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
-              padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-              decoration: BoxDecoration(
-                borderRadius: sendByMe ? BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomLeft: Radius.circular(23)
-                ) : BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomRight: Radius.circular(23)),
-                color: sendByMe ? Colors.white : Colors.pink.shade100,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 3,
-                    offset: Offset(0, 3),
-                  ),
                 ],
-              ),
-              child: Text(
-                  message,
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500)
-              ),
-            ),
-            SizedBox(height: 10,),
-            isDisplayTime ? Container(
-              child: Text(
-                timeChat,
-                style: TextStyle(color: Colors.grey, fontSize: 12, fontStyle: FontStyle.italic,fontWeight: FontWeight.w600),
-              ),
-            ) : SizedBox(height: 1,)
+              )
+          ),
+          (timeBreakSection != "" && isDisplayTime ) ? Container(
+              height: 20,
+              child: Center(
+                  child: Text(
+                    timeBreakSection,
 
-          ],
-        )
+                    style: TextStyle(color: Colors.black, fontSize: 12,fontWeight: FontWeight.w600),
+                  )
+              )
+          ) : SizedBox(),
+        ]
     );
   }
 
