@@ -145,6 +145,8 @@ class ChatRoomsTile extends StatelessWidget {
   final bool isSeenByAdmin;
   final bool isSendByAdmin;
   final int latestMessageTime;
+  int time = 0;
+  bool isSeenByAdmin1 = false;
 
   ChatRoomsTile({required this.users ,required this.chatRoomId, required this.admin_id,
     required this.latestMessage, required this.isSeenByAdmin, required this.isSendByAdmin,
@@ -153,6 +155,7 @@ class ChatRoomsTile extends StatelessWidget {
   final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    isSeenByAdmin1 = isSendByAdmin;
     User_Model user = new User_Model('', '', 1, '', '', '', '', '');
     for(int i = 0; i < users.length; i++) {
       if(users[i].getID() == chatRoomId) {
@@ -163,7 +166,11 @@ class ChatRoomsTile extends StatelessWidget {
     if(isSendByAdmin == true) displayLatestMessage = "You: " + latestMessage;
     else displayLatestMessage = latestMessage;
     String timeAgo = calculateTimeAgoSinceDate(latestMessageTime);
-
+    time = latestMessageTime;
+    if(time == 0) {
+      isSeenByAdmin1 = true;
+      timeAgo = "";
+    }
     return GestureDetector(
       onTap: (){
         DatabaseManager().seen(chatRoomId);
@@ -222,7 +229,7 @@ class ChatRoomsTile extends StatelessWidget {
                 Text(
                     timeAgo,
                   style: TextStyle(
-                    fontWeight: isSeenByAdmin ? FontWeight.w300 : FontWeight.w700
+                    fontWeight: isSeenByAdmin  ? FontWeight.w300 : FontWeight.w700
                   ),
                 ),
                 SizedBox(width: 5,),
@@ -230,7 +237,7 @@ class ChatRoomsTile extends StatelessWidget {
                   "assets/images/circle.png",
                   height: 10,
                   width: 10 ,
-                  color: isSeenByAdmin ? Colors.transparent : Colors.red,
+                  color: isSeenByAdmin1 ? Colors.transparent : Colors.red,
                 ),
               ],
             )

@@ -47,18 +47,16 @@ class DatabaseManager {
         .doc(chatRoomId)
         .set({'chatRoomID': chatRoomId,
           'latestMessage': "",
-          'latestMessageTime': DateTime.now().millisecondsSinceEpoch,
+          'latestMessageTime': 0,
           'isSeenByAdmin': false,
-          'latestMessageSendBy': "",
-          'latestMessageOfAdmin': "",
-          'latestMessageOfClient': ""})
+          'latestMessageSendBy': ""})
         .catchError((e) {
       print(e);
     });
   }
 
   Future<void> addMessage(chatRoomId, chatMessageData, message, time, isSeenByAdmin, idSender, isAdmin) async {
-    if(isAdmin == false) {
+
       FirebaseFirestore.instance
           .collection("ChatRoom")
           .doc(chatRoomId)
@@ -74,34 +72,12 @@ class DatabaseManager {
           .update({'isSeenByAdmin': isSeenByAdmin,
                   'latestMessage': message,
                   'latestMessageTime': time,
-                  'latestMessageSendBy': idSender,
-                  'latestMessageOfClient': message})
-          .catchError((e){
-        print(e.toString());
-      });
-    }
-    else {
-      FirebaseFirestore.instance
-          .collection("ChatRoom")
-          .doc(chatRoomId)
-          .collection("Chat")
-          .add(chatMessageData)
+                  'latestMessageSendBy': idSender})
           .catchError((e){
         print(e.toString());
       });
 
-      FirebaseFirestore.instance
-          .collection("ChatRoom")
-          .doc(chatRoomId)
-          .update({'isSeenByAdmin': isSeenByAdmin,
-        'latestMessage': message,
-        'latestMessageTime': time,
-        'latestMessageSendBy': idSender,
-        'latestMessageOfAdmin': message})
-          .catchError((e){
-        print(e.toString());
-      });
-    }
+
 
   }
 
