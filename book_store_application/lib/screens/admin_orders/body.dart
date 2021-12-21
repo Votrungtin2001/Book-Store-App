@@ -5,6 +5,7 @@ import 'package:book_store_application/firebase/providers/default_waitingOrders_
 import 'package:book_store_application/screens/admin_orders/order_cart_admin.dart';
 import 'package:book_store_application/screens/dismissible_widget.dart';
 import 'package:book_store_application/screens/my_orders/order_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,7 +24,9 @@ class _BodyState extends State<Body> {
 
   final DatabaseReference refOrders = FirebaseDatabase.instance.reference().child('Orders');
   final DatabaseReference refInventory = FirebaseDatabase.instance.reference().child('Inventory');
-
+  String collection = "Books";
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
   List<Order> listWaitingOrders = [];
   List<Order> listPreparingOrders = [];
   List<Order> listDeliveringOrders = [];
@@ -338,7 +341,16 @@ class _BodyState extends State<Body> {
                                   case DismissDirection.startToEnd:
                                     String user_id = item.getUSER_ID();
                                     String order_id = item.getID();
-                                    refOrders.child(user_id).child(order_id).update(
+                                    for(int i = 0; i < item.getBooksInCart().length; i++) {
+                                      int book_id = item.getBooksInCart()[i].getID();
+                                      int quantity = item.getBooksInCart()[i].getQUANTITY();
+                                      await _firestore.collection(collection).doc(book_id.toString()).get().then((result) {
+                                        int sold_count = result.get('sold_count');
+                                        int new_sold_count = quantity + sold_count;
+                                        _firestore.collection(collection).doc(book_id.toString()).update({'sold_count': new_sold_count});
+                                      });
+                                    }
+                                    await refOrders.child(user_id).child(order_id).update(
                                         {'status': 2});
                                     defaultWaitingOrdersProvider.updateStatus(order_id, 2);
                                     setState(() {
@@ -419,7 +431,16 @@ class _BodyState extends State<Body> {
                                 case DismissDirection.startToEnd:
                                   String user_id = item.getUSER_ID();
                                   String order_id = item.getID();
-                                  refOrders.child(user_id).child(order_id).update(
+                                  for(int i = 0; i < item.getBooksInCart().length; i++) {
+                                    int book_id = item.getBooksInCart()[i].getID();
+                                    int quantity = item.getBooksInCart()[i].getQUANTITY();
+                                    await _firestore.collection(collection).doc(book_id.toString()).get().then((result) {
+                                      int sold_count = result.get('sold_count');
+                                      int new_sold_count = quantity + sold_count;
+                                      _firestore.collection(collection).doc(book_id.toString()).update({'sold_count': new_sold_count});
+                                    });
+                                  }
+                                  await refOrders.child(user_id).child(order_id).update(
                                       {'status': 2});
                                   defaultWaitingOrdersProvider.updateStatus(order_id, 2);
                                   setState(() {
