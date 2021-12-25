@@ -159,6 +159,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ),
                                     filled: true,
                                     hintStyle: const TextStyle(color: Colors.black38),
+                                    prefixIcon: Icon(Icons.person,color:Colors.black),
                                     hintText: user_model.user.getName()
                                 ),
                               ),
@@ -184,6 +185,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ),
                                     filled: true,
                                     hintStyle: const TextStyle(color: Colors.black38),
+                                    prefixIcon: Icon(Icons.phone,color:Colors.black),
                                     hintText: user_model.user.getPhone()
                                 ),
                               ),
@@ -208,6 +210,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ),
                                     filled: true,
                                     hintStyle: const TextStyle(color: Colors.black38),
+                                    prefixIcon: Icon(Icons.edit_location,color:Colors.black),
                                     hintText: user_model.user.getAddress()),
                               ),
                             ),
@@ -249,7 +252,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             });
                           }
                           ////
-
                           if(name != "") {
                             _firestore.collection(collection).doc(user_model.user.getID()).update({'name': name});
                             user_model.user.setName(name);
@@ -272,8 +274,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           Fluttertoast.showToast(msg: 'Updated your information successfully', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
                           Navigator.of(context).pop();
                         },
-
-
                         color: Colors.blue,
                         padding: EdgeInsets.symmetric(horizontal: 50),
                         elevation: 2,
@@ -294,25 +294,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
         )
-    );
-  }
-
-  Widget buildTextField(String labelText, String placeholder) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
-
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
-            )),
-      ),
     );
   }
 }

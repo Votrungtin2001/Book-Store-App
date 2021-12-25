@@ -31,7 +31,7 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
         }}},
       child: Container(
         height: 50,
-        width: MediaQuery.of(context).size.width / 1.5,
+        width: MediaQuery.of(context).size.width / 2,
         decoration: BoxDecoration(
             gradient: const LinearGradient(colors: [
               Color.fromRGBO(236, 60, 3, 1),
@@ -45,7 +45,7 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                 blurRadius: 10.0,
               )
             ],
-            borderRadius: BorderRadius.circular(9.0)),
+            borderRadius: BorderRadius.circular(30.0)),
         child: Center(
           child: Text("Finish",
               style: const TextStyle(
@@ -102,8 +102,8 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                       ? 20
                       : MediaQuery.of(context).padding.bottom),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.min,
+              //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //  mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   SizedBox(
                       child: Form (
@@ -136,6 +136,7 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                                     ),
                                     filled: true,
                                     hintStyle: const TextStyle(color: Colors.black38),
+                                    prefixIcon: Icon(Icons.phone),
                                     hintText: 'Phone number'),
                               ),
                             ),
@@ -144,6 +145,7 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                       )
 
                   ),
+                  SizedBox(height: 40,),
                   Center(child: finishButton)
                 ],
               ),

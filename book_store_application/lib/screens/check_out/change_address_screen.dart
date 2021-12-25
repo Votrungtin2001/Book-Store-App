@@ -1,6 +1,7 @@
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/select_card_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import 'check_out_screen.dart';
@@ -41,7 +42,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       }}},
       child: Container(
         height: 50,
-        width: MediaQuery.of(context).size.width / 1.5,
+        width: MediaQuery.of(context).size.width / 2,
         decoration: BoxDecoration(
             gradient: const LinearGradient(colors: [
               Color.fromRGBO(236, 60, 3, 1),
@@ -55,7 +56,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 blurRadius: 10.0,
               )
             ],
-            borderRadius: BorderRadius.circular(9.0)),
+            borderRadius: BorderRadius.circular(30.0)),
         child: Center(
           child: Text("Finish",
               style: const TextStyle(
@@ -110,8 +111,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       ? 20
                       : MediaQuery.of(context).padding.bottom),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                 SizedBox(
                   child: Form (
@@ -143,6 +142,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
+                                prefixIcon: Icon(Icons.house),
                                 hintText: 'Flat Number/House Number'),
                           ),
                         ),
@@ -171,6 +171,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
+                                prefixIcon: Icon(Icons.cabin_sharp),
                                 hintText: 'Street'),
                           ),
                         ),
@@ -199,6 +200,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
+                                prefixIcon: Icon(Icons.location_city),
                                 hintText: 'Village'),
                           ),
                         ),
@@ -227,6 +229,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
+                                prefixIcon: Icon(Icons.place),
                                 hintText: 'District'),
                           ),
                         ),
@@ -256,6 +259,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
+                                prefixIcon: Icon(Icons.apartment_rounded),
                                 hintText: 'City'),
                           ),
                         ),
@@ -263,6 +267,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     ),
                   )
                 ),
+                  SizedBox(height: 40,),
                   Center(child: finishButton)
                 ],
               ),

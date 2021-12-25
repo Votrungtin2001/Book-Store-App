@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 
@@ -115,6 +116,7 @@ class _BodyState extends State<Body>{
                                     ),
                                     filled: true,
                                     hintStyle: const TextStyle(color: Colors.black38),
+                                    prefixIcon: const Icon(Icons.person, color: Colors.black),
                                     hintText: hint_owner,
                                   ),
                                 ),
@@ -138,6 +140,7 @@ class _BodyState extends State<Body>{
                                     ),
                                     filled: true,
                                     hintStyle: const TextStyle(color: Colors.black38),
+                                    prefixIcon: Icon(Icons.edit_location, color: Colors.black,),
                                     hintText: hint_address,
                                   ),
                                 ),
