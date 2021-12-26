@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'list_fav.dart';
 
 class FavouriteBookListView extends StatefulWidget {
   const FavouriteBookListView({Key? key, this.callBack}) : super(key: key);
@@ -160,7 +159,7 @@ class FavouriteView extends StatelessWidget {
                                                 letterSpacing: 0.27,
                                                 color: Colors.black,
                                               ),
-                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                           Padding(

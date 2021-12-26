@@ -62,31 +62,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final user_model = Provider.of<UserProvider>(context);
     String photo = user_model.user.getPhoto();
     user_id = user_model.user.getID();
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //   elevation: 1,
-      //   leading: IconButton(
-      //     icon: Icon(
-      //       Icons.arrow_back,
-      //       color: Colors.green,
-      //     ),
-      //     onPressed: () {},
-      //   ),
-      //   actions: [
-      //     IconButton(
-      //       icon: Icon(
-      //         Icons.settings,
-      //         color: Colors.green,
-      //       ),
-      //       onPressed: () {
-      //         Navigator.of(context).push(MaterialPageRoute(
-      //             builder: (BuildContext context) => SettingsPage()));
-      //       },
-      //     ),
-      //   ],
-      // ),
-        body: Container(
+    return Container(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height,
+        maxWidth: MediaQuery.of(context).size.width,
+      ),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/bg2.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
           padding: EdgeInsets.only(left: 16, top: 25, right: 16),
           child: GestureDetector(
             onTap: () {
@@ -293,7 +279,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
             ),
           ),
-        )
+
     );
   }
 }

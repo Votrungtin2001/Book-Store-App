@@ -41,36 +41,24 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           Navigator.pop(context);
       }}},
       child: Container(
-        height: 50,
+        height: 45,
         width: MediaQuery.of(context).size.width / 2,
         decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [
-              Color.fromRGBO(236, 60, 3, 1),
-              Color.fromRGBO(234, 60, 3, 1),
-              Color.fromRGBO(216, 78, 16, 1),],
-                begin: FractionalOffset.topCenter, end: FractionalOffset.bottomCenter),
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.16),
-                offset: Offset(0, 5),
-                blurRadius: 10.0,
-              )
-            ],
+            color: Colors.blue,
             borderRadius: BorderRadius.circular(30.0)),
         child: Center(
-          child: Text("Finish",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 20.0)
-          ),
+          child: Text("FINISH",
+              style: TextStyle(
+                  fontSize: 16,
+                  letterSpacing: 2.2,
+                  color: Colors.white)),
         ),
       ),
     );
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -110,8 +98,19 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   bottom: MediaQuery.of(context).padding.bottom == 0
                       ? 20
                       : MediaQuery.of(context).padding.bottom),
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height,
+                maxWidth: MediaQuery.of(context).size.width,
+              ),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/bg2.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Column(
                 children: <Widget>[
+                  SizedBox(height: 80,),
                 SizedBox(
                   child: Form (
                     key: formKey,
@@ -142,7 +141,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
-                                prefixIcon: Icon(Icons.house),
+                                prefixIcon: Icon(Icons.house,color: Colors.black,),
                                 hintText: 'Flat Number/House Number'),
                           ),
                         ),
@@ -171,7 +170,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
-                                prefixIcon: Icon(Icons.cabin_sharp),
+                                prefixIcon: Icon(Icons.cabin_sharp,color: Colors.black,),
                                 hintText: 'Street'),
                           ),
                         ),
@@ -200,7 +199,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
-                                prefixIcon: Icon(Icons.location_city),
+                                prefixIcon: Icon(Icons.location_city,color: Colors.black,),
                                 hintText: 'Village'),
                           ),
                         ),
@@ -229,7 +228,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
-                                prefixIcon: Icon(Icons.place),
+                                prefixIcon: Icon(Icons.place,color: Colors.black,),
                                 hintText: 'District'),
                           ),
                         ),
@@ -259,7 +258,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 ),
                                 filled: true,
                                 hintStyle: const TextStyle(color: Colors.black38),
-                                prefixIcon: Icon(Icons.apartment_rounded),
+                                prefixIcon: Icon(Icons.apartment_rounded,color: Colors.black,),
                                 hintText: 'City'),
                           ),
                         ),

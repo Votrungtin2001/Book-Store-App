@@ -146,6 +146,8 @@ class _BodyState extends State<Body> {
     getQuantity(book!.getID());
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -176,14 +178,24 @@ class _BodyState extends State<Body> {
         ],
       ),
       body: Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height,
+          maxWidth: MediaQuery.of(context).size.width,
+        ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg2.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: EdgeInsets.symmetric(horizontal: 15),
         height: double.infinity,
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: <Widget>[
-              // SizedBox(height: 30),
-              //
-              // SizedBox(height: 8),
+              SizedBox(height: 80),
+
               Container(
                 // height: MediaQuery.of(context).size.height - 170,
                 width: MediaQuery.of(context).size.width,

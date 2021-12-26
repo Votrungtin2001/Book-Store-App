@@ -241,7 +241,6 @@ class ChatRoomsTile extends StatelessWidget {
                 ),
               ],
             )
-
           ],
         ),
       )
@@ -253,7 +252,7 @@ class ChatRoomsTile extends StatelessWidget {
     final date2 = DateTime.now();
     final diff = date2.difference(notificationDate);
 
-    if(diff.inDays > 8) return DateFormat("dd/MM/yyyy HH:mm:ss").format(notificationDate);
+    if(diff.inDays > 8) return DateFormat("dd/MM/yyyy HH:mm").format(notificationDate);
     else if((diff.inDays / 7).floor() >= 1) return "last week";
     else if(diff.inDays >= 2) return '${diff.inDays} days ago';
     else if(diff.inDays >= 1) return "1 day ago";

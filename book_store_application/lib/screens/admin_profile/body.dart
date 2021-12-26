@@ -39,6 +39,14 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(vertical: 20),
+      child:Container(
+
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bg2.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
       child: Column(
         children: [
           getAppBarUI(),
@@ -127,7 +135,7 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
             )
         )
         ]
-      )
+      ))
     );
   }
 

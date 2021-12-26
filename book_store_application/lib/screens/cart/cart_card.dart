@@ -88,7 +88,7 @@ class _CartCardState extends State<CartCard> with TickerProviderStateMixin {
                 ),
                 Text(
                   getAuthorName(book.getAUTHOR_ID()),
-                  style: TextStyle(color: Colors.black12, fontSize: 14),
+                  style: TextStyle(color: Colors.black, fontSize: 14,fontWeight: FontWeight.w400),
                 ),
                 SizedBox(height: 10,),
                 Row(

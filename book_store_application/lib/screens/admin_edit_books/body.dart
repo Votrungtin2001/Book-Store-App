@@ -115,8 +115,17 @@ class _BodyState extends State<Body> {
     final publisherProvider = Provider.of<PublisherProvider>(context);
     publishers = publisherProvider.publishers;
 
-
     return Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bg2.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
       padding: EdgeInsets.symmetric(horizontal: 15),
       height: double.infinity,
       child: SingleChildScrollView(

@@ -16,6 +16,8 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -45,10 +47,18 @@ class _BodyState extends State<Body> {
           ),
         ],
       ),
-      body: Column(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg2.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          SizedBox(height: 70,),
           Flexible(
             child: FavouriteBookListView(
               callBack: () {
@@ -57,7 +67,7 @@ class _BodyState extends State<Body> {
             ),
           )
         ],
-      ),
+      ),)
     );
   }
 

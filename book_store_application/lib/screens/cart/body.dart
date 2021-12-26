@@ -35,37 +35,85 @@ class _BodyState extends State<Body> {
     booksInCart = orderProvider.booksInCart;
 
     return Scaffold(
-      body: Column(
-        children: [
-         // getAppBarUI(),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: ListView.builder(
-                itemCount: booksInCart.length,
-                itemBuilder: (context, index) {
-                  final item = booksInCart[index];
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Dismissible(
-                      key: ObjectKey(item),
-                      direction: DismissDirection.endToStart,
-                      background: buildSwipeActionRight(),
-                      onDismissed: (direction) {
-                        setState(() {
-                          int id = booksInCart[index].getID();
-                          booksInCart.removeAt(index);
-                          orderProvider.removeBooksInCart(id);
-                          orderProvider.calculateTotalPrice();
-                        });
-                      },
-                      child: CartCard(booksInCart[index]),
-                    ),
-                  );
-                },
-          )
-    ))],
-      ) ,
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        actions: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 30,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextButton(
+                  child: Row(
+                    children: const [
+                      Icon(Icons.navigate_before, color: Colors.black, size: 35,),
+                      Text("Back",
+                        style: TextStyle(color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400),)
+                    ],
+                  ),
+                  onPressed: () { Navigator.pop(context);},
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Container(
+          height: MediaQuery.of(context).size.height - 60,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height,
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bg2.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: ListView.builder(
+                        itemCount: booksInCart.length,
+                        itemBuilder: (context, index) {
+                          final item = booksInCart[index];
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Dismissible(
+                              key: ObjectKey(item),
+                              direction: DismissDirection.endToStart,
+                              background: buildSwipeActionRight(),
+                              onDismissed: (direction) {
+                                setState(() {
+                                  int id = booksInCart[index].getID();
+                                  booksInCart.removeAt(index);
+                                  orderProvider.removeBooksInCart(id);
+                                  orderProvider.calculateTotalPrice();
+                                });
+                              },
+                              child: CartCard(booksInCart[index]),
+                            ),
+                          );
+                        },
+                      )
+                  )
+              )
+            ],
+          ) ,
+        ),
+      ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15,),
         decoration: BoxDecoration(
