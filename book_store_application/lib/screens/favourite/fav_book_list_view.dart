@@ -11,39 +11,25 @@ import 'package:provider/provider.dart';
 
 
 class FavouriteBookListView extends StatefulWidget {
-  FavouriteBookListView({Key? key, this.callBack, this.user_ID}) : super(key: key);
+  FavouriteBookListView({Key? key, this.callBack, this.favorites}) : super(key: key);
   final Function()? callBack;
-  final String? user_ID;
-
-  List<int> favorites = [];
+  final List<int>? favorites;
 
   @override
-  _FavouriteBookListViewState createState() => _FavouriteBookListViewState(this.user_ID);
+  _FavouriteBookListViewState createState() => _FavouriteBookListViewState(this.favorites);
 }
 
 class _FavouriteBookListViewState extends State<FavouriteBookListView>  with TickerProviderStateMixin {
   final DatabaseReference refFavorite = FirebaseDatabase.instance.reference().child('Favorites');
   AnimationController? animationController;
-  List<int> favorites = [];
-  String? user_id;
-  _FavouriteBookListViewState(String? user_id) {
-    this.user_id = user_id;
+  List<int>? favorites;
+  _FavouriteBookListViewState(List<int>? list) {
+    this.favorites = list;
   }
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
-    List<int> books = [];
-    refFavorite.child(user_id!).child('book_id').once().then((DataSnapshot snapshot){
-      Map<String, dynamic> json = Map.from(snapshot.value);
-      json.forEach((key, value) {
-        int book_id = int.parse(value.toString());
-        books.add(book_id);
-      });
-    });
-    setState(() {
-      favorites = books;
-    });
     super.initState();
   }
 
@@ -66,7 +52,7 @@ class _FavouriteBookListViewState extends State<FavouriteBookListView>  with Tic
             return Center(child: CircularProgressIndicator());
           else {
             var books = snapshot.data as List<int>;
-            if(books.length < favorites.length) books = favorites;
+            if(books.length < favorites!.length) books = favorites!;
             return GridView(
               padding: const EdgeInsets.all(8),
               physics: const BouncingScrollPhysics(),
@@ -113,9 +99,10 @@ class _FavouriteBookListViewState extends State<FavouriteBookListView>  with Tic
         books.add(book_id);
       });
     });
-    return books;
+      return books;
+    }
   }
-}
+
 
 class FavouriteView extends StatelessWidget {
   FavouriteView({Key? key, this.book_id, this.animationController, this.animation, this.callback}) : super(key: key);

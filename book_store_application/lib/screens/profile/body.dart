@@ -10,6 +10,7 @@ import 'package:book_store_application/screens/login/login_screen.dart';
 import 'package:book_store_application/screens/my_orders/my_orders_screen.dart';
 import 'package:book_store_application/screens/profile/profile_ava.dart';
 import 'package:book_store_application/screens/profile/profile_menu.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> implements AccountAdministrationView {
+  final DatabaseReference refFavorite = FirebaseDatabase.instance.reference().child('Favorites');
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthenticationServices _auth = AuthenticationServices();
   late AccountAdministrationPresenter presenter;
@@ -96,11 +98,19 @@ class _BodyState extends State<Body> implements AccountAdministrationView {
                       ProfileMenu(
                         text: "My Favourite",
                         icon: "assets/icons/heart.svg",
-                        press: () {
+                        press: () async {
+                          List<int> favorites = [];
+                          await refFavorite.child(user_model.user.getID()).child('book_id').once().then((DataSnapshot snapshot){
+                            Map<String, dynamic> json = Map.from(snapshot.value);
+                            json.forEach((key, value) {
+                              int book_id = int.parse(value.toString());
+                              favorites.add(book_id);
+                            });
+                          });
                           Navigator.push<dynamic>(
                             context,
                             MaterialPageRoute<dynamic>(
-                              builder: (BuildContext context) => MyFavouriteScreen(),
+                              builder: (BuildContext context) => MyFavouriteScreen(favorites),
                             ),
                           );
                         },

@@ -6,15 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
-  const Body({Key? key, this.callBack}) : super(key: key);
-  final Function()? callBack;
+  List<int> favorites = [];
+  Body(List<int> list) {
+    this.favorites = list;
+  }
 
   @override
-  _BodyState createState() => _BodyState();
+  _BodyState createState() => _BodyState(this.favorites);
 }
 
 class _BodyState extends State<Body> {
-
+  List<int> favorites = [];
+  _BodyState(List<int> list) {
+    this.favorites = list;
+  }
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User_MD?>(context);
@@ -69,7 +74,7 @@ class _BodyState extends State<Body> {
               callBack: () {
                 moveTo();
               },
-              user_ID: user_id,
+              favorites: favorites,
             ),
           )
         ],
