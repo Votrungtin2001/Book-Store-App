@@ -11,20 +11,39 @@ import 'package:provider/provider.dart';
 
 
 class FavouriteBookListView extends StatefulWidget {
-  const FavouriteBookListView({Key? key, this.callBack}) : super(key: key);
+  FavouriteBookListView({Key? key, this.callBack, this.user_ID}) : super(key: key);
   final Function()? callBack;
+  final String? user_ID;
+
+  List<int> favorites = [];
 
   @override
-  _FavouriteBookListViewState createState() => _FavouriteBookListViewState();
+  _FavouriteBookListViewState createState() => _FavouriteBookListViewState(this.user_ID);
 }
 
 class _FavouriteBookListViewState extends State<FavouriteBookListView>  with TickerProviderStateMixin {
   final DatabaseReference refFavorite = FirebaseDatabase.instance.reference().child('Favorites');
   AnimationController? animationController;
+  List<int> favorites = [];
+  String? user_id;
+  _FavouriteBookListViewState(String? user_id) {
+    this.user_id = user_id;
+  }
   @override
   void initState() {
     animationController = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
+    List<int> books = [];
+    refFavorite.child(user_id!).child('book_id').once().then((DataSnapshot snapshot){
+      Map<String, dynamic> json = Map.from(snapshot.value);
+      json.forEach((key, value) {
+        int book_id = int.parse(value.toString());
+        books.add(book_id);
+      });
+    });
+    setState(() {
+      favorites = books;
+    });
     super.initState();
   }
 
@@ -43,10 +62,11 @@ class _FavouriteBookListViewState extends State<FavouriteBookListView>  with Tic
       child: FutureBuilder(
         future: getFavorites(user_id),
         builder: (BuildContext context, snapshot) {
-          if (!snapshot.hasData) {
-            return const SizedBox();
-          } else {
+          if(snapshot.connectionState == ConnectionState.waiting)
+            return Center(child: CircularProgressIndicator());
+          else {
             var books = snapshot.data as List<int>;
+            if(books.length < favorites.length) books = favorites;
             return GridView(
               padding: const EdgeInsets.all(8),
               physics: const BouncingScrollPhysics(),
@@ -87,8 +107,8 @@ class _FavouriteBookListViewState extends State<FavouriteBookListView>  with Tic
   Future<List<int>> getFavorites(String User_ID) async {
     List<int> books = [];
     refFavorite.child(User_ID).child('book_id').once().then((DataSnapshot snapshot){
-      List<dynamic> result = snapshot.value;
-      result.forEach((value) {
+      Map<String, dynamic> json = Map.from(snapshot.value);
+      json.forEach((key, value) {
         int book_id = int.parse(value.toString());
         books.add(book_id);
       });

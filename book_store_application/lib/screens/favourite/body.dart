@@ -1,7 +1,9 @@
+import 'package:book_store_application/MVP/Model/User.dart';
 import 'package:book_store_application/screens/favourite/fav_book_list_view.dart';
 import 'package:book_store_application/screens/my_orders/order_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key, this.callBack}) : super(key: key);
@@ -15,6 +17,9 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User_MD?>(context);
+    String user_id = "";
+    if(user!.uid != null) user_id = user.uid.toString();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
@@ -64,6 +69,7 @@ class _BodyState extends State<Body> {
               callBack: () {
                 moveTo();
               },
+              user_ID: user_id,
             ),
           )
         ],
