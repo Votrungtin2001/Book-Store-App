@@ -90,9 +90,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       ),
       body: LayoutBuilder(
         builder: (_, viewportConstraints) => SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: ConstrainedBox(
-            constraints:
-            BoxConstraints(minHeight: viewportConstraints.maxHeight),
+            constraints: BoxConstraints(minHeight: viewportConstraints.maxHeight),
             child: Container(
               padding: EdgeInsets.only(left: 16.0, right: 16.0,
                   bottom: MediaQuery.of(context).padding.bottom == 0
@@ -108,9 +108,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 80,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: SvgPicture.asset("assets/images/address.svg",
+                      height: MediaQuery.of(context).size.height*0.3,
+                    ),
+                  ),
+                  SizedBox(height: 40,),
                 SizedBox(
                   child: Form (
                     key: formKey,
@@ -274,6 +283,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           ),
         ),
       ),
+      )
     );
   }
 }

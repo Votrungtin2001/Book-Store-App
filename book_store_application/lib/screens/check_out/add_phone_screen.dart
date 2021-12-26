@@ -1,6 +1,7 @@
 import 'package:book_store_application/firebase/providers/user_provider.dart';
 import 'package:book_store_application/screens/select_card_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import 'check_out_screen.dart';
@@ -95,11 +96,18 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Column(
-              //  mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //  mainAxisSize: MainAxisSize.min,
+              child:  SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
                 children: <Widget>[
-                  SizedBox(height: 80,),
+                  SizedBox(height: 120,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: SvgPicture.asset("assets/images/phone.svg",
+                      height: MediaQuery.of(context).size.height*0.3,
+                    ),
+                  ),
+                  SizedBox(height: 40,),
                   SizedBox(
                       child: Form (
                         key: formKey,
@@ -145,9 +153,11 @@ class _AddPhoneScreenState extends State<AddPhoneScreen> {
                 ],
               ),
             ),
+
           ),
         ),
       ),
+      )
     );
   }
 }
