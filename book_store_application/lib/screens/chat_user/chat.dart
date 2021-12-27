@@ -52,7 +52,6 @@ class _ChatState extends State<Chat> {
   Widget chatMessages(){
 
     String id = latestMessageUserID;
-    String timeBreakSection = "";
 
     String calculateTimeAgoSinceDate1(int time) {
       DateTime notificationDate = DateTime.fromMillisecondsSinceEpoch(time);
@@ -74,25 +73,23 @@ class _ChatState extends State<Chat> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index){
               bool isDisplayTime = false;
+              String timeBreakSection = "";
               if(index == snapshot.data!.docs.length - 1) {
                 isDisplayTime = true;
                 timeBreakSection = "";
               }
-              else{
-                if(id == snapshot.data!.docs[index]["sendBy"] && Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 60)
+              else {
+                if(id == snapshot.data!.docs[index]["sendBy"])
                 {
                   isDisplayTime = true;
-                  timeBreakSection = calculateTimeAgoSinceDate1(snapshot.data!.docs[index+1]["time"]);
                 }
                 if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"])
                 {
-                  if(Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 60)
-                  {
-                    timeBreakSection = calculateTimeAgoSinceDate1(snapshot.data!.docs[index+1]["time"]);
-                  }
                   isDisplayTime = true;
-
                   id = snapshot.data!.docs[index+1]["sendBy"];
+                }
+                if(Calculate(snapshot.data!.docs[index]["time"],snapshot.data!.docs[index+1]["time"]) > 60) {
+                  timeBreakSection = calculateTimeAgoSinceDate1(snapshot.data!.docs[index+1]["time"]);
                 }
               }
               return MessageTile(
