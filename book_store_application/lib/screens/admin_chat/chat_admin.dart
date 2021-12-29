@@ -75,10 +75,6 @@ class _ChatAdminState extends State<ChatAdmin> {
                 timeBreakSection = "";
               }
               else {
-                if(id == snapshot.data!.docs[index]["sendBy"])
-                {
-                    isDisplayTime = true;
-                }
                 if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"])
                 {
                   isDisplayTime = true;

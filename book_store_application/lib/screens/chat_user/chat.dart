@@ -79,10 +79,6 @@ class _ChatState extends State<Chat> {
                 timeBreakSection = "";
               }
               else {
-                if(id == snapshot.data!.docs[index]["sendBy"])
-                {
-                  isDisplayTime = true;
-                }
                 if(id == snapshot.data!.docs[index]["sendBy"] && id != snapshot.data!.docs[index+1]["sendBy"])
                 {
                   isDisplayTime = true;
